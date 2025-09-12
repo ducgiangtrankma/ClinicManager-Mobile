@@ -33,5 +33,6 @@ const mergeAppTheme = (
     ...primaryTheme,
     Colors: mergedColors,
     Images: mergedImages,
+    IsDark: isDark,
   };
 };

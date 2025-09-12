@@ -10,7 +10,7 @@ middleware.push(createLogger());
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: [],
+  whitelist: ['languageReducer'], // Persist language state
   blacklist: [],
 };
 const rootReducer = combineReducers({

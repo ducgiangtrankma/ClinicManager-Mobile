@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AppThemeEntity, AppThemeState } from '@src/models';
 
 const initialLanguageState: AppThemeState = {
-  appTheme: AppThemeEntity.dark,
+  appTheme: AppThemeEntity.light,
 };
 
 const slice = createSlice({

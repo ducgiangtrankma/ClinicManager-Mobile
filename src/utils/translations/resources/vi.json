@@ -1,6 +1,27 @@
 {
     "translation":{
-       "hello":"Xin chào các nhà phát triển React Native",
-       "home.title":"Tiêu đề trang chủ"
+      "error.title": "Có lỗi xảy ra",
+      "error.camera.permission": "Bạn cần cấp quyền camera để sử dụng chức năng!",
+      "error.file.maxSize": "Kích thước tệp không vượt quá 10MB!",
+      "maxCount": "Tối đa {{count}} ảnh",
+      "datePicker.title":"Chọn ngày",
+      "datePicker.button.cancel":"Huỷ",
+      "datePicker.button.apply":"Áp dụng",
+      "imagePicker.title":"Chọn hình ảnh",
+      "customer.customerTab.name":"Khách hàng",
+      "customer.scheduleTab.name":"Lịch hẹn",
+      "customer.home.title":"Quản lý khách hàng",
+      "warehouse.homeTab.name":"Kho hàng",
+      "warehouse.inventoryTab.name":"Tồn kho",
+      "action.add.customer":"Thêm khách hàng",
+      "action.add.customer.message":"Bạn muốn thêm khách hàng mới?",
+      "action.add.appointment":"Thêm lịch hẹn",
+      "action.add.appointment.message":"Bạn muốn tạo lịch hẹn mới?",
+      "action.default":"Thêm mới",
+      "action.default.message":"Chưa có action cho tab này",
+      "button.cancel":"Hủy",
+      "button.add":"Thêm",
+      "button.create":"Tạo",
+      "notification":"Thông báo"
     }
  }

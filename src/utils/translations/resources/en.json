@@ -1,6 +1,25 @@
 {
     "translation":{
-       "hello":"Hello React Native Developer",
-       "home.title":"Home title"
+      "error.title": "An error occurred",
+      "error.camera.permission": "You need to grant camera permission to use this feature!",
+      "error.file.maxSize": "File size must not exceed 10MB!",
+      "maxCount": "Maximum {{count}} images",
+      "datePicker.title":"Select date",
+      "datePicker.button.cancel":"Cancel",
+      "datePicker.button.apply":"Apply",
+      "imagePicker.title":"Select image",
+      "customer.home.title":"Customer Management",
+      "warehouse.homeTab.name":"Warehouse",
+      "warehouse.inventoryTab.name":"Inventory",
+      "action.add.customer":"Add Customer",
+      "action.add.customer.message":"Do you want to add a new customer?",
+      "action.add.appointment":"Add Appointment",
+      "action.add.appointment.message":"Do you want to create a new appointment?",
+      "action.default":"Add New",
+      "action.default.message":"No action available for this tab",
+      "button.cancel":"Cancel",
+      "button.add":"Add",
+      "button.create":"Create",
+      "notification":"Notification"
     }
  }

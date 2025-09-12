@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppLanguage, LanguageState } from '@src/models';
 
 const initialLanguageState: LanguageState = {
-  appLanguage: AppLanguage.en,
+  appLanguage: AppLanguage.vi,
 };
 
 const slice = createSlice({

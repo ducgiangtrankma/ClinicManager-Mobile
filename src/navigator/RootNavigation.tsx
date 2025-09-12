@@ -1,22 +1,35 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
+import { AppStack, AuthStack } from './AppStackNavigation';
 import { APP_SCREEN, RootStackParamList } from './ScreenTypes';
-import { DrawerNavigator } from './Drawer';
 const RootStack = createStackNavigator<RootStackParamList>();
 export const RootNavigation = () => {
+  const accessToken = 'undefined';
   return (
     <RootStack.Navigator>
       <>
-        <RootStack.Screen
-          name={APP_SCREEN.DRAWER}
-          component={DrawerNavigator}
-          options={{
-            animationTypeForReplace: 'pop',
-            gestureEnabled: false,
-            headerShown: false,
-          }}
-        />
+        {!accessToken ? (
+          <RootStack.Screen
+            name={APP_SCREEN.AUTH_STACK}
+            component={AuthStack}
+            options={{
+              animationTypeForReplace: 'pop',
+              gestureEnabled: false,
+              headerShown: false,
+            }}
+          />
+        ) : (
+          <RootStack.Screen
+            name={APP_SCREEN.DRAWER}
+            component={AppStack}
+            options={{
+              animationTypeForReplace: 'pop',
+              gestureEnabled: false,
+              headerShown: false,
+            }}
+          />
+        )}
       </>
     </RootStack.Navigator>
   );

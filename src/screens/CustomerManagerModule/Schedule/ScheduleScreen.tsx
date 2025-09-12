@@ -3,10 +3,10 @@ import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Props {}
-export const ScheduleScreen: FC<Props> = () => {
+export const CustomerScheduleScreen: FC<Props> = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>ScheduleScreen</Text>
+      <Text>CustomerScheduleScreen</Text>
     </SafeAreaView>
   );
 };
