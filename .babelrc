@@ -1,0 +1,11 @@
+{
+    "plugins": [
+      ["module-resolver", {
+        "root": ["./"],
+        "alias": {
+          "@src":"./src",
+          "@screens":"./src/screens/index.ts"
+        }
+      }]
+    ]
+}

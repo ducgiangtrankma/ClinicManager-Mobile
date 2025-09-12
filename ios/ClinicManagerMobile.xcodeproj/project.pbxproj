@@ -7,11 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A830F97BA744F7C977A9224 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-ClinicManagerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ClinicManagerMobile.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		1D68CC6C7EFB4206AF96007C /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */; };
+		46BB2E511C084412AD6FDEC8 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		BB3491177F6542589DBDA08B /* PlayfairDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */; };
+		BC30E99501A54BF1B531121C /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */; };
 		C0C1193F13CF3558B2D8CA7F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		FDA697BB6EFF42A388EFCB46 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */; };
+		86E64B2C96F14112B905456F /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 374C693622CB48559141860C /* Roboto-Italic.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,12 +26,19 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClinicManagerMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClinicManagerMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = ClinicManagerMobile/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../src/assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
+		2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.ttf"; path = "../src/assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-ClinicManagerMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClinicManagerMobile.debug.xcconfig"; path = "Target Support Files/Pods-ClinicManagerMobile/Pods-ClinicManagerMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "PlayfairDisplay-Italic.ttf"; path = "../src/assets/fonts/PlayfairDisplay-Italic.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-ClinicManagerMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClinicManagerMobile.release.xcconfig"; path = "Target Support Files/Pods-ClinicManagerMobile/Pods-ClinicManagerMobile.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-ClinicManagerMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClinicManagerMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../src/assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ClinicManagerMobile/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClinicManagerMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../src/assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
+		DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../src/assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		374C693622CB48559141860C /* Roboto-Italic.ttf */ = {isa = PBXFileReference; name = "Roboto-Italic.ttf"; path = "../src/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +65,21 @@
 			name = ClinicManagerMobile;
 			sourceTree = "<group>";
 		};
+		16CD20CDAF1B4E63B520F0D1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */,
+				1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */,
+				2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */,
+				63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */,
+				A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */,
+				DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */,
+				374C693622CB48559141860C /* Roboto-Italic.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -75,6 +104,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				16CD20CDAF1B4E63B520F0D1 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -161,6 +191,13 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				C0C1193F13CF3558B2D8CA7F /* PrivacyInfo.xcprivacy in Resources */,
+				BB3491177F6542589DBDA08B /* PlayfairDisplay-Italic.ttf in Resources */,
+				0A830F97BA744F7C977A9224 /* Quicksand-Bold.ttf in Resources */,
+				BC30E99501A54BF1B531121C /* Quicksand-Light.ttf in Resources */,
+				FDA697BB6EFF42A388EFCB46 /* Quicksand-Medium.ttf in Resources */,
+				1D68CC6C7EFB4206AF96007C /* Quicksand-Regular.ttf in Resources */,
+				46BB2E511C084412AD6FDEC8 /* Quicksand-SemiBold.ttf in Resources */,
+				86E64B2C96F14112B905456F /* Roboto-Italic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
