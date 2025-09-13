@@ -1,7 +1,13 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-
+//Config ENV
+project.ext.envConfigFiles = [
+    dev: ".env.dev",
+    prod: ".env.prod",
+    anothercustombuild: ".env",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -82,8 +88,12 @@ android {
         applicationId "com.clinicmanagermobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // versionCode 1
+        // versionName "1.0"
+        versionCode Integer.valueOf(env.get("VERSION_CODE_ANDROID"))
+        versionName project.env.get("VERSION_NAME_ANDROID")
+        //Required
+        resValue "string", "build_config_package", applicationId // Bắt buộc để đọc được value trong env
     }
     signingConfigs {
         debug {
@@ -91,6 +101,19 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        //Add new
+        dev {
+            storeFile file(DEBUG_STORE_FILE)
+            storePassword DEBUG_STORE_PASSWORD
+            keyAlias DEBUG_KEY_ALIAS
+            keyPassword DEBUG_KEY_PASSWORD
+        }
+        prod {
+            storeFile file(PRODUCT_STORE_FILE)
+            storePassword PRODUCT_STORE_PASSWORD
+            keyAlias PRODUCT_KEY_ALIAS
+            keyPassword PRODUCT_KEY_PASSWORD
         }
     }
     buildTypes {
@@ -105,12 +128,27 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    flavorDimensions "enviroment"
+    productFlavors {
+        dev {
+            dimension "enviroment"
+            applicationId "com.clinicmanagermobile.dev"
+            resValue "string", "app_name", project.env.get("APP_NAME")
+            signingConfig signingConfigs.dev
+        }
+        prod {
+            dimension "enviroment"
+            applicationId "com.clinicmanagermobile"
+            resValue "string", "app_name", project.env.get("APP_NAME")
+            signingConfig signingConfigs.prod
+        }
+    }
 }
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
+    implementation project(':react-native-config')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
