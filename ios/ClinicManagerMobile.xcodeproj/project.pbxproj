@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		016A8275DBA11C63A1F965FA /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAB652D20790E105FCF9D3BD /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a */; };
 		0A830F97BA744F7C977A9224 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */; };
-		0C80B921A6F3F58F76C31292 /* libPods-ClinicManagerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ClinicManagerMobile.a */; };
+		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1D68CC6C7EFB4206AF96007C /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */; };
 		46BB2E511C084412AD6FDEC8 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */; };
@@ -18,6 +19,20 @@
 		BB3491177F6542589DBDA08B /* PlayfairDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */; };
 		BC30E99501A54BF1B531121C /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */; };
 		C0C1193F13CF3558B2D8CA7F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		CE48E3842E74FD12001F6E89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		CE48E3882E74FD12001F6E89 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		CE48E3892E74FD12001F6E89 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		CE48E38A2E74FD12001F6E89 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		CE48E38B2E74FD12001F6E89 /* PlayfairDisplay-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */; };
+		CE48E38C2E74FD12001F6E89 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */; };
+		CE48E38D2E74FD12001F6E89 /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */; };
+		CE48E38E2E74FD12001F6E89 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */; };
+		CE48E38F2E74FD12001F6E89 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */; };
+		CE48E3902E74FD12001F6E89 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */; };
+		CE48E3912E74FD12001F6E89 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 374C693622CB48559141860C /* Roboto-Italic.ttf */; };
+		CE48E39D2E750143001F6E89 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE48E39C2E750143001F6E89 /* Config.xcconfig */; };
+		CE48E39E2E750143001F6E89 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE48E39C2E750143001F6E89 /* Config.xcconfig */; };
+		EE381D594A1A665D3FA2FF23 /* libPods-ClinicManagerMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DFE83626C87AF0ECB042E5D /* libPods-ClinicManagerMobile.a */; };
 		FDA697BB6EFF42A388EFCB46 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */; };
 /* End PBXBuildFile section */
 
@@ -26,18 +41,24 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClinicManagerMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClinicManagerMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = ClinicManagerMobile/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../src/assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
-		2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.ttf"; path = "../src/assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; };
-		374C693622CB48559141860C /* Roboto-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Italic.ttf"; path = "../src/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
+		1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../src/assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
+		2DEF11942DEA47CBB65F5187 /* Quicksand-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.ttf"; path = "../src/assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; };
+		374C693622CB48559141860C /* Roboto-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Italic.ttf"; path = "../src/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-ClinicManagerMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClinicManagerMobile.debug.xcconfig"; path = "Target Support Files/Pods-ClinicManagerMobile/Pods-ClinicManagerMobile.debug.xcconfig"; sourceTree = "<group>"; };
-		4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "PlayfairDisplay-Italic.ttf"; path = "../src/assets/fonts/PlayfairDisplay-Italic.ttf"; sourceTree = "<group>"; };
+		4C31D0F9F0094D868B8C0702 /* PlayfairDisplay-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "PlayfairDisplay-Italic.ttf"; path = "../src/assets/fonts/PlayfairDisplay-Italic.ttf"; sourceTree = "<group>"; };
+		4DE9AF1938C0862E862327DA /* Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.release.xcconfig"; path = "Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.release.xcconfig"; sourceTree = "<group>"; };
+		56FAB6EC93983133EC895C41 /* Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.debug.xcconfig"; path = "Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-ClinicManagerMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClinicManagerMobile.release.xcconfig"; path = "Target Support Files/Pods-ClinicManagerMobile/Pods-ClinicManagerMobile.release.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-ClinicManagerMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClinicManagerMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../src/assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
+		63B4C6D11264486B9BF5041A /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../src/assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
+		6DFE83626C87AF0ECB042E5D /* libPods-ClinicManagerMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClinicManagerMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ClinicManagerMobile/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClinicManagerMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../src/assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
-		DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../src/assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
+		A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../src/assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
+		CAB652D20790E105FCF9D3BD /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE48E3982E74FD12001F6E89 /* ClinicManagerMobile-Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ClinicManagerMobile-Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE48E3992E74FD12001F6E89 /* ClinicManagerMobile-Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ClinicManagerMobile-Dev-Info.plist"; path = "/Users/ducgiangtran/Desktop/Giang/ClinicManager/ClinicManagerMobile/ios/ClinicManagerMobile-Dev-Info.plist"; sourceTree = "<absolute>"; };
+		CE48E39C2E750143001F6E89 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../src/assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -46,7 +67,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-ClinicManagerMobile.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
+				EE381D594A1A665D3FA2FF23 /* libPods-ClinicManagerMobile.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE48E3852E74FD12001F6E89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				016A8275DBA11C63A1F965FA /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,14 +107,14 @@
 				374C693622CB48559141860C /* Roboto-Italic.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-ClinicManagerMobile.a */,
+				CAB652D20790E105FCF9D3BD /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a */,
+				6DFE83626C87AF0ECB042E5D /* libPods-ClinicManagerMobile.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -99,12 +129,14 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				CE48E39C2E750143001F6E89 /* Config.xcconfig */,
 				13B07FAE1A68108700A75B9A /* ClinicManagerMobile */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				16CD20CDAF1B4E63B520F0D1 /* Resources */,
+				CE48E3992E74FD12001F6E89 /* ClinicManagerMobile-Dev-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -115,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* ClinicManagerMobile.app */,
+				CE48E3982E74FD12001F6E89 /* ClinicManagerMobile-Dev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,6 +157,8 @@
 			children = (
 				3B4392A12AC88292D35C810B /* Pods-ClinicManagerMobile.debug.xcconfig */,
 				5709B34CF0A7D63546082F79 /* Pods-ClinicManagerMobile.release.xcconfig */,
+				56FAB6EC93983133EC895C41 /* Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.debug.xcconfig */,
+				4DE9AF1938C0862E862327DA /* Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -140,6 +175,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				CE48E39B2E7500D6001F6E89 /* ShellScript */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
 			);
@@ -150,6 +186,28 @@
 			name = ClinicManagerMobile;
 			productName = ClinicManagerMobile;
 			productReference = 13B07F961A680F5B00A75B9A /* ClinicManagerMobile.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CE48E3812E74FD12001F6E89 /* ClinicManagerMobile-Dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE48E3952E74FD12001F6E89 /* Build configuration list for PBXNativeTarget "ClinicManagerMobile-Dev" */;
+			buildPhases = (
+				CE48E3822E74FD12001F6E89 /* [CP] Check Pods Manifest.lock */,
+				CE48E3832E74FD12001F6E89 /* Sources */,
+				CE48E3852E74FD12001F6E89 /* Frameworks */,
+				CE48E3872E74FD12001F6E89 /* Resources */,
+				CE48E3922E74FD12001F6E89 /* Bundle React Native code and images */,
+				CE48E39A2E7500BC001F6E89 /* ShellScript */,
+				CE48E3932E74FD12001F6E89 /* [CP] Embed Pods Frameworks */,
+				CE48E3942E74FD12001F6E89 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ClinicManagerMobile-Dev";
+			productName = ClinicManagerMobile;
+			productReference = CE48E3982E74FD12001F6E89 /* ClinicManagerMobile-Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -179,6 +237,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* ClinicManagerMobile */,
+				CE48E3812E74FD12001F6E89 /* ClinicManagerMobile-Dev */,
 			);
 		};
 /* End PBXProject section */
@@ -191,6 +250,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				C0C1193F13CF3558B2D8CA7F /* PrivacyInfo.xcprivacy in Resources */,
+				CE48E39D2E750143001F6E89 /* Config.xcconfig in Resources */,
 				BB3491177F6542589DBDA08B /* PlayfairDisplay-Italic.ttf in Resources */,
 				0A830F97BA744F7C977A9224 /* Quicksand-Bold.ttf in Resources */,
 				BC30E99501A54BF1B531121C /* Quicksand-Light.ttf in Resources */,
@@ -198,6 +258,24 @@
 				1D68CC6C7EFB4206AF96007C /* Quicksand-Regular.ttf in Resources */,
 				46BB2E511C084412AD6FDEC8 /* Quicksand-SemiBold.ttf in Resources */,
 				86E64B2C96F14112B905456F /* Roboto-Italic.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE48E3872E74FD12001F6E89 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE48E3882E74FD12001F6E89 /* LaunchScreen.storyboard in Resources */,
+				CE48E3892E74FD12001F6E89 /* Images.xcassets in Resources */,
+				CE48E38A2E74FD12001F6E89 /* PrivacyInfo.xcprivacy in Resources */,
+				CE48E39E2E750143001F6E89 /* Config.xcconfig in Resources */,
+				CE48E38B2E74FD12001F6E89 /* PlayfairDisplay-Italic.ttf in Resources */,
+				CE48E38C2E74FD12001F6E89 /* Quicksand-Bold.ttf in Resources */,
+				CE48E38D2E74FD12001F6E89 /* Quicksand-Light.ttf in Resources */,
+				CE48E38E2E74FD12001F6E89 /* Quicksand-Medium.ttf in Resources */,
+				CE48E38F2E74FD12001F6E89 /* Quicksand-Regular.ttf in Resources */,
+				CE48E3902E74FD12001F6E89 /* Quicksand-SemiBold.ttf in Resources */,
+				CE48E3912E74FD12001F6E89 /* Roboto-Italic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +337,112 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		CE48E3822E74FD12001F6E89 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE48E3922E74FD12001F6E89 /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		CE48E3932E74FD12001F6E89 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE48E3942E74FD12001F6E89 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev/Pods-ClinicManagerMobile-ClinicManagerMobile-Dev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE48E39A2E7500BC001F6E89 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${SRCROOT}/../node_modules/react-native-config/ios/ReactNativeConfig/BuildXCConfig.rb\" \"${SRCROOT}/..\" \"${SRCROOT}/tmp.xcconfig\"\n";
+		};
+		CE48E39B2E7500D6001F6E89 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${SRCROOT}/../node_modules/react-native-config/ios/ReactNativeConfig/BuildXCConfig.rb\" \"${SRCROOT}/..\" \"${SRCROOT}/tmp.xcconfig\"\n";
+		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,6 +468,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE48E3832E74FD12001F6E89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE48E3842E74FD12001F6E89 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +540,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE48E39C2E750143001F6E89 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -424,6 +617,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE48E39C2E750143001F6E89 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -490,6 +684,62 @@
 			};
 			name = Release;
 		};
+		CE48E3962E74FD12001F6E89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56FAB6EC93983133EC895C41 /* Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GP7JB2R4J2;
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "ClinicManagerMobile-Dev-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.clinicmanager-dev.vn";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		CE48E3972E74FD12001F6E89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4DE9AF1938C0862E862327DA /* Pods-ClinicManagerMobile-ClinicManagerMobile-Dev.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GP7JB2R4J2;
+				INFOPLIST_FILE = "ClinicManagerMobile-Dev-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.clinicmanager-dev.vn";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -507,6 +757,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE48E3952E74FD12001F6E89 /* Build configuration list for PBXNativeTarget "ClinicManagerMobile-Dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE48E3962E74FD12001F6E89 /* Debug */,
+				CE48E3972E74FD12001F6E89 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

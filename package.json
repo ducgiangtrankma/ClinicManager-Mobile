@@ -5,6 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "ios-dev": "react-native run-ios --scheme ClinicManagerMobile-Dev",
+    "ios-prod": "react-native run-ios --scheme ClinicManagerMobile",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest"
@@ -27,6 +29,7 @@
     "react-i18next": "^15.7.3",
     "react-native": "0.81.1",
     "react-native-calendars": "^1.1313.0",
+    "react-native-config": "^1.5.9",
     "react-native-device-info": "^14.0.4",
     "react-native-file-access": "^3.2.0",
     "react-native-flash-message": "^0.4.2",

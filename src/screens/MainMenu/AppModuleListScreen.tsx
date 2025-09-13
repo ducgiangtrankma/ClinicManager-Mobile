@@ -5,6 +5,7 @@ import { sizes } from '@src/utils';
 import React, { FC } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { AppConfig } from '@src/config';
 
 interface Props {}
 export const AppModuleListScreen: FC<Props> = () => {
@@ -26,7 +27,7 @@ export const AppModuleListScreen: FC<Props> = () => {
             </AppText>
           </TouchableOpacity>
         </Box>
-
+        <AppText>{AppConfig.env}</AppText>
         {/* Content area */}
         <Box style={styles.content}>
           <AppText
