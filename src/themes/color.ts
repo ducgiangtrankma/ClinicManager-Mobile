@@ -52,6 +52,8 @@ export const DarkColors = {
   cancelButton: COLORS.borderGray,
   grayBackground: COLORS.grayBackground,
   blackGray: COLORS.blackGray,
+  defaultButtonBackground: COLORS.primaryGreen,
+  defaultButtonTitle: COLORS.white,
 };
 export const LightColors = {
   //
@@ -73,4 +75,6 @@ export const LightColors = {
   cancelButton: COLORS.borderGray,
   grayBackground: COLORS.grayBackground,
   blackGray: COLORS.blackGray,
+  defaultButtonBackground: COLORS.primaryGreen,
+  defaultButtonTitle: COLORS.white,
 };

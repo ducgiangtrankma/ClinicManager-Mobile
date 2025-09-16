@@ -1,5 +1,6 @@
 {
     "translation":{
+      "empty_string":"",
       "error.title": "An error occurred",
       "error.camera.permission": "You need to grant camera permission to use this feature!",
       "error.file.maxSize": "File size must not exceed 10MB!",
@@ -20,6 +21,7 @@
       "button.cancel":"Cancel",
       "button.add":"Add",
       "button.create":"Create",
+      "button.continue":"Continue",
       "notification":"Notification"
     }
  }

@@ -11,7 +11,25 @@ import FlashMessage from 'react-native-flash-message';
 import { GlobalLoading, globalLoadingRef } from '@src/components';
 import { Platform } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 interface Props {}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30 * 1000, // 30 giây
+      gcTime: 60 * 1000, // 1 phút
+      retry: 2,
+      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
 
 if (Platform.OS === 'ios') {
   KeyboardManager.setEnable(true);
@@ -31,14 +49,16 @@ const App: FC<Props> = () => {
     <SafeAreaProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <I18nextProvider i18n={i18next}>
-            <Suspense fallback={null}>
-              <AppContainer />
-              <RXStore />
-              <GlobalLoading ref={globalLoadingRef} />
-              <FlashMessage position="top" hideOnPress={true} />
-            </Suspense>
-          </I18nextProvider>
+          <QueryClientProvider client={queryClient}>
+            <I18nextProvider i18n={i18next}>
+              <Suspense fallback={null}>
+                <AppContainer />
+                <RXStore />
+                <GlobalLoading ref={globalLoadingRef} />
+                <FlashMessage position="top" hideOnPress={true} />
+              </Suspense>
+            </I18nextProvider>
+          </QueryClientProvider>
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

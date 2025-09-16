@@ -1,113 +1,118 @@
-import { AppText, PageContainer, Box } from '@src/components';
-import { APP_SCREEN } from '@src/navigator';
-import { useAppTheme } from '@src/common';
-import { sizes } from '@src/utils';
-import React, { FC } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { AppConfig } from '@src/config';
+import { dispatch, useAppTheme, useSelector } from '@src/common';
+import {
+  AppActivityIndicator,
+  AppButton,
+  AppText,
+  Box,
+  PageContainer,
+} from '@src/components';
+import { FacilityEntity } from '@src/models';
+import { APP_SCREEN, navigate } from '@src/navigator';
+import { onSelectFacility } from '@src/redux';
+import { useFacilityQuery } from '@src/services';
+import { _screen_width, sizes } from '@src/utils';
+import React, { FC, useCallback, useEffect } from 'react';
+import { Image, RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { FacilityItem } from './FacilityItem';
+import { FacilityEmptyList } from './EmptyFacility';
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 
 interface Props {}
 export const AppModuleListScreen: FC<Props> = () => {
-  const { Colors } = useAppTheme();
-  const navigation = useNavigation();
+  const { Colors, Images } = useAppTheme();
+  const { facility } = useSelector(x => x.facilityReducer);
+  const { isFetching, data, refetch, isRefetching } = useFacilityQuery();
+  const uiReady = data && data.length > 0;
 
-  const openDrawer = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
+  const handleSelectFacility = useCallback((value: FacilityEntity) => {
+    dispatch(onSelectFacility(value));
+  }, []);
+
+  useEffect(() => {
+    if (!facility && data && data?.length > 0) {
+      dispatch(onSelectFacility(data[0]));
+    }
+  }, [data, facility]);
 
   return (
-    <PageContainer>
-      <Box style={styles.container}>
-        {/* Header với drawer button */}
-        <Box style={styles.header}>
-          <TouchableOpacity style={styles.drawerButton} onPress={openDrawer}>
-            <AppText fontSize="16" color={Colors.green}>
-              ☰ Menu
-            </AppText>
-          </TouchableOpacity>
-        </Box>
-        <AppText>{AppConfig.env}</AppText>
-        {/* Content area */}
-        <Box style={styles.content}>
+    <PageContainer padding>
+      <Image source={Images.appLogo} style={styles.logo} />
+      <Box style={styles.content}>
+        {!uiReady && <FacilityEmptyList />}
+        {uiReady && (
           <AppText
-            fontSize="24"
-            fontFamily="content_bold"
-            textAlign="center"
-            margin={{ mb: sizes._24sdp }}
-          >
-            Select Module
-          </AppText>
-
-          <TouchableOpacity
-            style={[styles.moduleButton, { backgroundColor: Colors.green }]}
-            onPress={() =>
-              navigation.navigate(APP_SCREEN.CUSTOMER_MODULE as never)
+            translationKey="moduleScreen.select_facility"
+            fontSize="18"
+            fontFamily="content_semibold"
+          />
+        )}
+        {isFetching ? (
+          <AppActivityIndicator animating={isFetching} />
+        ) : (
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefetching}
+                onRefresh={refetch}
+                tintColor={Colors.green} // iOS spinner color
+                colors={[Colors.green]} // Android spinner colors
+                progressViewOffset={sizes._12sdp} // khoảng cách spinner
+              />
             }
+            contentContainerStyle={{ gap: sizes._24sdp }}
+            showsVerticalScrollIndicator={false}
           >
-            <AppText
-              fontSize="18"
-              color={Colors.while}
-              fontFamily="content_semibold"
-            >
-              Customer Module
-            </AppText>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.moduleButton,
-              { backgroundColor: Colors.green, opacity: 0.8 },
-            ]}
-            onPress={() =>
-              navigation.navigate(APP_SCREEN.WAREHOUSE_MODULE as never)
-            }
-          >
-            <AppText
-              fontSize="18"
-              color={Colors.while}
-              fontFamily="content_semibold"
-            >
-              Warehouse Module
-            </AppText>
-          </TouchableOpacity>
-        </Box>
+            {data?.map((item, index) => (
+              <Animated.View
+                key={item.id}
+                entering={FadeInRight.springify()
+                  .damping(80)
+                  .stiffness(500)
+                  .delay(index * 100)}
+                exiting={FadeOutLeft.springify().damping(80).stiffness(500)}
+              >
+                <FacilityItem
+                  onSelect={() => handleSelectFacility(item)}
+                  item={item}
+                  isSelect={facility?.id === item.id}
+                />
+              </Animated.View>
+            ))}
+          </ScrollView>
+        )}
       </Box>
+      {uiReady && facility && (
+        <AppButton
+          title="button.continue"
+          onPress={() => navigate(APP_SCREEN.CUSTOMER_MODULE)}
+        />
+      )}
     </PageContainer>
   );
 };
 
+const LOGO_SIZE = _screen_width * 0.8;
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: sizes._24sdp,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: sizes._16sdp,
-    paddingBottom: sizes._24sdp,
-  },
-  drawerButton: {
-    paddingHorizontal: sizes._16sdp,
-    paddingVertical: sizes._8sdp,
-    borderRadius: sizes._8sdp,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: sizes._24sdp,
+    gap: sizes._24sdp,
+    marginBottom: sizes._16sdp,
   },
-  moduleButton: {
-    width: '100%',
-    paddingVertical: sizes._16sdp,
-    paddingHorizontal: sizes._24sdp,
-    borderRadius: sizes._12sdp,
+  logo: {
+    width: LOGO_SIZE,
+    height: 'auto',
+    aspectRatio: 1,
+    alignSelf: 'center',
+  },
+  item: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: sizes._8sdp,
+    gap: sizes._16sdp,
+    width: '100%',
+    paddingVertical: sizes._12sdp,
+    paddingHorizontal: sizes._8sdp,
+    borderRadius: sizes._12sdp,
+    borderWidth: sizes._1sdp,
   },
 });

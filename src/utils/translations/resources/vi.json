@@ -1,5 +1,19 @@
 {
     "translation":{
+      //Message
+      "action_success_message":"Thao tác thành công",
+      "active_error_message":"Thao tác thất bại",
+      "facility_create_success":"Tạo cở sở thành công.Hãy bắt đầu việc quản lý cơ sở đó.",
+      // Validation
+      "facility_name_is_required":"Tên cơ sở là bắt buộc",
+      "facility_address_is_required":"Địa chỉ cơ sở là bắt buộc",
+      //Form
+      "facility_form_name":"Tên cơ sở",
+      "facility_form_name_placeholder":"Nhập tên cơ sở",
+      "facility_form_address":"Địa chỉ hoạt động",
+      "facility_form_address_placeholder":"Nhập địa chỉ hoạt động",
+      // Base
+      "empty_string":"",
       "error.title": "Có lỗi xảy ra",
       "error.camera.permission": "Bạn cần cấp quyền camera để sử dụng chức năng!",
       "error.file.maxSize": "Kích thước tệp không vượt quá 10MB!",
@@ -22,6 +36,12 @@
       "button.cancel":"Hủy",
       "button.add":"Thêm",
       "button.create":"Tạo",
-      "notification":"Thông báo"
+      "button.continue":"Tiếp tục",
+      "notification":"Thông báo",
+      "button.create_facility":"Tạo cơ sở",
+      "moduleScreen.select_facility":"Chọn cơ sở",
+      "emptyFacility_description":"Bạn cần tạo cơ sở để quản lý",
+      "create_facility_title":"Tạo cơ sở điều trị",
+      "create_facility_button":"Đồng ý"
     }
  }
