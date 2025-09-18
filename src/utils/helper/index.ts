@@ -1,3 +1,8 @@
+import {
+  AttachmentEntity,
+  GridImageEntity,
+  LocalFileEntity,
+} from '@src/models';
 import { TreatmentEntity } from '@src/models/TreatmentEntity';
 import { Linking, Platform } from 'react-native';
 
@@ -16,4 +21,21 @@ const isSuccessTreatment = (treatments: TreatmentEntity[]) => {
   }
   return treatments.find(item => item.success === false) ? false : true;
 };
+export function attachmentsToGridImages(
+  attachments: AttachmentEntity[],
+): GridImageEntity[] {
+  return attachments.map(a => a);
+}
+export function localFilesToGridImages(
+  localFiles: LocalFileEntity[],
+): GridImageEntity[] {
+  return localFiles.map(f => ({
+    id: f.fileName,
+    originalUrl: f.uri,
+    thumbnailUrl: f.uri,
+    fileName: f.fileName,
+    type: f.type,
+    iconUrl: f.uri,
+  }));
+}
 export { callNumber, isSuccessTreatment };

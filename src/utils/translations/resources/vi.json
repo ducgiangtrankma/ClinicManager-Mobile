@@ -15,6 +15,7 @@
       "passwords_do_not_match": "Mật khẩu không trùng khớp",
       "otp_is_required":"OTP không được để trống",
       "otp_not_valid":"OTP là chuỗi 6 ký tự được gửi về email",
+      "phoneNumber_not_valid":"Số điện thoại không đúng định dạng",
       //Form
       "facility_form_name":"Tên cơ sở",
       "facility_form_name_placeholder":"Nhập tên cơ sở",
@@ -23,6 +24,32 @@
       "email_placeholder":"Nhâp địa chỉ email",
       "password_placeholder":"Nhập mật khẩu",
       "password_confirm_placeholder":"Nhập lại mật khẩu",
+      "customer_form_name_required":"Tên khách hàng không để trống",
+      "customer_create_name":"Tên khách hàng",
+      "customer_create_name_placeholder":"Nhập tên khách hàng",
+      "customer_create_phoneNumber":"Số điện thoại khách hàng",
+      "customer_create_phoneNumber_placeholder":"Nhập số điện thoại khách hàng",
+      "customer_create_type":"Phân loại khách hàng",
+      "customer_create_type_placeholder":"Chọn phân loại khách hàng",
+      "customer_create_leather_classification":"Đặc tính da",
+      "customer_create_leather_classification_placeholder":"Chọn đặc tính da",
+      "customer_create_maternity":"Tình trạng thai sản",
+      "customer_create_maternity_placeholder":"Chọn tình trạng thai sản",
+      "customer_create_medical_history":"Tiền sử bệnh lý/ Sử dụng thuốc",
+      "customer_create_medical_history_placeholder":"Nhập thông tin chi tiết",
+      "customer_create_skin_condition":"Tình trạng da hiện tại",
+      "customer_create_skin_condition_placeholder":"Nhập thông tin chi tiết",
+      "customer_create_pre_treatment":"Quá trình điều trị trước đó",
+      "customer_create_pre_treatment_placeholder":"Nhập thông tin chi tiết",
+      "customer_create_routine":"Thói quen Skincare & Routine",
+      "customer_create_routine_placeholder":"Nhập thông tin chi tiết",
+      "customer_create_diagnostic":"Chuẩn đoán ban đầu",
+      "customer_create_diagnostic_placeholder":"Nhập thông tin chi tiết",
+      "customer_create_note":"Ghi chú",      
+      "customer_create_note_placeholder":"Nhập ghi chú nếu có",
+      "customer_create_image":"Hình ảnh trước điều trị",
+      "customer_create_image_placeholder":"Thêm hình ảnh trước điều trị của khác hàng để theo dõi.",
+
       // Base
       "empty_string":"",
       "error.title": "Có lỗi xảy ra",
@@ -83,6 +110,9 @@
       "create_customer_step_2":"Thông tin y tế",
       "create_customer_step_3":"Tình trạng da",
       "create_customer_step_4":"Chuẩn đoán & Ghi chú",
-      "customer_emptyList":"Vui lòng thêm khách hàng!"
+      "customer_emptyList":"Vui lòng thêm khách hàng!",
+      "select_customer_type_title":"Chọn loại khách hàng",
+      "select_leather_classification_title":"Chọn đặc tính da",
+      "selecT_maternity_title":"Chọn tình trạng thai sản"
     }
  }

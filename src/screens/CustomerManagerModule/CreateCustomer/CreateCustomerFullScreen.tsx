@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAppTheme } from '@src/common';
 import {
   AppButton,
@@ -6,10 +7,7 @@ import {
   AppInputMultipleLine,
   AppSelectForm,
   AppText,
-  AttachmentPicker,
-  AttachmentPickerRef,
   Box,
-  GridImage,
   PageContainer,
   SelectCustomerType,
   SelectCustomerTypeRef,
@@ -19,12 +17,7 @@ import {
   SelectMaternityRef,
 } from '@src/components';
 import { CreateCustomerProgress } from '@src/components/CreateCustomerStep';
-import {
-  CreateCustomerFormEntity,
-  CUSTOMER_TYPE,
-  LocalFileEntity,
-  Sex,
-} from '@src/models';
+import { CreateCustomerFormEntity, CUSTOMER_TYPE, Sex } from '@src/models';
 import {
   _screen_width,
   createCustomerValidationSchema,
@@ -33,17 +26,16 @@ import {
   sizes,
 } from '@src/utils';
 import React, { FC, useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
-import { SelectImageIcon } from '@src/assets';
 
 interface Props {}
 enum ChangeStepType {
   next = 'next',
   back = 'back',
 }
-export const CreateCustomerScreen: FC<Props> = () => {
+export const CreateCustomerFullScreen: FC<Props> = () => {
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
   const selectCustomerTypeRef: React.RefObject<SelectCustomerTypeRef> =
@@ -52,11 +44,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
     React.createRef<any>();
   const selectMaternityRef: React.RefObject<SelectMaternityRef> =
     React.createRef<any>();
-  const attachmentPickerRef: React.RefObject<AttachmentPickerRef> =
-    React.createRef<any>();
   const [currentStep, setCurrentStep] = useState<number>(0);
-
-  const [images, setImages] = useState<LocalFileEntity[]>([]);
 
   const handleChangeStep = useCallback(
     (type: ChangeStepType) => {
@@ -107,8 +95,6 @@ export const CreateCustomerScreen: FC<Props> = () => {
     diagnostic: '', // chuẩn đoán
     note: '',
   };
-
-  console.log('images', images);
   return (
     <PageContainer>
       <AppHeader title={renderHeaderTile()} showBack />
@@ -296,26 +282,10 @@ export const CreateCustomerScreen: FC<Props> = () => {
                     />
                   </Box>
                   <Box gap={sizes._8sdp}>
-                    <Box horizontal justify="space-between">
-                      <AppText
-                        translationKey="customer_create_image"
-                        fontFamily="content_semibold"
-                      />
-                      <TouchableOpacity
-                        onPress={() => attachmentPickerRef.current.open()}
-                        hitSlop={{
-                          top: sizes._12sdp,
-                          bottom: sizes._12sdp,
-                          left: sizes._12sdp,
-                          right: sizes._12sdp,
-                        }}
-                      >
-                        <SelectImageIcon />
-                      </TouchableOpacity>
-                    </Box>
-                    <Box>
-                      <GridImage localImages={images} />
-                    </Box>
+                    <AppText
+                      translationKey="customer_create_image"
+                      fontFamily="content_semibold"
+                    />
                   </Box>
                 </Box>
               </ScrollView>
@@ -344,14 +314,6 @@ export const CreateCustomerScreen: FC<Props> = () => {
       <SelectCustomerType ref={selectCustomerTypeRef} />
       <SelectLeatherClassification ref={selectLeatherClassificationRef} />
       <SelectMaternity ref={selectMaternityRef} />
-      <AttachmentPicker
-        isMultiple
-        ref={attachmentPickerRef}
-        max_amount={6}
-        onConfirm={data => {
-          setImages(data);
-        }}
-      />
     </PageContainer>
   );
 };
