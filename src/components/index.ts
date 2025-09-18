@@ -17,3 +17,6 @@ export * from './ZoomImage';
 export * from './TabBarPlusButton';
 export * from './DrawerButton';
 export * from './AppButton';
+export * from './CreateCustomerStep';
+export * from './Avatar';
+export * from './EmptyList';

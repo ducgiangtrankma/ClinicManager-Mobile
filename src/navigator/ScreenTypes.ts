@@ -7,6 +7,10 @@ export enum APP_SCREEN {
   WAREHOUSE_MODULE = 'WAREHOUSE_MODULE',
   CREATE_FACILITY = 'CREATE_FACILITY',
   DRAWER = 'DRAWER',
+  SIGNIN = 'SIGNIN',
+  FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+  VERIFY_OTP = 'VERIFY_OTP',
+
   //Screen
   ONBOARDING = 'ONBOARDING',
   CUSTOMER_TAB = 'CUSTOMER_TAB',
@@ -19,6 +23,14 @@ export enum APP_SCREEN {
 export type UnAuthenticationPramsList = {
   [APP_SCREEN.ONBOARDING]: undefined;
   [APP_SCREEN.AUTH_STACK]: undefined;
+  [APP_SCREEN.SIGNIN]: {
+    email?: string;
+    signInMode?: boolean;
+  };
+  [APP_SCREEN.FORGOT_PASSWORD]: undefined;
+  [APP_SCREEN.VERIFY_OTP]: {
+    email: string;
+  };
 };
 
 export type AuthenticationPramsList = {

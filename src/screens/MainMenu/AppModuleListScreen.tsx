@@ -68,7 +68,7 @@ export const AppModuleListScreen: FC<Props> = () => {
                 entering={FadeInRight.springify()
                   .damping(80)
                   .stiffness(500)
-                  .delay(index * 100)}
+                  .delay(index * 50)}
                 exiting={FadeOutLeft.springify().damping(80).stiffness(500)}
               >
                 <FacilityItem

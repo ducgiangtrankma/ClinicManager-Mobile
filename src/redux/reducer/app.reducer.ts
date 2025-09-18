@@ -2,9 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppStateEntity, UserEntity } from '@src/models';
 
 const initialAppState: AppStateEntity = {
-  accessToken: undefined,
+  accessToken: 'undefined',
   refreshToken: undefined,
   user: undefined,
+  showOnboarding: true,
 };
 
 const slice = createSlice({
@@ -35,7 +36,9 @@ const slice = createSlice({
     ) => {
       state.user = payload.user;
     },
-
+    onDisableOnboarding: state => {
+      state.showOnboarding = false;
+    },
     onLogout: state => {
       state.accessToken = undefined;
       state.refreshToken = undefined;
@@ -44,4 +47,5 @@ const slice = createSlice({
 });
 const appReducer = slice.reducer;
 export default appReducer;
-export const { onSetToken, onSetUser, onLogout } = slice.actions;
+export const { onSetToken, onSetUser, onLogout, onDisableOnboarding } =
+  slice.actions;

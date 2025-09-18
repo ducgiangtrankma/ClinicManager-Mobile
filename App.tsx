@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 30 * 1000, // 30 giây
       gcTime: 60 * 1000, // 1 phút
-      retry: 2,
+      retry: 1,
       retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
       refetchOnWindowFocus: true,
       refetchOnReconnect: true,

@@ -35,7 +35,7 @@ export const Gradients = {
 
 export const DarkColors = {
   //
-  while: COLORS.white,
+  white: COLORS.white,
   black: COLORS.black,
   green: COLORS.primaryGreen,
   divider: COLORS.borderGray,
@@ -54,10 +54,11 @@ export const DarkColors = {
   blackGray: COLORS.blackGray,
   defaultButtonBackground: COLORS.primaryGreen,
   defaultButtonTitle: COLORS.white,
+  disableButtonBackground: COLORS.grayBackground,
 };
 export const LightColors = {
   //
-  while: COLORS.white,
+  white: COLORS.white,
   black: COLORS.black,
   error: COLORS.errorRed,
   divider: COLORS.borderGray,
@@ -77,4 +78,5 @@ export const LightColors = {
   blackGray: COLORS.blackGray,
   defaultButtonBackground: COLORS.primaryGreen,
   defaultButtonTitle: COLORS.white,
+  disableButtonBackground: COLORS.grayBackground,
 };

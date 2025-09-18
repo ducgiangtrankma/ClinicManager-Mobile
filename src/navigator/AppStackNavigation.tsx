@@ -6,9 +6,13 @@ import {
 
 import React from 'react';
 
-import { APP_SCREEN, UnAuthenticationPramsList } from './ScreenTypes';
+import {
+  ForgotPasswordScreen,
+  OnBoardingScreen,
+  SignInScreen,
+} from '@src/screens';
 import { DrawerNavigator } from './Drawer';
-import { CustomerHomeScreen } from '@src/screens';
+import { APP_SCREEN, UnAuthenticationPramsList } from './ScreenTypes';
 
 const AuthStackNavigation = createStackNavigator<UnAuthenticationPramsList>();
 
@@ -26,7 +30,15 @@ export const AuthStack = () => {
   }[] = [
     {
       name: APP_SCREEN.ONBOARDING,
-      component: CustomerHomeScreen,
+      component: OnBoardingScreen,
+    },
+    {
+      name: APP_SCREEN.SIGNIN,
+      component: SignInScreen,
+    },
+    {
+      name: APP_SCREEN.FORGOT_PASSWORD,
+      component: ForgotPasswordScreen,
     },
   ];
 

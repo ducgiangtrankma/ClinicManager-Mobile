@@ -4,9 +4,10 @@ import React from 'react';
 import { AppStack, AuthStack } from './AppStackNavigation';
 import { APP_SCREEN, RootStackParamList } from './ScreenTypes';
 import { CreateFacilityScreen } from '@src/screens';
+import { useSelector } from '@src/common';
 const RootStack = createStackNavigator<RootStackParamList>();
 export const RootNavigation = () => {
-  const accessToken = 'undefined';
+  const { accessToken } = useSelector(x => x.appReducer);
   return (
     <RootStack.Navigator>
       <>

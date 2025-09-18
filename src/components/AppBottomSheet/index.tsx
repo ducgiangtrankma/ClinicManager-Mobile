@@ -109,7 +109,7 @@ const BottomSheetModalContainerCpn = React.forwardRef<
       }}
       style={styles.sheetContainer}
       backgroundStyle={{
-        backgroundColor: Colors.while, // Màu nền của bottom sheet
+        backgroundColor: Colors.white, // Màu nền của bottom sheet
       }}
       backdropComponent={renderBackdrop}
     >
@@ -117,7 +117,7 @@ const BottomSheetModalContainerCpn = React.forwardRef<
         style={[
           styles.contentContainer,
           {
-            backgroundColor: Colors.while,
+            backgroundColor: Colors.white,
           },
         ]}
       >

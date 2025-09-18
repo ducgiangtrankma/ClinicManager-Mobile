@@ -12,3 +12,8 @@ export interface UserEntity {
   createdAt: string;
   updatedAt: string;
 }
+export enum Sex {
+  NAM = 'Male',
+  Nu = 'Female',
+  Other = 'Unidentify',
+}

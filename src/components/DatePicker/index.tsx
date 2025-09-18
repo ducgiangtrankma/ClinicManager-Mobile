@@ -115,7 +115,7 @@ export const DateTimePicker = forwardRef<DateTimePickerReft, Props>(
             hideArrows
             hideExtraDays
             theme={{
-              calendarBackground: Colors.while,
+              calendarBackground: Colors.white,
               dayTextColor: Colors.defaultTextColor,
               textDayFontSize: sizes._14sdp,
               textDayFontWeight: '500',
@@ -126,7 +126,7 @@ export const DateTimePicker = forwardRef<DateTimePickerReft, Props>(
               todayTextColor: Colors.green,
               textDayHeaderFontFamily: APP_FONTS.content_bold,
             }}
-            style={{ backgroundColor: Colors.while }}
+            style={{ backgroundColor: Colors.white }}
           />
           <Box
             direction="horizontal"
@@ -152,7 +152,7 @@ export const DateTimePicker = forwardRef<DateTimePickerReft, Props>(
             >
               <AppText
                 translationKey="datePicker.button.apply"
-                color={Colors.while}
+                color={Colors.white}
                 fontFamily="content_bold"
               />
             </TouchableOpacity>

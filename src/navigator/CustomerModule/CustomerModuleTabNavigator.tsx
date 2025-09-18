@@ -34,7 +34,7 @@ const CustomerMainTab = () => {
         tabBarActiveTintColor: Colors.green,
         tabBarInactiveTintColor: Colors.blackGray,
         tabBarStyle: {
-          backgroundColor: Colors.while,
+          backgroundColor: Colors.white,
         },
         tabBarLabelStyle: {
           fontFamily: APP_FONTS.content_semibold,

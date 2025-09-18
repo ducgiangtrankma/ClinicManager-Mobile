@@ -199,7 +199,7 @@ export const FullScreenImageViewer: FC<Props> = ({
               styles.paginationDot,
               {
                 backgroundColor:
-                  index === currentIndex ? Colors.while : Colors.grayBackground,
+                  index === currentIndex ? Colors.white : Colors.grayBackground,
                 width: index === currentIndex ? sizes._24sdp : sizes._8sdp,
               },
             ]}
@@ -247,13 +247,13 @@ export const FullScreenImageViewer: FC<Props> = ({
                   onPress={handleClose}
                   activeOpacity={0.7}
                 >
-                  <CloseIcon fill={Colors.while} />
+                  <CloseIcon fill={Colors.white} />
                 </TouchableOpacity>
                 <View style={styles.imageCounter}>
                   <AppText
                     fontSize="16"
                     fontFamily="content_bold"
-                    style={{ color: Colors.while }}
+                    style={{ color: Colors.white }}
                   >
                     {currentIndex + 1}/{images.length}
                   </AppText>

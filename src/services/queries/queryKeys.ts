@@ -7,11 +7,17 @@ export const queryKeys = {
     listFacility: (userId: string) =>
       [...queryKeys.facilityList.all(userId), 'listFacility'] as const,
   },
-  //   facilityList: {
-  //     all: (userId?: string) => ['facilityList', userId] as const,
-  //     listFacility: (userId: string, params: { page?: number; limit?: number }) =>
-  //       [...queryKeys.facilityList.all(userId), 'listFacility', params] as const,
-  //   },
+  customerList: {
+    all: (userId?: string) => ['customerList', userId] as const,
+    listCustomer: (userId: string, limit: number) =>
+      [
+        ...queryKeys.customerList.all(userId),
+        'listCustomer',
+        {
+          limit: limit,
+        },
+      ] as const,
+  },
 } as const;
 
 export type QueryKeys = typeof queryKeys;
