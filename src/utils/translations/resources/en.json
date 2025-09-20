@@ -22,6 +22,7 @@
       "button.add":"Add",
       "button.create":"Create",
       "button.continue":"Continue",
-      "notification":"Notification"
+      "notification":"Notification",
+      "validation.step_incomplete":"Please complete all required information in step"
     }
  }

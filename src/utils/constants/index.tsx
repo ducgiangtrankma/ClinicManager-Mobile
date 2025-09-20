@@ -1,3 +1,5 @@
+import { CUSTOMER_TYPE } from '@src/models';
+
 export const ACTIVE_OPACITY_TOUCH = 0.6;
 export const MAX_COUNT_IMAGE_UPLOAD = 6;
 export const BLANK_AVATAR =
@@ -5,27 +7,27 @@ export const BLANK_AVATAR =
 export const LEATHER_CLASSIFICATION_DATA = [
   {
     id: '1',
-    key: 'Thường',
+    label: 'Thường',
     value: 'Thường',
   },
   {
     id: '2',
-    key: 'Khô',
+    label: 'Khô',
     value: 'Khô',
   },
   {
     id: '3',
-    key: 'Dầu',
+    label: 'Dầu',
     value: 'Dầu',
   },
   {
     id: '4',
-    key: 'Hỗ hợp thiên khô',
+    label: 'Hỗ hợp thiên khô',
     value: 'Hỗ hợp thiên khô',
   },
   {
     id: '5',
-    key: 'Hỗn hợp thiên dầu',
+    label: 'Hỗn hợp thiên dầu',
     value: 'Hỗn hợp thiên dầu',
   },
 ];
@@ -33,22 +35,34 @@ export const LEATHER_CLASSIFICATION_DATA = [
 export const MATERNITY = [
   {
     id: '1',
-    key: 'Đang dự định mang thai',
+    label: 'Đang dự định mang thai',
     value: 'Đang dự định mang thai',
   },
   {
     id: '2',
-    key: 'Đang mang thai',
+    label: 'Đang mang thai',
     value: 'Đang mang thai',
   },
   {
     id: '3',
-    key: 'Đang cho con bú',
+    label: 'Đang cho con bú',
     value: 'Đang cho con bú',
   },
   {
     id: '4',
-    key: 'Không có',
+    label: 'Không có',
     value: 'không có',
+  },
+];
+export const CUSTOMER_TYPE_DATA = [
+  {
+    id: '1',
+    label: 'Khách lẻ',
+    value: CUSTOMER_TYPE.retail,
+  },
+  {
+    id: '2',
+    label: 'Khách liệu trình',
+    value: CUSTOMER_TYPE.treatment,
   },
 ];

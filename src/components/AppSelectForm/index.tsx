@@ -18,12 +18,7 @@ interface Props {
   errMessage?: string;
   secureTextEntry?: boolean;
   onPress: () => void;
-  value:
-    | {
-        label: string;
-        value: string;
-      }
-    | undefined;
+  value: { id: string; label: string; value: string } | undefined;
 }
 export const AppSelectForm: FC<Props> = ({
   style,

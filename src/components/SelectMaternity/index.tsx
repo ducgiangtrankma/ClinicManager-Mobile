@@ -7,7 +7,10 @@ import {
 } from '../AppBottomSheet';
 import { AppText } from '../AppText';
 import { Box } from '../Box';
-interface Props {}
+import { MaternitySelectEntity } from '@src/models';
+interface Props {
+  onSelect?: (value: MaternitySelectEntity) => void;
+}
 export interface SelectMaternityRef {
   open(): void;
   close(): void;
@@ -35,10 +38,10 @@ export const SelectMaternity = forwardRef<SelectMaternityRef, Props>(
       <BottomSheetModalContainer
         currentSnapPoints={['1%', `${currentSnapPointsMax}%`]}
         ref={bottomSheetRef}
-        title="selecT_maternity_title"
+        title="select_maternity_title"
       >
         <Box style={styles.container}>
-          <AppText>Tình trạng thai sản</AppText>
+          <AppText>Chọn tình trạng thai sản:</AppText>
         </Box>
       </BottomSheetModalContainer>
     );
@@ -56,5 +59,12 @@ const styles = StyleSheet.create({
   },
   titleMenu: {
     marginLeft: sizes._8sdp,
+  },
+  option: {
+    padding: sizes._12sdp,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: sizes._8sdp,
+    marginVertical: sizes._4sdp,
   },
 });

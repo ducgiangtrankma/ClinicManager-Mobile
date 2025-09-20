@@ -1,13 +1,29 @@
-import { _screen_height, sizes } from '@src/utils';
-import React, { forwardRef, useImperativeHandle } from 'react';
-import { StyleSheet } from 'react-native';
+import { CustomerEntity } from '@src/models';
+import {
+  _screen_height,
+  ACTIVE_OPACITY_TOUCH,
+  CUSTOMER_TYPE_DATA,
+  sizes,
+} from '@src/utils';
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import {
   BottomSheetModalContainer,
   BottomSheetModalRef,
 } from '../AppBottomSheet';
-import { AppText } from '../AppText';
+import { AppList } from '../AppList';
 import { Box } from '../Box';
-interface Props {}
+
+import { CustomerTypeItem, CustomerTypeSelectEntity } from './CustomerTypeItem';
+interface Props {
+  onSelect: (value: CustomerTypeSelectEntity) => void;
+}
 export interface SelectCustomerTypeRef {
   open(): void;
   close(): void;
@@ -18,7 +34,9 @@ export const SelectCustomerType = forwardRef<SelectCustomerTypeRef, Props>(
   (props, ref) => {
     const bottomSheetRef: React.RefObject<BottomSheetModalRef> =
       React.createRef<any>();
-
+    const [selected, setSelected] = useState<CustomerTypeSelectEntity>(
+      CUSTOMER_TYPE_DATA[0],
+    );
     useImperativeHandle(
       ref,
       () => ({
@@ -31,6 +49,40 @@ export const SelectCustomerType = forwardRef<SelectCustomerTypeRef, Props>(
       }),
       [bottomSheetRef],
     );
+
+    const handleSelectItem = useCallback(
+      (item: CustomerTypeSelectEntity) => {
+        setSelected(item);
+        // Call the callback to update form
+        props.onSelect?.(item);
+        // Close the modal
+        bottomSheetRef.current?.close();
+      },
+      [props, bottomSheetRef],
+    );
+
+    const renderItem = useCallback(
+      ({ item, index }: { item: CustomerTypeSelectEntity; index: number }) => {
+        return (
+          <Animated.View
+            entering={FadeInRight.springify()
+              .damping(80)
+              .stiffness(500)
+              .delay(index * 30)}
+            exiting={FadeOutLeft.springify().damping(80).stiffness(500)}
+          >
+            <TouchableOpacity
+              activeOpacity={ACTIVE_OPACITY_TOUCH}
+              onPress={() => handleSelectItem(item)}
+            >
+              <CustomerTypeItem item={item} selected={selected} />
+            </TouchableOpacity>
+          </Animated.View>
+        );
+      },
+      [selected, handleSelectItem],
+    );
+
     return (
       <BottomSheetModalContainer
         currentSnapPoints={['1%', `${currentSnapPointsMax}%`]}
@@ -38,7 +90,13 @@ export const SelectCustomerType = forwardRef<SelectCustomerTypeRef, Props>(
         title="select_customer_type_title"
       >
         <Box style={styles.container}>
-          <AppText>Danh sách loại khách hàng</AppText>
+          <AppList
+            style={{ height: _screen_height * 0.4 }}
+            data={CUSTOMER_TYPE_DATA}
+            renderItem={renderItem}
+            canRefresh
+            keyExtractor={(item: CustomerEntity) => `${item?.id}`}
+          />
         </Box>
       </BottomSheetModalContainer>
     );

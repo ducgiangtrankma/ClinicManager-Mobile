@@ -7,7 +7,10 @@ import {
 } from '../AppBottomSheet';
 import { AppText } from '../AppText';
 import { Box } from '../Box';
-interface Props {}
+import { LeatherClassificationSelectEntity } from '@src/models';
+interface Props {
+  onSelect?: (value: LeatherClassificationSelectEntity) => void;
+}
 export interface SelectLeatherClassificationRef {
   open(): void;
   close(): void;
@@ -40,7 +43,7 @@ export const SelectLeatherClassification = forwardRef<
       title="select_leather_classification_title"
     >
       <Box style={styles.container}>
-        <AppText>Danh sách loại da</AppText>
+        <AppText>SelectLeatherClassification</AppText>
       </Box>
     </BottomSheetModalContainer>
   );
@@ -57,5 +60,12 @@ const styles = StyleSheet.create({
   },
   titleMenu: {
     marginLeft: sizes._8sdp,
+  },
+  option: {
+    padding: sizes._12sdp,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: sizes._8sdp,
+    marginVertical: sizes._4sdp,
   },
 });

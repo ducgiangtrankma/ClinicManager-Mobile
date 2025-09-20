@@ -2,14 +2,9 @@ import { useAppTheme } from '@src/common';
 import {
   AppButton,
   AppHeader,
-  AppInput,
-  AppInputMultipleLine,
-  AppSelectForm,
-  AppText,
   AttachmentPicker,
   AttachmentPickerRef,
   Box,
-  GridImage,
   PageContainer,
   SelectCustomerType,
   SelectCustomerTypeRef,
@@ -17,6 +12,7 @@ import {
   SelectLeatherClassificationRef,
   SelectMaternity,
   SelectMaternityRef,
+  showErrorMessage,
 } from '@src/components';
 import { CreateCustomerProgress } from '@src/components/CreateCustomerStep';
 import {
@@ -32,11 +28,16 @@ import {
   MATERNITY,
   sizes,
 } from '@src/utils';
-import React, { FC, useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SelectImageIcon } from '@src/assets';
+import { ScrollView, StyleSheet } from 'react-native';
+import {
+  Step1BasicInfo,
+  Step2MedicalInfo,
+  Step3SkinCareHistory,
+  Step4DiagnosisAndNotes,
+} from './components';
 
 interface Props {}
 enum ChangeStepType {
@@ -57,27 +58,129 @@ export const CreateCustomerScreen: FC<Props> = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const [images, setImages] = useState<LocalFileEntity[]>([]);
+  const formikRef = useRef<any>(null);
+
+  // Validation functions for each step
+  const validateStep = useCallback(
+    (step: number, values: CreateCustomerFormEntity, errors: any) => {
+      switch (step) {
+        case 0: // Step 1: Basic Info
+          return (
+            !errors.name &&
+            !errors.phoneNumber &&
+            !errors.type &&
+            values.name.trim() !== '' &&
+            values.phoneNumber.trim() !== ''
+          );
+        case 1: // Step 2: Medical Info
+          return (
+            !errors.leather_classification &&
+            !errors.maternity &&
+            !errors.medical_history &&
+            values.medical_history.trim() !== ''
+          );
+        case 2: // Step 3: Skin Care History
+          return (
+            !errors.pre_treatment &&
+            !errors.skin_condition &&
+            !errors.routine &&
+            values.pre_treatment.trim() !== '' &&
+            values.skin_condition.trim() !== '' &&
+            values.routine.trim() !== ''
+          );
+        case 3: // Step 4: Diagnosis and Notes
+          return (
+            !errors.diagnostic &&
+            !errors.note &&
+            values.diagnostic.trim() !== '' &&
+            values.note.trim() !== ''
+          );
+        default:
+          return true;
+      }
+    },
+    [],
+  );
 
   const handleChangeStep = useCallback(
-    (type: ChangeStepType) => {
-      let newStep: number;
+    (type: ChangeStepType, submitForm?: () => void, formikProps?: any) => {
       if (type === ChangeStepType.back) {
-        newStep = currentStep - 1;
+        const newStep = currentStep - 1;
         if (newStep < 0) {
           return;
         } else {
           setCurrentStep(newStep);
         }
       } else {
-        newStep = currentStep + 1;
-        if (newStep > 3) {
+        // Nếu đang ở step cuối cùng (step 3), submit form
+        if (currentStep === 3) {
+          if (submitForm) {
+            submitForm();
+          }
           return;
+        }
+
+        // Validate current step before proceeding
+        if (formikProps) {
+          const { values, validateForm, setTouched } = formikProps;
+
+          // Trigger validation for current step
+          validateForm().then((validationErrors: any) => {
+            const isCurrentStepValid = validateStep(
+              currentStep,
+              values,
+              validationErrors,
+            );
+
+            if (!isCurrentStepValid) {
+              // Mark fields as touched to show validation errors
+              const touchedFields: any = {};
+              switch (currentStep) {
+                case 0:
+                  touchedFields.name = true;
+                  touchedFields.phoneNumber = true;
+                  touchedFields.type = true;
+                  break;
+                case 1:
+                  touchedFields.leather_classification = true;
+                  touchedFields.maternity = true;
+                  touchedFields.medical_history = true;
+                  break;
+                case 2:
+                  touchedFields.pre_treatment = true;
+                  touchedFields.skin_condition = true;
+                  touchedFields.routine = true;
+                  break;
+                case 3:
+                  touchedFields.diagnostic = true;
+                  touchedFields.note = true;
+                  break;
+              }
+              setTouched(touchedFields);
+              showErrorMessage(
+                'notification',
+                `${t('validation.step_incomplete')}`,
+              );
+
+              return;
+            }
+
+            // If validation passes, proceed to next step
+            const newStep = currentStep + 1;
+            if (newStep <= 3) {
+              setCurrentStep(newStep);
+            }
+          });
         } else {
-          setCurrentStep(newStep);
+          // Fallback: proceed without validation if formikProps not available
+          const newStep = currentStep + 1;
+          if (newStep <= 3) {
+            setCurrentStep(newStep);
+          }
         }
       }
     },
-    [currentStep],
+    [currentStep, validateStep, t],
   );
 
   const renderHeaderTile = useCallback(() => {
@@ -87,6 +190,48 @@ export const CreateCustomerScreen: FC<Props> = () => {
     if (currentStep === 3) return 'create_customer_step_4';
     return 'empty_string';
   }, [currentStep]);
+
+  const renderCurrentStep = useCallback(
+    (formik: any) => {
+      switch (currentStep) {
+        case 0:
+          return (
+            <Step1BasicInfo
+              formik={formik}
+              selectCustomerTypeRef={selectCustomerTypeRef}
+            />
+          );
+        case 1:
+          return (
+            <Step2MedicalInfo
+              formik={formik}
+              selectLeatherClassificationRef={selectLeatherClassificationRef}
+              selectMaternityRef={selectMaternityRef}
+            />
+          );
+        case 2:
+          return <Step3SkinCareHistory formik={formik} />;
+        case 3:
+          return (
+            <Step4DiagnosisAndNotes
+              formik={formik}
+              attachmentPickerRef={attachmentPickerRef}
+              images={images}
+            />
+          );
+        default:
+          return null;
+      }
+    },
+    [
+      currentStep,
+      selectCustomerTypeRef,
+      selectLeatherClassificationRef,
+      selectMaternityRef,
+      attachmentPickerRef,
+      images,
+    ],
+  );
 
   //Form
   const validationSignUpSchema = createCustomerValidationSchema(t);
@@ -108,7 +253,6 @@ export const CreateCustomerScreen: FC<Props> = () => {
     note: '',
   };
 
-  console.log('images', images);
   return (
     <PageContainer>
       <AppHeader title={renderHeaderTile()} showBack />
@@ -120,236 +264,105 @@ export const CreateCustomerScreen: FC<Props> = () => {
             enableReinitialize
             validationSchema={validationSignUpSchema}
             onSubmit={values => {
-              console.log('values', values);
+              // Combine form values with images
+              const finalData = {
+                ...values,
+                images: images,
+              };
+
+              console.log('Final form data:', finalData);
+
+              // TODO: Call API to create customer
+              // Example: await createCustomerAPI(finalData);
+
+              // Show success message or navigate back
+              // Example: navigate back or show success toast
             }}
           >
-            {({ handleSubmit, errors, values, setFieldValue }) => (
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: sizes._56sdp }}
-              >
-                <Box gap={sizes._16sdp}>
-                  {/* Thông tin cơ bản - currentStep 0 */}
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_name"
-                      fontFamily="content_semibold"
+            {formikProps => {
+              // Store formik reference for modal callbacks
+              formikRef.current = formikProps;
+
+              return (
+                <>
+                  <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: sizes._56sdp }}
+                  >
+                    {renderCurrentStep(formikProps)}
+                  </ScrollView>
+                  <Box
+                    horizontal
+                    justify="space-between"
+                    style={styles.actionContainer}
+                  >
+                    <AppButton
+                      onPress={() => handleChangeStep(ChangeStepType.back)}
+                      title="step_button_title_back"
+                      style={[
+                        styles.baseStepButton,
+                        { backgroundColor: Colors.disableButtonBackground },
+                      ]}
+                      titleColor={Colors.black}
                     />
-                    <AppInput
-                      value={values.name}
-                      placeholder={t('customer_create_name_placeholder')}
-                      onChangeText={value => setFieldValue('name', value)}
-                      errMessage={errors.name}
-                      clearButtonMode="always"
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_phoneNumber"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInput
-                      value={values.phoneNumber}
-                      placeholder={t('customer_create_phoneNumber_placeholder')}
-                      onChangeText={value =>
-                        setFieldValue('phoneNumber', value)
-                      }
-                      errMessage={errors.name}
-                      clearButtonMode="always"
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_type"
-                      fontFamily="content_semibold"
-                    />
-                    <AppSelectForm
-                      onPress={() => selectCustomerTypeRef.current.open()}
-                      placeholder="customer_create_type_placeholder"
-                      errMessage={errors.type}
-                      value={undefined}
-                    />
-                  </Box>
-                  {/* Thông tin y tế - currentStep 1 */}
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_leather_classification"
-                      fontFamily="content_semibold"
-                    />
-                    <AppSelectForm
+                    <AppButton
                       onPress={() =>
-                        selectLeatherClassificationRef.current.open()
+                        handleChangeStep(
+                          ChangeStepType.next,
+                          formikProps.handleSubmit,
+                          formikProps,
+                        )
                       }
-                      placeholder="customer_create_leather_classification_placeholder"
-                      errMessage={errors.type}
-                      value={undefined}
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_maternity"
-                      fontFamily="content_semibold"
-                    />
-                    <AppSelectForm
-                      onPress={() => selectMaternityRef.current.open()}
-                      placeholder="customer_create_maternity_placeholder"
-                      errMessage={errors.type}
-                      value={undefined}
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_medical_history"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInputMultipleLine
-                      value={values.medical_history}
-                      placeholder={t(
-                        'customer_create_medical_history_placeholder',
-                      )}
-                      onChangeText={value =>
-                        setFieldValue('medical_history', value)
+                      title={
+                        currentStep === 3
+                          ? 'step_button_save'
+                          : 'step_button_tile_next'
                       }
-                      errMessage={errors.medical_history}
-                      clearButtonMode="always"
-                      multiline
+                      style={styles.baseStepButton}
                     />
                   </Box>
-                  {/* Tình trạng, lịch sử chăm sóc da - current step 2 */}
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_pre_treatment"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInputMultipleLine
-                      value={values.pre_treatment}
-                      placeholder={t(
-                        'customer_create_pre_treatment_placeholder',
-                      )}
-                      onChangeText={value =>
-                        setFieldValue('pre_treatment', value)
-                      }
-                      errMessage={errors.pre_treatment}
-                      clearButtonMode="always"
-                      multiline
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_skin_condition"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInputMultipleLine
-                      value={values.skin_condition}
-                      placeholder={t(
-                        'customer_create_skin_condition_placeholder',
-                      )}
-                      onChangeText={value =>
-                        setFieldValue('skin_condition', value)
-                      }
-                      errMessage={errors.skin_condition}
-                      clearButtonMode="always"
-                      multiline
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_routine"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInputMultipleLine
-                      value={values.routine}
-                      placeholder={t('customer_create_routine_placeholder')}
-                      onChangeText={value => setFieldValue('routine', value)}
-                      errMessage={errors.routine}
-                      clearButtonMode="always"
-                      multiline
-                    />
-                  </Box>
-                  {/* Chuẩn đoán và ghi chú - current step 3 */}
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_diagnostic"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInputMultipleLine
-                      value={values.diagnostic}
-                      placeholder={t('customer_create_diagnostic_placeholder')}
-                      onChangeText={value => setFieldValue('diagnostic', value)}
-                      errMessage={errors.diagnostic}
-                      clearButtonMode="always"
-                      multiline
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <AppText
-                      translationKey="customer_create_note"
-                      fontFamily="content_semibold"
-                    />
-                    <AppInputMultipleLine
-                      value={values.note}
-                      placeholder={t('customer_create_note_placeholder')}
-                      onChangeText={value => setFieldValue('note', value)}
-                      errMessage={errors.diagnostic}
-                      clearButtonMode="always"
-                      multiline
-                    />
-                  </Box>
-                  <Box gap={sizes._8sdp}>
-                    <Box horizontal justify="space-between">
-                      <AppText
-                        translationKey="customer_create_image"
-                        fontFamily="content_semibold"
-                      />
-                      <TouchableOpacity
-                        onPress={() => attachmentPickerRef.current.open()}
-                        hitSlop={{
-                          top: sizes._12sdp,
-                          bottom: sizes._12sdp,
-                          left: sizes._12sdp,
-                          right: sizes._12sdp,
-                        }}
-                      >
-                        <SelectImageIcon />
-                      </TouchableOpacity>
-                    </Box>
-                    <Box>
-                      <GridImage localImages={images} />
-                    </Box>
-                  </Box>
-                </Box>
-              </ScrollView>
-            )}
+                </>
+              );
+            }}
           </Formik>
         </Box>
-        <Box horizontal justify="space-between" style={styles.actionContainer}>
-          <AppButton
-            onPress={() => handleChangeStep(ChangeStepType.back)}
-            title="step_button_title_back"
-            style={[
-              styles.baseStepButton,
-              { backgroundColor: Colors.disableButtonBackground },
-            ]}
-            titleColor={Colors.black}
-          />
-          <AppButton
-            onPress={() => handleChangeStep(ChangeStepType.next)}
-            title={
-              currentStep === 3 ? 'step_button_save' : 'step_button_tile_next'
-            }
-            style={styles.baseStepButton}
-          />
-        </Box>
       </Box>
-      <SelectCustomerType ref={selectCustomerTypeRef} />
-      <SelectLeatherClassification ref={selectLeatherClassificationRef} />
-      <SelectMaternity ref={selectMaternityRef} />
+
+      {/* Modal Components - Placed at root level for proper z-index */}
+      <SelectCustomerType
+        ref={selectCustomerTypeRef}
+        onSelect={value => {
+          if (formikRef.current) {
+            formikRef.current.setFieldValue('type', value.value);
+          }
+        }}
+      />
+      <SelectLeatherClassification
+        ref={selectLeatherClassificationRef}
+        onSelect={value => {
+          if (formikRef.current) {
+            formikRef.current.setFieldValue('leather_classification', value);
+          }
+        }}
+      />
+      <SelectMaternity
+        ref={selectMaternityRef}
+        onSelect={value => {
+          if (formikRef.current) {
+            formikRef.current.setFieldValue('maternity', value);
+          }
+        }}
+      />
       <AttachmentPicker
         isMultiple
         ref={attachmentPickerRef}
         max_amount={6}
         onConfirm={data => {
           setImages(data);
+          // Also update formik field if needed
+          if (formikRef.current) {
+            formikRef.current.setFieldValue('images', data);
+          }
         }}
       />
     </PageContainer>
