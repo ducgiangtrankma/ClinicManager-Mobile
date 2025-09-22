@@ -1,3 +1,4 @@
+import { ScheduleType } from '../ScheduleEntity';
 import { UserEntity } from '../UserEntity';
 
 export interface AppStateEntity {
@@ -5,4 +6,5 @@ export interface AppStateEntity {
   refreshToken: string | undefined;
   user: UserEntity | undefined;
   showOnboarding: boolean;
+  scheduleType: ScheduleType;
 }

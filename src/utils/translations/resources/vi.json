@@ -114,6 +114,8 @@
       "select_customer_type_title":"Chọn loại khách hàng",
       "select_leather_classification_title":"Chọn đặc tính da",
       "select_maternity_title":"Chọn tình trạng thai sản",
-      "validation.step_incomplete":"Vui lòng hoàn thành tất cả thông tin bắt buộc"
+      "validation.step_incomplete":"Vui lòng hoàn thành tất cả thông tin bắt buộc",
+      "schedule_list_title":"Lịch hẹn hôm nay",
+      "schedule_title":"Quản lý lịch hẹn"
     }
  }

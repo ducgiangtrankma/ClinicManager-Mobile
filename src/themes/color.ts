@@ -39,6 +39,7 @@ export const DarkColors = {
   black: COLORS.black,
   green: COLORS.primaryGreen,
   divider: COLORS.borderGray,
+  red: 'red',
   defaultPageBackground: COLORS.white,
   defaultTextColor: COLORS.white,
   headerBorderBackground: COLORS.grayBackground,
@@ -55,12 +56,16 @@ export const DarkColors = {
   defaultButtonBackground: COLORS.primaryGreen,
   defaultButtonTitle: COLORS.white,
   disableButtonBackground: COLORS.grayBackground,
+  dot: COLORS.dot,
+  content: COLORS.content,
+  today: COLORS.lightGreenBackground,
 };
 export const LightColors = {
   //
   white: COLORS.white,
   black: COLORS.black,
   error: COLORS.errorRed,
+  red: 'red',
   divider: COLORS.borderGray,
   defaultTextColor: COLORS.black,
   defaultPageBackground: COLORS.white,
@@ -79,4 +84,7 @@ export const LightColors = {
   defaultButtonBackground: COLORS.primaryGreen,
   defaultButtonTitle: COLORS.white,
   disableButtonBackground: COLORS.grayBackground,
+  dot: COLORS.dot,
+  content: COLORS.content,
+  today: COLORS.lightGreenBackground,
 };
