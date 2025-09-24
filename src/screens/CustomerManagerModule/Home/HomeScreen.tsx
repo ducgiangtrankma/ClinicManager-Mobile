@@ -10,13 +10,15 @@ import { CustomerEntity, customersDummy } from '@src/models';
 import { FilterIcon } from '@src/assets';
 import { useCustomerQuery } from '@src/services';
 import { sizes } from '@src/utils';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { TouchableOpacity } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { CustomerItem } from './components/CustomerItem';
+import { CustomerFilter, CustomerFilterRef } from './components/CustomerFilter';
 
 interface Props {}
 export const CustomerHomeScreen: FC<Props> = () => {
+  const customerFilterRef = useRef<CustomerFilterRef>(null);
   const {
     data,
     isFetching,
@@ -64,6 +66,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
         showBack={false}
         rightContent={
           <TouchableOpacity
+            onPress={() => customerFilterRef.current?.open({})}
             hitSlop={{
               top: sizes._12sdp,
               bottom: sizes._12sdp,
@@ -111,6 +114,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
           ListEmptyComponent={<EmptyList description="customer_emptyList" />}
         />
       )} */}
+      <CustomerFilter ref={customerFilterRef} />
     </PageContainer>
   );
 };

@@ -1,3 +1,5 @@
+import { TreatmentEntity } from '@src/models';
+
 export enum APP_SCREEN {
   AUTHENTICATION = 'AUTHENTICATION',
   AUTH_STACK = 'AUTH_STACK',
@@ -16,6 +18,10 @@ export enum APP_SCREEN {
   CUSTOMER_TAB = 'CUSTOMER_TAB',
   CUSTOMER_LIST = 'CUSTOMER_LIST',
   CREATE_CUSTOMER = 'CREATE_CUSTOMER',
+  CUSTOMER_DETAIL = 'CUSTOMER_DETAIL',
+  CREATE_TREATMENT = 'CREATE_TREATMENT',
+  TREATMENT_DETAIL = 'TREATMENT_DETAIL',
+  CREATE_BILL = 'CREATE_BILL',
   SCHEDULE = 'SCHEDULE',
 
   WAREHOUSE_TAB = 'WAREHOUSE_TAB',
@@ -43,6 +49,12 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.WAREHOUSE_TAB]: undefined;
   [APP_SCREEN.CUSTOMER_LIST]: undefined;
   [APP_SCREEN.CREATE_CUSTOMER]: undefined;
+  [APP_SCREEN.CUSTOMER_DETAIL]: undefined;
+  [APP_SCREEN.CREATE_TREATMENT]: undefined;
+  [APP_SCREEN.TREATMENT_DETAIL]: {
+    treatment: TreatmentEntity;
+  };
+  [APP_SCREEN.CREATE_BILL]: undefined;
   [APP_SCREEN.SCHEDULE]: undefined;
 };
 

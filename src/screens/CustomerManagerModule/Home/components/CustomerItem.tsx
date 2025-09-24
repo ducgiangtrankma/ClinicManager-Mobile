@@ -2,6 +2,7 @@ import { CallIcon, CheckIcon } from '@src/assets';
 import { useAppTheme } from '@src/common';
 import { AppText, Avatar, Box } from '@src/components';
 import { CustomerEntity } from '@src/models';
+import { APP_SCREEN, navigate } from '@src/navigator';
 import {
   ACTIVE_OPACITY_TOUCH,
   callNumber,
@@ -21,30 +22,35 @@ export const CustomerItem: FC<Props> = ({ item }) => {
 
   return (
     <Box style={styles.shadowWrap}>
-      <Box
-        horizontal
-        align="center"
-        justify="space-between"
-        gap={sizes._16sdp}
-        style={[styles.card, { backgroundColor: Colors.white }]}
+      <TouchableOpacity
+        activeOpacity={ACTIVE_OPACITY_TOUCH}
+        onPress={() => navigate(APP_SCREEN.CUSTOMER_DETAIL)}
       >
-        <Avatar size={sizes._32sdp} uri={item.profile.avatar.iconUrl} />
-        <Box gap={sizes._12sdp} style={styles.infoContainer}>
-          <AppText fontFamily="content_bold">{item.profile.name}</AppText>
-          <TouchableOpacity
-            activeOpacity={ACTIVE_OPACITY_TOUCH}
-            onPress={() => callNumber(item.phoneNumber)}
-          >
-            <Box horizontal align="center" gap={sizes._6sdp}>
-              <CallIcon />
-              <AppText>{item.phoneNumber}</AppText>
-            </Box>
-          </TouchableOpacity>
+        <Box
+          horizontal
+          align="center"
+          justify="space-between"
+          gap={sizes._16sdp}
+          style={[styles.card, { backgroundColor: Colors.white }]}
+        >
+          <Avatar size={sizes._32sdp} uri={item.profile.avatar.iconUrl} />
+          <Box gap={sizes._12sdp} style={styles.infoContainer}>
+            <AppText fontFamily="content_bold">{item.profile.name}</AppText>
+            <TouchableOpacity
+              activeOpacity={ACTIVE_OPACITY_TOUCH}
+              onPress={() => callNumber(item.phoneNumber)}
+            >
+              <Box horizontal align="center" gap={sizes._6sdp}>
+                <CallIcon />
+                <AppText>{item.phoneNumber}</AppText>
+              </Box>
+            </TouchableOpacity>
+          </Box>
+          {isSuccessTreatment(item.treatments) && (
+            <CheckIcon color={Colors.green} />
+          )}
         </Box>
-        {isSuccessTreatment(item.treatments) && (
-          <CheckIcon color={Colors.green} />
-        )}
-      </Box>
+      </TouchableOpacity>
     </Box>
   );
 };

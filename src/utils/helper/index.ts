@@ -115,4 +115,23 @@ export const formatTimeAgo = (dateString: string): string => {
   const years = Math.floor(months / 12);
   return `${years} năm trước`;
 };
+
+export const formatDateTime = (
+  date: string | Date,
+  format: 'dd/mm/yyyy' | 'dd/mm/yyyy HH:mm' = 'dd/mm/yyyy',
+): string => {
+  const d = dayjs(date);
+  switch (format) {
+    case 'dd/mm/yyyy':
+      return d.format('DD/MM/YYYY');
+    case 'dd/mm/yyyy HH:mm':
+      return d.format('DD/MM/YYYY - HH:mm');
+    default:
+      return d.format(); // fallback ISO
+  }
+};
+
+export const formatMoney = (money: number | string) => {
+  return money && money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+};
 export { callNumber, isSuccessTreatment };

@@ -7,6 +7,7 @@ import {
 import { useAppTheme } from '@src/common';
 import React, { FC, useState } from 'react';
 import { AppText } from '../AppText';
+import { sizes } from '@src/utils';
 const initialLocales: Record<string, Partial<LocaleConfigsProps>> = {
   en: {
     weekDayShort: 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'), // Text in day header (Sun, Mon, etc.)
@@ -99,6 +100,19 @@ export const CalendarKit: FC<Props> = () => {
       theme={{
         colors: {
           background: Colors.defaultPageBackground,
+        },
+        hourTextStyle: {
+          fontSize: sizes._16sdp,
+        },
+        dayNumber: {
+          fontSize: sizes._16sdp,
+        },
+        todayNumberContainer: {
+          backgroundColor: Colors.green,
+        },
+        todayNumber: {
+          fontSize: sizes._18sdp,
+          color: Colors.white,
         },
       }}
     >

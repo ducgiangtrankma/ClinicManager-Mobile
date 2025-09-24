@@ -7,7 +7,13 @@ import {
 import React from 'react';
 
 import { APP_SCREEN, AuthenticationPramsList } from '../ScreenTypes';
-import { CreateCustomerScreen } from '@src/screens';
+import {
+  CreateBillScreen,
+  CreateCustomerScreen,
+  CreateTreatmentScreen,
+  CustomerDetailScreen,
+  TreatmentDetailScreen,
+} from '@src/screens';
 import { CustomerMainTab } from './CustomerModuleTabNavigator';
 
 const CustomerModuleStackNavigation =
@@ -32,6 +38,22 @@ export const CustomerModuleStack = () => {
     {
       name: APP_SCREEN.CREATE_CUSTOMER,
       component: CreateCustomerScreen,
+    },
+    {
+      name: APP_SCREEN.CUSTOMER_DETAIL,
+      component: CustomerDetailScreen,
+    },
+    {
+      name: APP_SCREEN.CREATE_TREATMENT,
+      component: CreateTreatmentScreen,
+    },
+    {
+      name: APP_SCREEN.TREATMENT_DETAIL,
+      component: TreatmentDetailScreen,
+    },
+    {
+      name: APP_SCREEN.CREATE_BILL,
+      component: CreateBillScreen,
     },
   ];
   return (

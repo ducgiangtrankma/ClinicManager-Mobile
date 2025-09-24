@@ -38,6 +38,7 @@ import {
   Step3SkinCareHistory,
   Step4DiagnosisAndNotes,
 } from './components';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props {}
 enum ChangeStepType {
@@ -47,6 +48,7 @@ enum ChangeStepType {
 export const CreateCustomerScreen: FC<Props> = () => {
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
+  const insert = useSafeAreaInsets();
   const selectCustomerTypeRef: React.RefObject<SelectCustomerTypeRef> =
     React.createRef<any>();
   const selectLeatherClassificationRef: React.RefObject<SelectLeatherClassificationRef> =
@@ -294,7 +296,13 @@ export const CreateCustomerScreen: FC<Props> = () => {
                   <Box
                     horizontal
                     justify="space-between"
-                    style={styles.actionContainer}
+                    style={[
+                      styles.actionContainer,
+                      {
+                        paddingBottom:
+                          insert.bottom === 0 ? sizes._16sdp : insert.bottom,
+                      },
+                    ]}
                   >
                     <AppButton
                       onPress={() => handleChangeStep(ChangeStepType.back)}

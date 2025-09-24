@@ -3,13 +3,13 @@ import {
   AppSelectForm,
   Box,
   SelectCustomerTypeRef,
+  FormTitle,
 } from '@src/components';
 import { CreateCustomerFormEntity } from '@src/models';
 import { CUSTOMER_TYPE_DATA, sizes } from '@src/utils';
 import { FormikProps } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormTitle } from './FormTitle';
 
 interface Props {
   formik: FormikProps<CreateCustomerFormEntity>;

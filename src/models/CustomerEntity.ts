@@ -1,5 +1,6 @@
 import { AttachmentEntity } from './AttachmentEntity';
 import { TreatmentEntity } from './TreatmentEntity';
+import dayjs from 'dayjs';
 
 import { Sex } from './userEntity';
 
@@ -23,17 +24,23 @@ export interface CustomerEntity {
   completed: boolean;
   createBy: string;
   createdAt: string;
+  debt: number; // công nợ
+  paid: number; //Số tiền đã thanh toán
+  payment_history: PaymentHistoryEntity[];
 }
 
 export enum CUSTOMER_TYPE {
   treatment = 'treatment',
   retail = 'retail',
 }
-// Dummy data cho AttachmentEntity/TreatmentEntity/CustomerEntity
-// Giả định đã có enum:
-// enum CUSTOMER_TYPE { LEAD='LEAD', MEMBER='MEMBER', VIP='VIP' }
-// enum Sex { MALE='MALE', FEMALE='FEMALE', OTHER='OTHER' }
-
+export interface PaymentHistoryEntity {
+  treatment_id: string;
+  treatment_name: string;
+  total_treatment_fee: number; // tổng số tiền điều trị của liệu trình
+  debt: number; // công nợ
+  paid: number; //Số tiền đã thanh toán
+  updateAt: string;
+}
 export const customersDummy: CustomerEntity[] = [
   {
     id: 'cus_001',
@@ -55,11 +62,63 @@ export const customersDummy: CustomerEntity[] = [
       {
         id: 'tr_001',
         title: 'Điện di Vitamin C',
-        note: 'Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ.',
+        note: 'Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ.',
         implementation_date: '2025-08-20T09:30:00.000Z',
         cosmetics: [
-          { id: 'cs_ha', quantity: 1 },
-          { id: 'cs_sunscreen', quantity: 1 },
+          {
+            id: 'p2',
+            sku: 'COS-002',
+            createBy: 'staff01',
+            name: 'Serum vitamin C',
+            description: 'Làm sáng da và giảm thâm nám',
+            inventory: 80,
+            price: 320000,
+            originPrice: 150000,
+            category: 'Serum',
+            createdAt: dayjs().subtract(3, 'day').toISOString(),
+            updatedAt: null,
+            images: [
+              {
+                fileName: 'serum_vitc.jpg',
+                id: 'img2',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/f9a602/fff&text=Serum+C',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/f9a602/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/f9a602/fff&text=Icon',
+              },
+            ],
+            _destroy: false,
+            quantity: 2,
+          },
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
         ],
         success: true,
         images: [
@@ -75,18 +134,296 @@ export const customersDummy: CustomerEntity[] = [
         createdAt: '2025-08-20T10:00:00.000Z',
         updateAt: '2025-08-20T10:10:00.000Z',
         nativeEventId: 'evt_8L1A',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
       },
       {
         id: 'tr_002',
         title: 'Peel da AHA/BHA',
         note: 'Tái khám sau 1 tuần.',
         implementation_date: '2025-09-05T08:00:00.000Z',
-        cosmetics: [{ id: 'cs_moist', quantity: 1 }],
-        success: true,
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
+        success: false,
         images: [],
         createdAt: '2025-09-05T08:50:00.000Z',
         updateAt: '2025-09-05T08:55:00.000Z',
         nativeEventId: 'evt_9K2B',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
+      },
+      {
+        id: 'tr_003',
+        title: 'Peel da AHA/BHA',
+        note: 'Tái khám sau 1 tuần.',
+        implementation_date: '2025-09-05T08:00:00.000Z',
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
+        success: false,
+        images: [],
+        createdAt: '2025-09-05T08:50:00.000Z',
+        updateAt: '2025-09-05T08:55:00.000Z',
+        nativeEventId: 'evt_9K2B',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
+      },
+      {
+        id: 'tr_004',
+        title: 'Peel da AHA/BHA',
+        note: 'Tái khám sau 1 tuần.',
+        implementation_date: '2025-09-05T08:00:00.000Z',
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
+        success: false,
+        images: [],
+        createdAt: '2025-09-05T08:50:00.000Z',
+        updateAt: '2025-09-05T08:55:00.000Z',
+        nativeEventId: 'evt_9K2B',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
+      },
+      {
+        id: 'tr_005',
+        title: 'Điện di Vitamin C',
+        note: 'Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ.',
+        implementation_date: '2025-08-20T09:30:00.000Z',
+        cosmetics: [
+          {
+            id: 'p2',
+            sku: 'COS-002',
+            createBy: 'staff01',
+            name: 'Serum vitamin C',
+            description: 'Làm sáng da và giảm thâm nám',
+            inventory: 80,
+            price: 320000,
+            originPrice: 150000,
+            category: 'Serum',
+            createdAt: dayjs().subtract(3, 'day').toISOString(),
+            updatedAt: null,
+            images: [
+              {
+                fileName: 'serum_vitc.jpg',
+                id: 'img2',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/f9a602/fff&text=Serum+C',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/f9a602/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/f9a602/fff&text=Icon',
+              },
+            ],
+            _destroy: false,
+            quantity: 2,
+          },
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
+        success: true,
+        images: [
+          {
+            id: 'att_001_1',
+            fileName: 'treat_001_before.jpg',
+            type: 'image/jpeg',
+            originalUrl: 'https://picsum.photos/id/1021/800/600',
+            thumbnailUrl: 'https://picsum.photos/id/1021/160/120',
+            iconUrl: 'https://picsum.photos/id/1021/48/48',
+          },
+        ],
+        createdAt: '2025-08-20T10:00:00.000Z',
+        updateAt: '2025-08-20T10:10:00.000Z',
+        nativeEventId: 'evt_8L1A',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
+      },
+      {
+        id: 'tr_006',
+        title: 'Điện di Vitamin C',
+        note: 'Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ. Da hơi đỏ nhẹ sau 2h, dặn tránh nắng kỹ.',
+        implementation_date: '2025-08-20T09:30:00.000Z',
+        cosmetics: [
+          {
+            id: 'p2',
+            sku: 'COS-002',
+            createBy: 'staff01',
+            name: 'Serum vitamin C',
+            description: 'Làm sáng da và giảm thâm nám',
+            inventory: 80,
+            price: 320000,
+            originPrice: 150000,
+            category: 'Serum',
+            createdAt: dayjs().subtract(3, 'day').toISOString(),
+            updatedAt: null,
+            images: [
+              {
+                fileName: 'serum_vitc.jpg',
+                id: 'img2',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/f9a602/fff&text=Serum+C',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/f9a602/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/f9a602/fff&text=Icon',
+              },
+            ],
+            _destroy: false,
+            quantity: 2,
+          },
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
+        success: true,
+        images: [
+          {
+            id: 'att_001_1',
+            fileName: 'treat_001_before.jpg',
+            type: 'image/jpeg',
+            originalUrl: 'https://picsum.photos/id/1021/800/600',
+            thumbnailUrl: 'https://picsum.photos/id/1021/160/120',
+            iconUrl: 'https://picsum.photos/id/1021/48/48',
+          },
+        ],
+        createdAt: '2025-08-20T10:00:00.000Z',
+        updateAt: '2025-08-20T10:10:00.000Z',
+        nativeEventId: 'evt_8L1A',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
       },
     ],
     images: [
@@ -108,6 +445,9 @@ export const customersDummy: CustomerEntity[] = [
     completed: false,
     createBy: 'therapist01',
     createdAt: '2025-08-15T03:12:00.000Z',
+    payment_history: [],
+    debt: 0,
+    paid: 0,
   },
   {
     id: 'cus_002',
@@ -131,12 +471,43 @@ export const customersDummy: CustomerEntity[] = [
         title: 'Nặn mụn chuẩn y khoa',
         note: 'Cho dùng kháng viêm tại chỗ 3 ngày.',
         implementation_date: '2025-09-01T07:30:00.000Z',
-        cosmetics: [{ id: 'cs_spot', quantity: 1 }],
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
         success: true,
         images: [],
         createdAt: '2025-09-01T08:10:00.000Z',
         updateAt: '2025-09-01T08:12:00.000Z',
         nativeEventId: 'evt_X1P0',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
       },
     ],
     images: [],
@@ -149,6 +520,9 @@ export const customersDummy: CustomerEntity[] = [
     completed: true,
     createBy: 'reception',
     createdAt: '2025-08-28T02:00:00.000Z',
+    payment_history: [],
+    debt: 0,
+    paid: 0,
   },
   {
     id: 'cus_003',
@@ -172,7 +546,35 @@ export const customersDummy: CustomerEntity[] = [
         title: 'RF nâng cơ',
         note: 'Hẹn lịch duy trì sau 4 tuần.',
         implementation_date: '2025-08-10T10:00:00.000Z',
-        cosmetics: [{ id: 'cs_serum_rf', quantity: 1 }],
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
         success: true,
         images: [
           {
@@ -195,6 +597,9 @@ export const customersDummy: CustomerEntity[] = [
         createdAt: '2025-08-10T11:00:00.000Z',
         updateAt: '2025-08-10T11:05:00.000Z',
         nativeEventId: 'evt_RF88',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
       },
     ],
     images: [],
@@ -207,6 +612,9 @@ export const customersDummy: CustomerEntity[] = [
     completed: true,
     createBy: 'therapist02',
     createdAt: '2025-08-05T06:20:00.000Z',
+    payment_history: [],
+    debt: 0,
+    paid: 0,
   },
   {
     id: 'cus_004',
@@ -230,12 +638,43 @@ export const customersDummy: CustomerEntity[] = [
         title: 'Detox da',
         note: 'Theo dõi dầu nhờn sau 3 ngày.',
         implementation_date: '2025-09-09T13:30:00.000Z',
-        cosmetics: [{ id: 'cs_clay', quantity: 1 }],
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
         success: true,
         images: [],
         createdAt: '2025-09-09T14:00:00.000Z',
         updateAt: '2025-09-09T14:02:00.000Z',
         nativeEventId: 'evt_DT11',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
       },
     ],
     images: [
@@ -257,6 +696,9 @@ export const customersDummy: CustomerEntity[] = [
     completed: false,
     createBy: 'admin',
     createdAt: '2025-09-01T01:00:00.000Z',
+    payment_history: [],
+    debt: 0,
+    paid: 0,
   },
   {
     id: 'cus_005',
@@ -285,6 +727,9 @@ export const customersDummy: CustomerEntity[] = [
     completed: false,
     createBy: 'reception',
     createdAt: '2025-09-10T03:45:00.000Z',
+    payment_history: [],
+    debt: 0,
+    paid: 0,
   },
   {
     id: 'cus_006',
@@ -308,7 +753,35 @@ export const customersDummy: CustomerEntity[] = [
         title: 'Mesotherapy HA',
         note: 'Tránh makeup 24h.',
         implementation_date: '2025-08-30T09:00:00.000Z',
-        cosmetics: [{ id: 'cs_ha_serum', quantity: 1 }],
+        cosmetics: [
+          {
+            id: 'p1',
+            sku: 'COS-001',
+            createBy: 'admin',
+            name: 'Kem dưỡng ẩm ban ngày',
+            description: 'Giúp cấp ẩm và bảo vệ da suốt 24h',
+            inventory: 120,
+            price: 250000,
+            originPrice: 150000,
+            category: 'Moisturizer',
+            createdAt: dayjs().subtract(7, 'day').toISOString(),
+            updatedAt: dayjs().toISOString(),
+            images: [
+              {
+                fileName: 'kem_duong_am.jpg',
+                id: 'img1',
+                type: 'image/jpeg',
+                originalUrl:
+                  'https://dummyimage.com/600x400/89cff0/fff&text=Moisturizer',
+                thumbnailUrl:
+                  'https://dummyimage.com/200x200/89cff0/fff&text=Thumb',
+                iconUrl: 'https://dummyimage.com/50x50/89cff0/fff&text=Icon',
+              } as AttachmentEntity,
+            ],
+            _destroy: false,
+            quantity: 3,
+          },
+        ],
         success: true,
         images: [
           {
@@ -323,6 +796,9 @@ export const customersDummy: CustomerEntity[] = [
         createdAt: '2025-08-30T10:00:00.000Z',
         updateAt: '2025-08-30T10:03:00.000Z',
         nativeEventId: 'evt_MS77',
+        total_treatment_fee: 200000,
+        paid: 10000,
+        debt: 40000,
       },
     ],
     images: [],
@@ -335,5 +811,8 @@ export const customersDummy: CustomerEntity[] = [
     completed: true,
     createBy: 'therapist01',
     createdAt: '2025-08-29T05:30:00.000Z',
+    payment_history: [],
+    debt: 0,
+    paid: 0,
   },
 ];

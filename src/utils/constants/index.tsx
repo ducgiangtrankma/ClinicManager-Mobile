@@ -9,7 +9,10 @@ export const DEFAULT_HIT_SLOP = {
   left: sizes._12sdp,
   right: sizes._12sdp,
 };
-
+export enum CHANGE_COUNT_TYPE {
+  DECREASE = 'DECREASE',
+  INCREASE = 'INCREASE',
+}
 export const BLANK_AVATAR =
   'https://banner2.cleanpng.com/20240229/agb/transparent-pokemon-sad-pikachu-with-red-nose-black-1710858214400.webp';
 export const LEATHER_CLASSIFICATION_DATA = [
