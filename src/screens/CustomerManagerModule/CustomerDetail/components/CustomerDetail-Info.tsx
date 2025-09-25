@@ -33,7 +33,8 @@ export const CustomerDetailInfo: FC<Props> = () => {
   // Mock data - lấy khách hàng đầu tiên để demo
   const customerData = customersDummy[0];
 
-  const initialValues: CreateCustomerFormEntity = {
+  // Lazy initialization - chỉ tạo khi cần edit
+  const getInitialValues = (): CreateCustomerFormEntity => ({
     name: customerData.profile.name,
     gender: customerData.gender as Sex,
     type: customerData.type as CUSTOMER_TYPE,
@@ -49,7 +50,7 @@ export const CustomerDetailInfo: FC<Props> = () => {
     routine: '',
     diagnostic: customerData.diagnostic,
     note: '',
-  };
+  });
 
   const handleSave = (values: CreateCustomerFormEntity) => {
     console.log('Saving customer info:', values);
@@ -94,133 +95,162 @@ export const CustomerDetailInfo: FC<Props> = () => {
     </Box>
   );
 
+  // Render View Mode - Không dùng Formik
+  const renderViewMode = () => (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <Box gap={sizes._16sdp}>
+        {/* Tên khách hàng */}
+        {renderField('customer_create_name', customerData.profile.name, true)}
+
+        {/* Số điện thoại */}
+        {renderField(
+          'customer_create_phoneNumber',
+          customerData.phoneNumber,
+          true,
+        )}
+
+        {/* Loại khách hàng */}
+        <Box gap={sizes._8sdp}>
+          <FormTitle title="customer_create_type" required />
+          <AppText color={Colors.content} fontFamily="content_regular">
+            {CUSTOMER_TYPE_DATA.find(e => e.value === customerData.type)
+              ?.label || t('empty_value')}
+          </AppText>
+        </Box>
+
+        {/* Giới tính */}
+        <Box gap={sizes._8sdp}>
+          <FormTitle title="customer_create_gender" />
+          <AppText color={Colors.content} fontFamily="content_regular">
+            {customerData.gender === Sex.NAM ? t('male') : t('female')}
+          </AppText>
+        </Box>
+      </Box>
+    </ScrollView>
+  );
+
+  // Render Edit Mode - Có Formik
+  const renderEditMode = () => (
+    <Formik
+      innerRef={formikRef}
+      initialValues={getInitialValues()}
+      onSubmit={handleSave}
+    >
+      {formikProps => (
+        <>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <Box gap={sizes._16sdp}>
+              {/* Tên khách hàng */}
+              {renderEditableField(
+                formikProps,
+                'name',
+                'customer_create_name',
+                'customer_create_name_placeholder',
+                true,
+              )}
+
+              {/* Số điện thoại */}
+              {renderEditableField(
+                formikProps,
+                'phoneNumber',
+                'customer_create_phoneNumber',
+                'customer_create_phoneNumber_placeholder',
+                true,
+              )}
+
+              {/* Loại khách hàng */}
+              <Box gap={sizes._8sdp}>
+                <FormTitle title="customer_create_type" required />
+                <AppSelectForm
+                  onPress={() => selectCustomerTypeRef.current?.open()}
+                  placeholder="customer_create_type_placeholder"
+                  errMessage={formikProps.errors.type}
+                  value={CUSTOMER_TYPE_DATA.find(
+                    e => e.value === formikProps.values.type,
+                  )}
+                />
+              </Box>
+
+              {/* Giới tính */}
+              <Box gap={sizes._8sdp}>
+                <FormTitle title="customer_create_gender" />
+                <AppText color={Colors.content} fontFamily="content_regular">
+                  {formikProps.values.gender === Sex.NAM
+                    ? t('male')
+                    : t('female')}
+                </AppText>
+              </Box>
+            </Box>
+          </ScrollView>
+
+          {/* Action Buttons */}
+          <Box
+            style={[
+              styles.actionContainer,
+              {
+                backgroundColor: Colors.defaultPageBackground,
+                borderTopColor: Colors.divider,
+              },
+            ]}
+          >
+            <Box horizontal gap={sizes._12sdp}>
+              <AppButton
+                title="step_button_title_back"
+                onPress={handleCancel}
+                style={[
+                  styles.actionButton,
+                  { backgroundColor: Colors.disableButtonBackground },
+                ]}
+                titleColor={Colors.black}
+              />
+              <AppButton
+                title="step_button_save"
+                onPress={formikProps.handleSubmit}
+                style={styles.actionButton}
+              />
+            </Box>
+          </Box>
+
+          {/* Select Customer Type Modal */}
+          <SelectCustomerType
+            ref={selectCustomerTypeRef}
+            onSelect={value => {
+              formikProps.setFieldValue('type', value.value);
+            }}
+          />
+        </>
+      )}
+    </Formik>
+  );
+
   return (
     <Box style={styles.container}>
-      <Formik
-        innerRef={formikRef}
-        initialValues={initialValues}
-        enableReinitialize
-        onSubmit={handleSave}
-      >
-        {formikProps => (
-          <>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}
-            >
-              <Box gap={sizes._16sdp}>
-                {/* Tên khách hàng */}
-                {isEditing
-                  ? renderEditableField(
-                      formikProps,
-                      'name',
-                      'customer_create_name',
-                      'customer_create_name_placeholder',
-                      true,
-                    )
-                  : renderField(
-                      'customer_create_name',
-                      formikProps.values.name,
-                      true,
-                    )}
+      {isEditing ? renderEditMode() : renderViewMode()}
 
-                {/* Số điện thoại */}
-                {isEditing
-                  ? renderEditableField(
-                      formikProps,
-                      'phoneNumber',
-                      'customer_create_phoneNumber',
-                      'customer_create_phoneNumber_placeholder',
-                      true,
-                    )
-                  : renderField(
-                      'customer_create_phoneNumber',
-                      formikProps.values.phoneNumber,
-                      true,
-                    )}
-
-                {/* Loại khách hàng */}
-                <Box gap={sizes._8sdp}>
-                  <FormTitle title="customer_create_type" required />
-                  {isEditing ? (
-                    <AppSelectForm
-                      onPress={() => selectCustomerTypeRef.current?.open()}
-                      placeholder="customer_create_type_placeholder"
-                      errMessage={formikProps.errors.type}
-                      value={CUSTOMER_TYPE_DATA.find(
-                        e => e.value === formikProps.values.type,
-                      )}
-                    />
-                  ) : (
-                    <AppText
-                      color={Colors.content}
-                      fontFamily="content_regular"
-                    >
-                      {CUSTOMER_TYPE_DATA.find(
-                        e => e.value === formikProps.values.type,
-                      )?.label || t('empty_value')}
-                    </AppText>
-                  )}
-                </Box>
-
-                {/* Giới tính */}
-                <Box gap={sizes._8sdp}>
-                  <FormTitle title="customer_create_type" />
-                  <AppText color={Colors.content} fontFamily="content_regular">
-                    {formikProps.values.gender === Sex.NAM
-                      ? t('male')
-                      : t('female')}
-                  </AppText>
-                </Box>
-              </Box>
-            </ScrollView>
-
-            {/* Action Buttons */}
-            <Box
-              style={[
-                styles.actionContainer,
-                {
-                  backgroundColor: Colors.defaultPageBackground,
-                  borderTopColor: Colors.divider,
-                },
-              ]}
-            >
-              {isEditing ? (
-                <Box horizontal gap={sizes._12sdp}>
-                  <AppButton
-                    title="step_button_title_back"
-                    onPress={handleCancel}
-                    style={[
-                      styles.actionButton,
-                      { backgroundColor: Colors.disableButtonBackground },
-                    ]}
-                    titleColor={Colors.black}
-                  />
-                  <AppButton
-                    title="step_button_save"
-                    onPress={formikProps.handleSubmit}
-                    style={styles.actionButton}
-                  />
-                </Box>
-              ) : (
-                <AppButton
-                  title="step_button_edit"
-                  onPress={() => setIsEditing(true)}
-                  style={styles.actionButton}
-                />
-              )}
-            </Box>
-
-            {/* Select Customer Type Modal */}
-            <SelectCustomerType
-              ref={selectCustomerTypeRef}
-              onSelect={value => {
-                formikProps.setFieldValue('type', value.value);
-              }}
-            />
-          </>
-        )}
-      </Formik>
+      {/* Edit Button - chỉ hiện trong view mode */}
+      {!isEditing && (
+        <Box
+          style={[
+            styles.actionContainer,
+            {
+              backgroundColor: Colors.defaultPageBackground,
+              borderTopColor: Colors.divider,
+            },
+          ]}
+        >
+          <AppButton
+            title="step_button_edit"
+            onPress={() => setIsEditing(true)}
+            style={styles.actionButton}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

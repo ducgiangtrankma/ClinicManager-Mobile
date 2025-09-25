@@ -9,6 +9,7 @@ export const DEFAULT_HIT_SLOP = {
   left: sizes._12sdp,
   right: sizes._12sdp,
 };
+
 export enum CHANGE_COUNT_TYPE {
   DECREASE = 'DECREASE',
   INCREASE = 'INCREASE',

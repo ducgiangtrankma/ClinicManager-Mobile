@@ -1,20 +1,25 @@
 import { TreatmentEntity } from '@src/models';
 import { _screen_height, sizes } from '@src/utils';
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  ScrollView as NativeScrollView,
+} from 'react-native';
 import {
   BottomSheetModalContainer,
   BottomSheetModalRef,
 } from '../AppBottomSheet';
 import { Box } from '../Box';
 import { CostItem } from './CostItem';
-
+import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 interface Props {}
 export interface CustomerCostRef {
   open: (data: TreatmentEntity[]) => void;
   close(): void;
 }
-
+const SheetScrollView =
+  Platform.OS === 'android' ? GestureScrollView : NativeScrollView;
 export const CustomerCost = forwardRef<CustomerCostRef, Props>((props, ref) => {
   const bottomSheetRef: React.RefObject<BottomSheetModalRef> =
     React.createRef<any>();
@@ -40,11 +45,11 @@ export const CustomerCost = forwardRef<CustomerCostRef, Props>((props, ref) => {
       title="customer_detail_cost"
     >
       <Box style={styles.container}>
-        <ScrollView>
+        <SheetScrollView>
           {treatments.map(item => (
             <CostItem key={item.id} treatment={item} />
           ))}
-        </ScrollView>
+        </SheetScrollView>
       </Box>
     </BottomSheetModalContainer>
   );

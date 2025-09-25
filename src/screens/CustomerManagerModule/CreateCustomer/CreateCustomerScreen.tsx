@@ -235,9 +235,9 @@ export const CreateCustomerScreen: FC<Props> = () => {
     ],
   );
 
-  //Form
-  const validationSignUpSchema = createCustomerValidationSchema(t);
-  const initialCreateCustomerValues: CreateCustomerFormEntity = {
+  //Form - Lazy initialization
+  const getValidationSchema = () => createCustomerValidationSchema(t);
+  const getInitialValues = (): CreateCustomerFormEntity => ({
     name: '',
     gender: Sex.Nu,
     type: CUSTOMER_TYPE.retail,
@@ -253,7 +253,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
     routine: '',
     diagnostic: '', // chuẩn đoán
     note: '',
-  };
+  });
 
   return (
     <PageContainer>
@@ -262,27 +262,18 @@ export const CreateCustomerScreen: FC<Props> = () => {
         <CreateCustomerProgress currentStep={currentStep} />
         <Box style={styles.formContainer}>
           <Formik
-            initialValues={initialCreateCustomerValues}
-            enableReinitialize
-            validationSchema={validationSignUpSchema}
+            initialValues={getInitialValues()}
+            validationSchema={getValidationSchema()}
             onSubmit={values => {
-              // Combine form values with images
               const finalData = {
                 ...values,
                 images: images,
               };
 
               console.log('Final form data:', finalData);
-
-              // TODO: Call API to create customer
-              // Example: await createCustomerAPI(finalData);
-
-              // Show success message or navigate back
-              // Example: navigate back or show success toast
             }}
           >
             {formikProps => {
-              // Store formik reference for modal callbacks
               formikRef.current = formikProps;
 
               return (
@@ -336,7 +327,6 @@ export const CreateCustomerScreen: FC<Props> = () => {
         </Box>
       </Box>
 
-      {/* Modal Components - Placed at root level for proper z-index */}
       <SelectCustomerType
         ref={selectCustomerTypeRef}
         onSelect={value => {
@@ -367,7 +357,6 @@ export const CreateCustomerScreen: FC<Props> = () => {
         max_amount={6}
         onConfirm={data => {
           setImages(data);
-          // Also update formik field if needed
           if (formikRef.current) {
             formikRef.current.setFieldValue('images', data);
           }

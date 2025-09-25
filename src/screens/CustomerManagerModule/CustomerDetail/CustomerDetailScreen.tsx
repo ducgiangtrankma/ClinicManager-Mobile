@@ -1,18 +1,18 @@
+import { DeleteUser } from '@src/assets';
+import { useAppTheme } from '@src/common';
 import { AppHeader, Box, PageContainer } from '@src/components';
 import {
   CustomerDetailMenubarEntity,
   CustomerInfoMenuBar,
   MenuType,
 } from '@src/components/CustomerInfoMenuBar';
+import { TreatmentScreen } from '@src/screens/Treatment';
+import { DEFAULT_HIT_SLOP } from '@src/utils';
 import React, { FC, useCallback, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { CustomerDetailInfo } from './components/CustomerDetail-Info';
 import { CustomerDetailInitialExaminationInfo } from './components/CustomerDetail-InitialExaminationInfo';
 import { CustomerDetailPayment } from './components/CustomerDetail-Payment';
-import { DeleteUser } from '@src/assets';
-import { useAppTheme } from '@src/common';
-import { DEFAULT_HIT_SLOP } from '@src/utils';
-import { TreatmentScreen } from '@src/screens/Treatment';
 
 interface Props {}
 export const CustomerDetailScreen: FC<Props> = () => {

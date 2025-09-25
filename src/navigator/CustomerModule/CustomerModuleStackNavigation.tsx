@@ -15,17 +15,20 @@ import {
   TreatmentDetailScreen,
 } from '@src/screens';
 import { CustomerMainTab } from './CustomerModuleTabNavigator';
+import { Platform } from 'react-native';
 
 const CustomerModuleStackNavigation =
   createStackNavigator<AuthenticationPramsList>();
 
 export const CustomerModuleStack = () => {
   const defaultScreenOptions: StackNavigationOptions = {
-    animationTypeForReplace: 'pop',
+    animationTypeForReplace: 'push',
     gestureEnabled: false,
     headerShown: false,
-    // cardStyleInterpolator: forZoom,
-    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+    cardStyleInterpolator:
+      Platform.OS === 'ios'
+        ? CardStyleInterpolators.forFadeFromBottomAndroid
+        : CardStyleInterpolators.forNoAnimation, // Nguyên nhân gây flick UI khi chuyển màn trên android
   };
   const screens: {
     name: keyof AuthenticationPramsList;

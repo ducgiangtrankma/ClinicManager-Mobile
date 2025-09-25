@@ -44,7 +44,8 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
   // Mock data - lấy khách hàng đầu tiên để demo
   const customerData = customersDummy[0];
 
-  const initialValues: CreateCustomerFormEntity = {
+  // Lazy initialization - chỉ tạo khi cần edit
+  const getInitialValues = (): CreateCustomerFormEntity => ({
     name: customerData.profile.name,
     gender: customerData.gender as any,
     type: customerData.type as any,
@@ -60,7 +61,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
     routine: '',
     diagnostic: customerData.diagnostic,
     note: '',
-  };
+  });
 
   const handleSave = (values: CreateCustomerFormEntity) => {
     // Combine form values with images
@@ -112,237 +113,260 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
     </Box>
   );
 
-  return (
-    <Box style={styles.container}>
-      <Formik
-        innerRef={formikRef}
-        initialValues={initialValues}
-        enableReinitialize
-        onSubmit={handleSave}
-      >
-        {formikProps => (
-          <>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.scrollContent}
-            >
-              <Box gap={sizes._16sdp}>
-                {/* Phân loại da */}
-                <Box gap={sizes._8sdp}>
-                  <FormTitle title="customer_create_leather_classification" />
-                  {isEditing ? (
-                    <AppSelectForm
-                      onPress={() =>
-                        selectLeatherClassificationRef.current?.open()
-                      }
-                      placeholder="customer_create_leather_classification_placeholder"
-                      errMessage={formikProps.errors.leather_classification}
-                      value={LEATHER_CLASSIFICATION_DATA.find(
-                        e =>
-                          e.value === formikProps.values.leather_classification,
-                      )}
-                    />
-                  ) : (
-                    <AppText
-                      color={Colors.content}
-                      fontFamily="content_regular"
-                    >
-                      {LEATHER_CLASSIFICATION_DATA.find(
-                        e =>
-                          e.value === formikProps.values.leather_classification,
-                      )?.label ||
-                        formikProps.values.leather_classification ||
-                        t('empty_value')}
-                    </AppText>
+  // Render View Mode - Không dùng Formik
+  const renderViewMode = () => (
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent}
+    >
+      <Box gap={sizes._16sdp}>
+        {/* Phân loại da */}
+        <Box gap={sizes._8sdp}>
+          <FormTitle title="customer_create_leather_classification" />
+          <AppText color={Colors.content} fontFamily="content_regular">
+            {LEATHER_CLASSIFICATION_DATA.find(
+              e => e.value === customerData.leather_classification,
+            )?.label ||
+              customerData.leather_classification ||
+              t('empty_value')}
+          </AppText>
+        </Box>
+
+        {/* Tình trạng thai sản */}
+        <Box gap={sizes._8sdp}>
+          <FormTitle title="customer_create_maternity" />
+          <AppText color={Colors.content} fontFamily="content_regular">
+            {MATERNITY.find(e => e.value === MATERNITY[0].value)?.label ||
+              t('empty_value')}
+          </AppText>
+        </Box>
+
+        {/* Tiền sử bệnh */}
+        {renderField(
+          'customer_create_medical_history',
+          customerData.medical_history,
+          true,
+        )}
+
+        {/* Điều trị trước đó */}
+        {renderField(
+          'customer_create_pre_treatment',
+          customerData.pre_treatment,
+        )}
+
+        {/* Tình trạng da hiện tại */}
+        {renderField(
+          'customer_create_skin_condition',
+          customerData.skin_condition,
+        )}
+
+        {/* Chuẩn đoán */}
+        {renderField('customer_create_diagnostic', customerData.diagnostic)}
+
+        {/* Thông tin khác */}
+        {renderField('customer_create_note', customerData.other_info)}
+
+        {/* Hình ảnh */}
+        <Box gap={sizes._8sdp}>
+          <AppText
+            translationKey="customer_create_image"
+            fontFamily="content_semibold"
+          />
+          <Box>
+            <GridImage localImages={[]} remoteImages={customerData.images} />
+          </Box>
+        </Box>
+      </Box>
+    </ScrollView>
+  );
+
+  // Render Edit Mode - Có Formik
+  const renderEditMode = () => (
+    <Formik
+      innerRef={formikRef}
+      initialValues={getInitialValues()}
+      onSubmit={handleSave}
+    >
+      {formikProps => (
+        <>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <Box gap={sizes._16sdp}>
+              {/* Phân loại da */}
+              <Box gap={sizes._8sdp}>
+                <FormTitle title="customer_create_leather_classification" />
+                <AppSelectForm
+                  onPress={() => selectLeatherClassificationRef.current?.open()}
+                  placeholder="customer_create_leather_classification_placeholder"
+                  errMessage={formikProps.errors.leather_classification}
+                  value={LEATHER_CLASSIFICATION_DATA.find(
+                    e => e.value === formikProps.values.leather_classification,
                   )}
-                </Box>
+                />
+              </Box>
 
-                {/* Tình trạng thai sản */}
-                <Box gap={sizes._8sdp}>
-                  <FormTitle title="customer_create_maternity" />
-                  {isEditing ? (
-                    <AppSelectForm
-                      onPress={() => selectMaternityRef.current?.open()}
-                      placeholder="customer_create_maternity_placeholder"
-                      errMessage={formikProps.errors.maternity}
-                      value={MATERNITY.find(
-                        e => e.value === formikProps.values.maternity,
-                      )}
-                    />
-                  ) : (
-                    <AppText
-                      color={Colors.content}
-                      fontFamily="content_regular"
-                    >
-                      {MATERNITY.find(
-                        e => e.value === formikProps.values.maternity,
-                      )?.label || t('empty_value')}
-                    </AppText>
+              {/* Tình trạng thai sản */}
+              <Box gap={sizes._8sdp}>
+                <FormTitle title="customer_create_maternity" />
+                <AppSelectForm
+                  onPress={() => selectMaternityRef.current?.open()}
+                  placeholder="customer_create_maternity_placeholder"
+                  errMessage={formikProps.errors.maternity}
+                  value={MATERNITY.find(
+                    e => e.value === formikProps.values.maternity,
                   )}
+                />
+              </Box>
+
+              {/* Tiền sử bệnh */}
+              {renderEditableMultilineField(
+                formikProps,
+                'medical_history',
+                'customer_create_medical_history',
+                'customer_create_medical_history_placeholder',
+                true,
+              )}
+
+              {/* Điều trị trước đó */}
+              {renderEditableMultilineField(
+                formikProps,
+                'pre_treatment',
+                'customer_create_pre_treatment',
+                'customer_create_pre_treatment_placeholder',
+              )}
+
+              {/* Tình trạng da hiện tại */}
+              {renderEditableMultilineField(
+                formikProps,
+                'skin_condition',
+                'customer_create_skin_condition',
+                'customer_create_skin_condition_placeholder',
+              )}
+
+              {/* Chuẩn đoán */}
+              {renderEditableMultilineField(
+                formikProps,
+                'diagnostic',
+                'customer_create_diagnostic',
+                'customer_create_diagnostic_placeholder',
+              )}
+
+              {/* Thông tin khác */}
+              {renderEditableMultilineField(
+                formikProps,
+                'other_info',
+                'customer_create_note',
+                'customer_create_note_placeholder',
+              )}
+
+              {/* Hình ảnh */}
+              <Box gap={sizes._8sdp}>
+                <Box horizontal justify="space-between">
+                  <AppText
+                    translationKey="customer_create_image"
+                    fontFamily="content_semibold"
+                  />
+                  <TouchableOpacity
+                    onPress={() => attachmentPickerRef.current?.open()}
+                    hitSlop={{
+                      top: sizes._12sdp,
+                      bottom: sizes._12sdp,
+                      left: sizes._12sdp,
+                      right: sizes._12sdp,
+                    }}
+                  >
+                    <SelectImageIcon />
+                  </TouchableOpacity>
                 </Box>
-
-                {/* Tiền sử bệnh */}
-                {isEditing
-                  ? renderEditableMultilineField(
-                      formikProps,
-                      'medical_history',
-                      'customer_create_medical_history',
-                      'customer_create_medical_history_placeholder',
-                      true,
-                    )
-                  : renderField(
-                      'customer_create_medical_history',
-                      formikProps.values.medical_history,
-                      true,
-                    )}
-
-                {/* Điều trị trước đó */}
-                {isEditing
-                  ? renderEditableMultilineField(
-                      formikProps,
-                      'pre_treatment',
-                      'customer_create_pre_treatment',
-                      'customer_create_pre_treatment_placeholder',
-                    )
-                  : renderField(
-                      'customer_create_pre_treatment',
-                      formikProps.values.pre_treatment,
-                    )}
-
-                {/* Tình trạng da hiện tại */}
-                {isEditing
-                  ? renderEditableMultilineField(
-                      formikProps,
-                      'skin_condition',
-                      'customer_create_skin_condition',
-                      'customer_create_skin_condition_placeholder',
-                    )
-                  : renderField(
-                      'customer_create_skin_condition',
-                      formikProps.values.skin_condition,
-                    )}
-
-                {/* Chuẩn đoán */}
-                {isEditing
-                  ? renderEditableMultilineField(
-                      formikProps,
-                      'diagnostic',
-                      'customer_create_diagnostic',
-                      'customer_create_diagnostic_placeholder',
-                    )
-                  : renderField(
-                      'customer_create_diagnostic',
-                      formikProps.values.diagnostic,
-                    )}
-
-                {/* Thông tin khác */}
-                {isEditing
-                  ? renderEditableMultilineField(
-                      formikProps,
-                      'other_info',
-                      'customer_create_note',
-                      'customer_create_note_placeholder',
-                    )
-                  : renderField(
-                      'customer_create_note',
-                      formikProps.values.other_info,
-                    )}
-
-                {/* Hình ảnh */}
-                <Box gap={sizes._8sdp}>
-                  <Box horizontal justify="space-between">
-                    <AppText
-                      translationKey="customer_create_image"
-                      fontFamily="content_semibold"
-                    />
-                    {isEditing && (
-                      <TouchableOpacity
-                        onPress={() => attachmentPickerRef.current?.open()}
-                        hitSlop={{
-                          top: sizes._12sdp,
-                          bottom: sizes._12sdp,
-                          left: sizes._12sdp,
-                          right: sizes._12sdp,
-                        }}
-                      >
-                        <SelectImageIcon />
-                      </TouchableOpacity>
-                    )}
-                  </Box>
-                  <Box>
-                    <GridImage
-                      localImages={isEditing ? images : []}
-                      remoteImages={!isEditing ? customerData.images : []}
-                    />
-                  </Box>
+                <Box>
+                  <GridImage localImages={images} remoteImages={[]} />
                 </Box>
               </Box>
-            </ScrollView>
-
-            {/* Action Buttons */}
-            <Box
-              style={[
-                styles.actionContainer,
-                {
-                  backgroundColor: Colors.defaultPageBackground,
-                  borderTopColor: Colors.divider,
-                },
-              ]}
-            >
-              {isEditing ? (
-                <Box horizontal gap={sizes._12sdp}>
-                  <AppButton
-                    title="step_button_title_back"
-                    onPress={handleCancel}
-                    style={[
-                      styles.actionButton,
-                      { backgroundColor: Colors.disableButtonBackground },
-                    ]}
-                    titleColor={Colors.black}
-                  />
-                  <AppButton
-                    title="step_button_save"
-                    onPress={formikProps.handleSubmit}
-                    style={styles.actionButton}
-                  />
-                </Box>
-              ) : (
-                <AppButton
-                  title="step_button_edit"
-                  onPress={() => setIsEditing(true)}
-                  style={styles.actionButton}
-                />
-              )}
             </Box>
+          </ScrollView>
 
-            {/* Select Modals */}
-            <SelectLeatherClassification
-              ref={selectLeatherClassificationRef}
-              onSelect={value => {
-                formikProps.setFieldValue('leather_classification', value);
-              }}
-            />
-            <SelectMaternity
-              ref={selectMaternityRef}
-              onSelect={value => {
-                formikProps.setFieldValue('maternity', value);
-              }}
-            />
-            <AttachmentPicker
-              isMultiple
-              ref={attachmentPickerRef}
-              max_amount={6}
-              onConfirm={data => {
-                setImages(data);
-                // Also update formik field if needed
-                if (formikRef.current) {
-                  formikRef.current.setFieldValue('images', data);
-                }
-              }}
-            />
-          </>
-        )}
-      </Formik>
+          {/* Action Buttons */}
+          <Box
+            style={[
+              styles.actionContainer,
+              {
+                backgroundColor: Colors.defaultPageBackground,
+                borderTopColor: Colors.divider,
+              },
+            ]}
+          >
+            <Box horizontal gap={sizes._12sdp}>
+              <AppButton
+                title="step_button_title_back"
+                onPress={handleCancel}
+                style={[
+                  styles.actionButton,
+                  { backgroundColor: Colors.disableButtonBackground },
+                ]}
+                titleColor={Colors.black}
+              />
+              <AppButton
+                title="step_button_save"
+                onPress={formikProps.handleSubmit}
+                style={styles.actionButton}
+              />
+            </Box>
+          </Box>
+
+          {/* Select Modals */}
+          <SelectLeatherClassification
+            ref={selectLeatherClassificationRef}
+            onSelect={value => {
+              formikProps.setFieldValue('leather_classification', value);
+            }}
+          />
+          <SelectMaternity
+            ref={selectMaternityRef}
+            onSelect={value => {
+              formikProps.setFieldValue('maternity', value);
+            }}
+          />
+          <AttachmentPicker
+            isMultiple
+            ref={attachmentPickerRef}
+            max_amount={6}
+            onConfirm={data => {
+              setImages(data);
+              // Also update formik field if needed
+              if (formikRef.current) {
+                formikRef.current.setFieldValue('images', data);
+              }
+            }}
+          />
+        </>
+      )}
+    </Formik>
+  );
+
+  return (
+    <Box style={styles.container}>
+      {isEditing ? renderEditMode() : renderViewMode()}
+
+      {/* Edit Button - chỉ hiện trong view mode */}
+      {!isEditing && (
+        <Box
+          style={[
+            styles.actionContainer,
+            {
+              backgroundColor: Colors.defaultPageBackground,
+              borderTopColor: Colors.divider,
+            },
+          ]}
+        >
+          <AppButton
+            title="step_button_edit"
+            onPress={() => setIsEditing(true)}
+            style={styles.actionButton}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

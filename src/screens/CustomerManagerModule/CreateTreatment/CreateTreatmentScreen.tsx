@@ -31,7 +31,8 @@ export const CreateTreatmentScreen: FC<Props> = () => {
   const datetimePickerRef = useRef<DateTimePickerReft>(null);
   const cosmeticsSelectRef = useRef<SelectCosmeticsRef>(null);
 
-  const initialTreatmentValues: TreatmentCreateFormValuesEntity = {
+  // Lazy initialization - tối ưu performance
+  const getInitialValues = (): TreatmentCreateFormValuesEntity => ({
     implementation_date: dayjs().format('YYYY-MM-DD'),
     title: '',
     note: '',
@@ -39,16 +40,21 @@ export const CreateTreatmentScreen: FC<Props> = () => {
     total_treatment_fee: 0,
     debt: 0,
     paid: 0,
-  };
+  });
+
+  // Memoize validation schema
+  const validationSchema = React.useMemo(
+    () => treatmentValidationSchema(t),
+    [t],
+  );
 
   return (
     <PageContainer>
       <AppHeader title="treatment_create_header" showBack />
       <Box style={styles.container}>
         <Formik
-          initialValues={initialTreatmentValues}
-          enableReinitialize
-          validationSchema={treatmentValidationSchema(t)}
+          initialValues={getInitialValues()}
+          validationSchema={validationSchema}
           onSubmit={values => {
             console.log('values', values);
           }}
@@ -56,10 +62,13 @@ export const CreateTreatmentScreen: FC<Props> = () => {
           {({ handleSubmit, errors, values, setFieldValue }) => (
             <React.Fragment>
               <ScrollView
+                style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
-                  paddingBottom: sizes._256sdp,
+                  flexGrow: 1,
+                  paddingBottom: sizes._120sdp, // Reduced từ 256sdp
                   gap: sizes._16sdp,
+                  padding: sizes._16sdp, // Add padding cho content
                 }}
               >
                 <Box gap={sizes._8sdp}>
@@ -184,7 +193,6 @@ export const CreateTreatmentScreen: FC<Props> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: sizes._24sdp,
   },
   actionContainer: {
     position: 'absolute',
