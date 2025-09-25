@@ -4,6 +4,7 @@ import { AppText, Avatar, Box } from '@src/components';
 import { CustomerEntity } from '@src/models';
 import { APP_SCREEN, navigate } from '@src/navigator';
 import {
+  _screen_width,
   ACTIVE_OPACITY_TOUCH,
   callNumber,
   isSuccessTreatment,
@@ -21,7 +22,7 @@ export const CustomerItem: FC<Props> = ({ item }) => {
   const { Colors } = useAppTheme();
 
   return (
-    <Box style={styles.shadowWrap}>
+    <Box style={[styles.shadowWrap, { backgroundColor: Colors.white }]}>
       <TouchableOpacity
         activeOpacity={ACTIVE_OPACITY_TOUCH}
         onPress={() => navigate(APP_SCREEN.CUSTOMER_DETAIL)}
@@ -31,12 +32,13 @@ export const CustomerItem: FC<Props> = ({ item }) => {
           align="center"
           justify="space-between"
           gap={sizes._16sdp}
-          style={[styles.card, { backgroundColor: Colors.white }]}
+          style={[styles.card]}
         >
           <Avatar size={sizes._32sdp} uri={item.profile.avatar.iconUrl} />
           <Box gap={sizes._12sdp} style={styles.infoContainer}>
             <AppText fontFamily="content_bold">{item.profile.name}</AppText>
             <TouchableOpacity
+              style={{ width: _screen_width * 0.3 }}
               activeOpacity={ACTIVE_OPACITY_TOUCH}
               onPress={() => callNumber(item.phoneNumber)}
             >
@@ -69,14 +71,11 @@ const styles = StyleSheet.create({
     shadowRadius: sizes._2sdp,
     // Android shadow
     elevation: sizes._6sdp,
-    // khoảng cách giữa các item
     marginVertical: sizes._6sdp,
   },
   card: {
     borderRadius: R,
     paddingVertical: sizes._12sdp,
     paddingHorizontal: sizes._16sdp,
-    // nếu muốn che nội dung tràn góc bo:
-    overflow: 'hidden', // (để ở card, KHÔNG để ở shadowWrap)
   },
 });

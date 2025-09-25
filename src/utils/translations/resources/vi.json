@@ -152,6 +152,7 @@
       "payment_bill_sum":"Tổng hoá đơn:",
       "payment_bill_paid":"Số tiền thanh toán:",
       "payment_bill_in_debt":"Còn nợ:",
-      "payment_bill_info_treatment":"Thông tin: "
+      "payment_bill_info_treatment":"Thông tin: ",
+      "save_bill_success_title":"Lưu hoá đơn thành công"
     }
  }

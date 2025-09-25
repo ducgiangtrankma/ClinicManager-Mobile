@@ -5,9 +5,9 @@ import {
   LocalFileEntity,
 } from '@src/models';
 import { TreatmentEntity } from '@src/models/TreatmentEntity';
-import { Linking, Platform } from 'react-native';
+import { Linking, PermissionsAndroid, Platform } from 'react-native';
 import dayjs from 'dayjs';
-
+import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 function callNumber(phone: string) {
   let phoneNumber = phone;
   if (Platform.OS !== 'android') {
@@ -133,5 +133,62 @@ export const formatDateTime = (
 
 export const formatMoney = (money: number | string) => {
   return money && money.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+};
+
+export const hasAndroidPermission = async () => {
+  const getCheckPermissionPromise = () => {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      return Promise.all([
+        PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+        ),
+        PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+        ),
+      ]).then(
+        ([hasReadMediaImagesPermission, hasReadMediaVideoPermission]) =>
+          hasReadMediaImagesPermission && hasReadMediaVideoPermission,
+      );
+    } else {
+      return PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      );
+    }
+  };
+
+  const hasPermission = await getCheckPermissionPromise();
+
+  if (hasPermission) {
+    return true;
+  }
+
+  const getRequestPermissionPromise = () => {
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      return PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+        PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+      ]).then(
+        statuses =>
+          statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES] ===
+            PermissionsAndroid.RESULTS.GRANTED &&
+          statuses[PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO] ===
+            PermissionsAndroid.RESULTS.GRANTED,
+      );
+    } else {
+      return PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      ).then(status => status === PermissionsAndroid.RESULTS.GRANTED);
+    }
+  };
+
+  return await getRequestPermissionPromise();
+};
+
+export const SaveToCameraRoll = async (uri: string) => {
+  if (Platform.OS === 'android' && !(await hasAndroidPermission())) return;
+
+  await CameraRoll.saveAsset(uri, {
+    type: 'photo',
+  });
 };
 export { callNumber, isSuccessTreatment };

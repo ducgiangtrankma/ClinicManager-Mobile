@@ -13,7 +13,7 @@ import { APP_SCREEN, navigate } from '@src/navigator';
 interface Props {
   treatments: TreatmentEntity[];
 }
-const BOX_CONTENT_HEIGHT = sizes._240sdp;
+const BOX_CONTENT_HEIGHT = sizes._260sdp;
 const BOX_CONTENT_PADDING_BOTTOM = sizes._12sdp;
 const STEP_BOX_SIZE = sizes._32sdp;
 export const TreatmentStepIndicator: FC<Props> = ({ treatments }) => {

@@ -16,10 +16,12 @@ import { Image, RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { FacilityItem } from './FacilityItem';
 import { FacilityEmptyList } from './EmptyFacility';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props {}
 export const AppModuleListScreen: FC<Props> = () => {
   const { Colors, Images } = useAppTheme();
+  const insets = useSafeAreaInsets();
   const { facility } = useSelector(x => x.facilityReducer);
   const { isFetching, data, refetch, isRefetching } = useFacilityQuery();
   const uiReady = data && data.length > 0;
@@ -82,10 +84,16 @@ export const AppModuleListScreen: FC<Props> = () => {
         )}
       </Box>
       {uiReady && facility && (
-        <AppButton
-          title="button.continue"
-          onPress={() => navigate(APP_SCREEN.CUSTOMER_MODULE)}
-        />
+        <Box
+          style={{
+            marginBottom: insets.bottom > 0 ? sizes._0sdp : sizes._16sdp,
+          }}
+        >
+          <AppButton
+            title="button.continue"
+            onPress={() => navigate(APP_SCREEN.CUSTOMER_MODULE)}
+          />
+        </Box>
       )}
     </PageContainer>
   );

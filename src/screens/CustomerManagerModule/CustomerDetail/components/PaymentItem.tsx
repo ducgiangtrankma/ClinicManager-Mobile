@@ -9,8 +9,8 @@ export const PaymentItem: FC<Props> = () => {
   const { Colors } = useAppTheme();
 
   return (
-    <Box style={styles.container}>
-      <Box style={[styles.card, { backgroundColor: Colors.white }]}>
+    <Box style={[styles.container, { backgroundColor: Colors.white }]}>
+      <Box style={[styles.card]}>
         <Box horizontal justify="space-between">
           <AppText fontFamily="content_bold">Buổi 1</AppText>
           <AppText fontSize="14">18:12 21/02/2025</AppText>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: sizes._2sdp,
     // Android shadow
-    elevation: sizes._6sdp,
+    elevation: sizes._4sdp,
     // khoảng cách giữa các item
     marginVertical: sizes._6sdp,
   },
@@ -53,7 +53,5 @@ const styles = StyleSheet.create({
     paddingVertical: sizes._12sdp,
     paddingHorizontal: sizes._16sdp,
     gap: sizes._8sdp,
-    // nếu muốn che nội dung tràn góc bo:
-    overflow: 'hidden', // (để ở card, KHÔNG để ở shadowWrap)
   },
 });
