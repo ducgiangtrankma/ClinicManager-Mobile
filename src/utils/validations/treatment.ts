@@ -14,9 +14,18 @@ export const treatmentValidationSchema = (
 export const treatmentPaymentValidationSchema = (
   t: TFunction<'translation', undefined>,
 ) =>
-  Yup.object().shape({
-    total_treatment_fee: Yup.number().required(t('value_not_empty')),
-    paid: Yup.number().required(t('value_not_empty')),
-    debt: Yup.number().required(t('value_not_empty')),
-    newPaid: Yup.number().required(t('value_not_empty')),
+  Yup.object({
+    totalTreatmentFee: Yup.number()
+      .typeError(t('value_must_be_number'))
+      .required(t('value_not_empty')),
+    paid: Yup.number()
+      .typeError(t('value_must_be_number'))
+      .required(t('value_not_empty')),
+    debt: Yup.number()
+      .typeError(t('value_must_be_number'))
+      .required(t('value_not_empty')),
+    newPaid: Yup.number()
+      .typeError(t('value_must_be_number'))
+      .required(t('value_not_empty'))
+      .max(Yup.ref('debt'), t('payment_newPaid_must_be_lte_debt')), // newPaid <= debt
   });

@@ -7,4 +7,5 @@ export interface AppStateEntity {
   user: UserEntity | undefined;
   showOnboarding: boolean;
   scheduleType: ScheduleType;
+  shouldRefreshHome: boolean;
 }

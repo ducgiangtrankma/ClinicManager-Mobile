@@ -5,9 +5,12 @@ import {
   AttachmentPicker,
   AttachmentPickerRef,
   Box,
+  globalLoading,
   PageContainer,
   SelectCustomerType,
   SelectCustomerTypeRef,
+  SelectGender,
+  SelectGenderRef,
   SelectLeatherClassification,
   SelectLeatherClassificationRef,
   SelectMaternity,
@@ -16,29 +19,34 @@ import {
 } from '@src/components';
 import { CreateCustomerProgress } from '@src/components/CreateCustomerStep';
 import {
+  AttachmentEntity,
+  CreateCustomerBodyData,
   CreateCustomerFormEntity,
   CUSTOMER_TYPE,
+  Gender,
   LocalFileEntity,
-  Sex,
 } from '@src/models';
+import { goBack } from '@src/navigator';
+import { AttachmentService, CustomerService } from '@src/services';
 import {
   _screen_width,
   createCustomerValidationSchema,
+  GENDER_DATA,
   LEATHER_CLASSIFICATION_DATA,
-  MATERNITY,
+  MATERNITY_DATA,
   sizes,
 } from '@src/utils';
 import { Formik } from 'formik';
 import React, { FC, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Step1BasicInfo,
   Step2MedicalInfo,
   Step3SkinCareHistory,
   Step4DiagnosisAndNotes,
 } from './components';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Props {}
 enum ChangeStepType {
@@ -54,6 +62,8 @@ export const CreateCustomerScreen: FC<Props> = () => {
   const selectLeatherClassificationRef: React.RefObject<SelectLeatherClassificationRef> =
     React.createRef<any>();
   const selectMaternityRef: React.RefObject<SelectMaternityRef> =
+    React.createRef<any>();
+  const selectGenderRef: React.RefObject<SelectGenderRef> =
     React.createRef<any>();
   const attachmentPickerRef: React.RefObject<AttachmentPickerRef> =
     React.createRef<any>();
@@ -75,28 +85,31 @@ export const CreateCustomerScreen: FC<Props> = () => {
             values.phoneNumber.trim() !== ''
           );
         case 1: // Step 2: Medical Info
-          return (
-            !errors.leather_classification &&
-            !errors.maternity &&
-            !errors.medical_history &&
-            values.medical_history.trim() !== ''
-          );
+          return true;
+        // return (
+        //   !errors.leather_classification &&
+        //   !errors.maternity &&
+        //   !errors.medical_history &&
+        //   values.medical_history.trim() !== ''
+        // );
         case 2: // Step 3: Skin Care History
-          return (
-            !errors.pre_treatment &&
-            !errors.skin_condition &&
-            !errors.routine &&
-            values.pre_treatment.trim() !== '' &&
-            values.skin_condition.trim() !== '' &&
-            values.routine.trim() !== ''
-          );
+          return true;
+        // return (
+        //   !errors.pre_treatment &&
+        //   !errors.skin_condition &&
+        //   !errors.routine &&
+        //   values.pre_treatment.trim() !== '' &&
+        //   values.skin_condition.trim() !== '' &&
+        //   values.routine.trim() !== ''
+        // );
         case 3: // Step 4: Diagnosis and Notes
-          return (
-            !errors.diagnostic &&
-            !errors.note &&
-            values.diagnostic.trim() !== '' &&
-            values.note.trim() !== ''
-          );
+          return true;
+        // return (
+        //   !errors.diagnostic &&
+        //   !errors.note &&
+        //   values.diagnostic.trim() !== '' &&
+        //   values.note.trim() !== ''
+        // );
         default:
           return true;
       }
@@ -201,6 +214,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
             <Step1BasicInfo
               formik={formik}
               selectCustomerTypeRef={selectCustomerTypeRef}
+              selectGenderRef={selectGenderRef}
             />
           );
         case 1:
@@ -228,6 +242,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
     [
       currentStep,
       selectCustomerTypeRef,
+      selectGenderRef,
       selectLeatherClassificationRef,
       selectMaternityRef,
       attachmentPickerRef,
@@ -239,21 +254,58 @@ export const CreateCustomerScreen: FC<Props> = () => {
   const getValidationSchema = () => createCustomerValidationSchema(t);
   const getInitialValues = (): CreateCustomerFormEntity => ({
     name: '',
-    gender: Sex.Nu,
+    gender: Gender.Female,
     type: CUSTOMER_TYPE.retail,
     stepTreatment: [],
     images: [],
     phoneNumber: '',
-    leather_classification: LEATHER_CLASSIFICATION_DATA[0].value,
-    maternity: MATERNITY[3].value,
-    medical_history: '',
-    pre_treatment: '', // điều trị trước đó
-    other_info: '', // thông tin khác
-    skin_condition: '', // tình trạng da hiện tại
+    leatherClassification: LEATHER_CLASSIFICATION_DATA[0].value,
+    maternity: MATERNITY_DATA[0].value,
+    medicalHistory: '',
+    preTreatment: '', // điều trị trước đó
+    otherInfo: '', // thông tin khác
+    skinCondition: '', // tình trạng da hiện tại
     routine: '',
     diagnostic: '', // chuẩn đoán
     note: '',
   });
+
+  const _handleCreateCustomer = useCallback(
+    async (customerData: CreateCustomerBodyData) => {
+      try {
+        globalLoading.show();
+        let imageIds: string[] = [];
+        // Upload images nếu có
+        if (customerData.images && customerData.images.length > 0) {
+          try {
+            const uploadResponse = await AttachmentService.upload(
+              customerData.images,
+            );
+            // Giả sử response trả về array of attachments với id
+            if (uploadResponse.data && uploadResponse.data.success) {
+              imageIds = uploadResponse.data.success.map(
+                (attachment: AttachmentEntity) => attachment.id,
+              );
+            }
+          } catch (uploadError: any) {
+            showErrorMessage('error.title', uploadError.message);
+          }
+        }
+        const createCustomerPayload = {
+          ...customerData,
+          images: imageIds, // Array of string IDs
+        };
+        await CustomerService.createCustomer(createCustomerPayload);
+        goBack();
+      } catch (error: any) {
+        showErrorMessage('error.title', error.message);
+        throw error;
+      } finally {
+        globalLoading.hide();
+      }
+    },
+    [],
+  );
 
   return (
     <PageContainer>
@@ -271,6 +323,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
               };
 
               console.log('Final form data:', finalData);
+              _handleCreateCustomer(finalData);
             }}
           >
             {formikProps => {
@@ -337,17 +390,38 @@ export const CreateCustomerScreen: FC<Props> = () => {
       />
       <SelectLeatherClassification
         ref={selectLeatherClassificationRef}
+        valueSelect={
+          formikRef.current?.values?.leather_classification ||
+          LEATHER_CLASSIFICATION_DATA[0].value
+        }
         onSelect={value => {
           if (formikRef.current) {
-            formikRef.current.setFieldValue('leather_classification', value);
+            formikRef.current.setFieldValue(
+              'leather_classification',
+              value.value,
+            );
+            selectLeatherClassificationRef.current.close();
           }
         }}
       />
       <SelectMaternity
         ref={selectMaternityRef}
+        valueSelect={
+          formikRef.current?.values?.maternity || MATERNITY_DATA[0].value
+        }
         onSelect={value => {
           if (formikRef.current) {
-            formikRef.current.setFieldValue('maternity', value);
+            formikRef.current.setFieldValue('maternity', value.value);
+            selectMaternityRef.current.close();
+          }
+        }}
+      />
+      <SelectGender
+        ref={selectGenderRef}
+        valueSelect={formikRef.current?.values?.gender || GENDER_DATA[1].value}
+        onSelect={value => {
+          if (formikRef.current) {
+            formikRef.current.setFieldValue('maternity', value.value);
           }
         }}
       />

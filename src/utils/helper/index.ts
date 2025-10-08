@@ -1,6 +1,7 @@
 import {
   AppLanguage,
   AttachmentEntity,
+  Gender,
   GridImageEntity,
   LocalFileEntity,
 } from '@src/models';
@@ -190,5 +191,51 @@ export const SaveToCameraRoll = async (uri: string) => {
   await CameraRoll.saveAsset(uri, {
     type: 'photo',
   });
+};
+
+export type OptionItem = { id: string; label: string; value: string };
+
+export function enumToOptions<T extends Record<string, string>>(
+  en: T,
+  opts?: {
+    start?: number; // id bắt đầu (mặc định 1)
+    order?: string[]; // ưu tiên các key lên đầu (mặc định ['Empty'])
+    label?: (value: string, key: string, index: number) => string;
+    value?: (value: string, key: string, index: number) => string;
+    filter?: (key: string, value: string) => boolean; // lọc nếu muốn
+  },
+): OptionItem[] {
+  const {
+    start = 1,
+    order = ['Empty'],
+    label = (v: any) => v,
+    value = (v: any) => v,
+    filter = () => true,
+  } = opts ?? {};
+
+  const entries = Object.entries(en).filter(([k, v]) => filter(k, v));
+
+  // Đưa các key trong `order` lên đầu theo đúng thứ tự order
+  const ordered = [
+    ...(order
+      .map(want => entries.find(([k]) => k === want))
+      .filter(Boolean) as [string, string][]),
+    ...entries.filter(([k]) => !order.includes(k)),
+  ];
+
+  return ordered.map(([k, v], i) => ({
+    id: String(start + i),
+    label: label(v, k, i),
+    value: value(v, k, i),
+  }));
+}
+export const renderGender = (gender: Gender) => {
+  if (gender === Gender.Female) return 'Nữ';
+  if (gender === Gender.Male) return 'Nam';
+  if (gender === Gender.Other) return 'Khác';
+};
+
+export const startsWithHttp = (s: unknown): boolean => {
+  return typeof s === 'string' && /^\s*https?:\/\//i.test(s);
 };
 export { callNumber, isSuccessTreatment };

@@ -1,6 +1,6 @@
-import { dummyFacilities } from '@src/models';
 import { store } from '@src/redux';
 import { useQuery } from '@tanstack/react-query';
+import { FacilityService } from '../facility-service';
 import { queryKeys } from './queryKeys';
 
 export const useFacilityQuery = () => {
@@ -10,7 +10,8 @@ export const useFacilityQuery = () => {
     ),
     queryFn: async () => {
       //Call Api -> Response
-      return dummyFacilities;
+      const response = await FacilityService.getFacility();
+      return response.data;
     },
   });
 };

@@ -34,3 +34,6 @@ export * from './FormTitle';
 export * from './CosmeticsSelect';
 export * from './TreatmentDetailMenuBar';
 export * from './CosmeticsSelect/CosmeticsItem';
+export * from './BackButton';
+export * from './CreateCustomerProgress';
+export * from './SelectGender';

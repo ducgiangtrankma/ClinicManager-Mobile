@@ -1,7 +1,6 @@
-import { CheckIcon, UnCheckIcon } from '@src/assets';
 import { useAppTheme } from '@src/common';
 import { CUSTOMER_TYPE } from '@src/models';
-import { sizes } from '@src/utils';
+import { OptionItem, sizes } from '@src/utils';
 import React, { FC } from 'react';
 import { AppText } from '../AppText';
 import { Box } from '../Box';
@@ -12,7 +11,7 @@ export interface CustomerTypeSelectEntity {
 }
 interface Props {
   item: CustomerTypeSelectEntity;
-  selected: CustomerTypeSelectEntity;
+  selected: OptionItem;
 }
 export const CustomerTypeItem: FC<Props> = ({ item, selected }) => {
   const { Colors } = useAppTheme();
@@ -28,13 +27,10 @@ export const CustomerTypeItem: FC<Props> = ({ item, selected }) => {
           ? Colors.grayBackground
           : Colors.defaultPageBackground,
         height: sizes._48sdp,
+        borderBottomColor: Colors.bottomSheetDivider,
+        borderBottomWidth: sizes._1sdp,
       }}
     >
-      {item.value === selected.value ? (
-        <CheckIcon color={Colors.green} />
-      ) : (
-        <UnCheckIcon />
-      )}
       <AppText>{item.label}</AppText>
     </Box>
   );

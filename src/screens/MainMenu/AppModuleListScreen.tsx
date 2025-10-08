@@ -10,13 +10,21 @@ import { FacilityEntity } from '@src/models';
 import { APP_SCREEN, navigate } from '@src/navigator';
 import { onSelectFacility } from '@src/redux';
 import { useFacilityQuery } from '@src/services';
-import { _screen_width, sizes } from '@src/utils';
+import { _screen_width, DEFAULT_HIT_SLOP, sizes } from '@src/utils';
 import React, { FC, useCallback, useEffect } from 'react';
-import { Image, RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { FacilityItem } from './FacilityItem';
 import { FacilityEmptyList } from './EmptyFacility';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
+import { PlusIcon } from '@src/assets';
 
 interface Props {}
 export const AppModuleListScreen: FC<Props> = () => {
@@ -36,17 +44,39 @@ export const AppModuleListScreen: FC<Props> = () => {
     }
   }, [data, facility]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [refetch]),
+  );
+  console.log('facility', facility);
+  console.log('data', data);
   return (
     <PageContainer padding>
       <Image source={Images.appLogo} style={styles.logo} />
       <Box style={styles.content}>
-        {!uiReady && <FacilityEmptyList />}
+        {!uiReady && !isFetching && <FacilityEmptyList />}
         {uiReady && (
-          <AppText
-            translationKey="moduleScreen.select_facility"
-            fontSize="18"
-            fontFamily="content_semibold"
-          />
+          <Box horizontal align="center" justify="space-between">
+            <AppText
+              translationKey="moduleScreen.select_facility"
+              fontSize="18"
+              fontFamily="content_semibold"
+            />
+            <TouchableOpacity
+              onPress={() => navigate(APP_SCREEN.CREATE_FACILITY)}
+              hitSlop={DEFAULT_HIT_SLOP}
+              style={[
+                {
+                  backgroundColor: Colors.green,
+                },
+                styles.addButton,
+              ]}
+            >
+              <PlusIcon />
+            </TouchableOpacity>
+          </Box>
         )}
         {isFetching ? (
           <AppActivityIndicator animating={isFetching} />
@@ -122,5 +152,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizes._8sdp,
     borderRadius: sizes._12sdp,
     borderWidth: sizes._1sdp,
+  },
+  addButton: {
+    borderRadius: sizes._99sdp,
+    width: sizes._36sdp,
+    height: sizes._36sdp,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

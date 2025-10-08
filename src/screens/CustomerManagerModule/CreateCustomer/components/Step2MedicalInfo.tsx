@@ -7,7 +7,7 @@ import {
   SelectMaternityRef,
 } from '@src/components';
 import { CreateCustomerFormEntity } from '@src/models';
-import { LEATHER_CLASSIFICATION_DATA, MATERNITY, sizes } from '@src/utils';
+import { LEATHER_CLASSIFICATION_DATA, MATERNITY_DATA, sizes } from '@src/utils';
 import { FormikProps } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,10 +25,11 @@ export const Step2MedicalInfo: FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { errors, values, setFieldValue } = formik;
+
   const leatherValue = LEATHER_CLASSIFICATION_DATA.find(
-    e => e.value === values.type,
+    e => e.value === values.leatherClassification,
   );
-  const maternityValue = MATERNITY.find(e => e.value === values.type);
+  const maternityValue = MATERNITY_DATA.find(e => e.value === values.maternity);
 
   return (
     <Box gap={sizes._16sdp}>
@@ -41,7 +42,7 @@ export const Step2MedicalInfo: FC<Props> = ({
         <AppSelectForm
           onPress={() => selectLeatherClassificationRef.current?.open()}
           placeholder="customer_create_leather_classification_placeholder"
-          errMessage={errors.leather_classification}
+          errMessage={errors.leatherClassification}
           value={leatherValue}
         />
       </Box>
@@ -67,10 +68,10 @@ export const Step2MedicalInfo: FC<Props> = ({
           fontFamily="content_semibold"
         />
         <AppInputMultipleLine
-          value={values.medical_history}
+          value={values.medicalHistory}
           placeholder={t('customer_create_medical_history_placeholder')}
           onChangeText={value => setFieldValue('medical_history', value)}
-          errMessage={errors.medical_history}
+          errMessage={errors.medicalHistory}
           clearButtonMode="always"
           multiline
         />

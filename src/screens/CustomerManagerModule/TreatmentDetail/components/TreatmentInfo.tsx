@@ -1,3 +1,4 @@
+import { SelectImageIcon } from '@src/assets';
 import { useAppTheme } from '@src/common';
 import {
   AppButton,
@@ -5,51 +6,104 @@ import {
   AppInputMultipleLine,
   AppSelectForm,
   AppText,
+  AttachmentPicker,
+  AttachmentPickerRef,
   Box,
   CosmeticItem,
   DateTimePicker,
   DateTimePickerReft,
   FormTitle,
+  globalLoading,
+  GridImage,
   SelectCosmetics,
   SelectCosmeticsRef,
+  showErrorMessage,
 } from '@src/components';
 
-import { TreatmentCreateFormValuesEntity, TreatmentEntity } from '@src/models';
-import { formatDateTime, sizes, treatmentValidationSchema } from '@src/utils';
+import {
+  AttachmentEntity,
+  LocalFileEntity,
+  TreatmentDetailEntity,
+  TreatmentUpdateFormValuesEntity,
+} from '@src/models';
+import { AttachmentService, TreatmentService } from '@src/services';
+import {
+  formatDateTime,
+  formatMoney,
+  sizes,
+  startsWithHttp,
+  treatmentValidationSchema,
+} from '@src/utils';
 import { Formik } from 'formik';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface Props {
-  treatment: TreatmentEntity;
+  treatment: TreatmentDetailEntity;
+  onUpdateSuccess: () => void;
 }
-export const TreatmentInfo: FC<Props> = ({ treatment }) => {
+export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
   const { t } = useTranslation();
   const { Colors } = useAppTheme();
   const [isEditing, setIsEditing] = useState(false);
   const datetimePickerRef = useRef<DateTimePickerReft>(null);
   const cosmeticsSelectRef = useRef<SelectCosmeticsRef>(null);
+  const attachmentPickerRef = useRef<AttachmentPickerRef>(null);
+  console.log('treatment.cosmetics,', treatment.cosmetics);
 
+  const [images, setImages] = useState<LocalFileEntity[]>([]);
   // Lazy initialization - chỉ tạo khi cần edit
-  const getInitialValues = (): TreatmentCreateFormValuesEntity => ({
-    implementation_date: new Date(treatment.implementation_date)
+  const getInitialValues = (): TreatmentUpdateFormValuesEntity => ({
+    implementation_date: new Date(treatment.implementationDate)
       .toISOString()
       .slice(0, 16),
     title: treatment.title,
     note: treatment.note,
     cosmetics: treatment.cosmetics,
-    total_treatment_fee: treatment.total_treatment_fee,
+    totalTreatmentFee: treatment.totalTreatmentFee,
     debt: treatment.debt,
     paid: treatment.paid,
+    images: treatment.images,
   });
+  console.log('treatment.images', treatment.images);
+  const handleSave = useCallback(
+    async (values: TreatmentUpdateFormValuesEntity) => {
+      try {
+        globalLoading.show();
+        console.log('Saving treatment:', values);
+        let imageIds: string[] = [];
+        // Upload images nếu có
+        if (images && images.length > 0) {
+          try {
+            const uploadResponse = await AttachmentService.upload(images);
+            // Giả sử response trả về array of attachments với id
+            if (uploadResponse.data && uploadResponse.data.success) {
+              imageIds = uploadResponse.data.success.map(
+                (attachment: AttachmentEntity) => attachment.id,
+              );
+            }
+          } catch (uploadError: any) {
+            showErrorMessage('error.title', uploadError.message);
+          }
+        }
 
-  const handleSave = (values: TreatmentCreateFormValuesEntity) => {
-    console.log('Saving treatment:', values);
-    // TODO: Call API to update treatment
-    setIsEditing(false);
-  };
-
+        await TreatmentService.updateTreatment(treatment.id, {
+          ...values,
+          totalTreatmentFee: Number(values.totalTreatmentFee),
+          images: [...imageIds, ...values.images.map(e => e.id)],
+        });
+        setIsEditing(false);
+        onUpdateSuccess();
+      } catch (error: any) {
+        console.log('error', error);
+        showErrorMessage('error.title', error.message);
+      } finally {
+        globalLoading.hide();
+      }
+    },
+    [images, onUpdateSuccess, treatment.id],
+  );
   const handleCancel = () => {
     setIsEditing(false);
   };
@@ -74,7 +128,7 @@ export const TreatmentInfo: FC<Props> = ({ treatment }) => {
       <Box gap={sizes._8sdp}>
         <FormTitle title="treatment_create_time_implementation_date" required />
         <AppText color={Colors.content} fontFamily="content_regular">
-          {formatDateTime(treatment.implementation_date, 'dd/mm/yyyy')}
+          {formatDateTime(treatment.implementationDate, 'dd/mm/yyyy')}
         </AppText>
       </Box>
 
@@ -86,18 +140,42 @@ export const TreatmentInfo: FC<Props> = ({ treatment }) => {
       </Box>
 
       <Box gap={sizes._8sdp}>
+        <FormTitle title="treatment_update_total_bill" required />
+        <AppText color={Colors.content} fontFamily="content_regular">
+          {formatMoney(treatment.totalTreatmentFee)}
+        </AppText>
+      </Box>
+
+      <Box gap={sizes._8sdp}>
+        <FormTitle title="treatment_update_paid" required />
+        <AppText color={Colors.content} fontFamily="content_regular">
+          {formatMoney(treatment.paid)}
+        </AppText>
+      </Box>
+
+      <Box gap={sizes._8sdp}>
         <AppText
           translationKey="treatment_create_cosmetics"
           fontFamily="content_semibold"
         />
         {treatment.cosmetics.map(item => (
           <CosmeticItem
-            key={item.id}
+            key={item.sku}
             item={item}
             edited={false}
             onChange={() => {}}
           />
         ))}
+      </Box>
+      {/* Hình ảnh */}
+      <Box gap={sizes._8sdp}>
+        <AppText
+          translationKey="treatment_image"
+          fontFamily="content_semibold"
+        />
+        <Box>
+          <GridImage remoteImages={treatment.images} />
+        </Box>
       </Box>
     </ScrollView>
   );
@@ -149,6 +227,20 @@ export const TreatmentInfo: FC<Props> = ({ treatment }) => {
               />
             </Box>
             <Box gap={sizes._8sdp}>
+              <FormTitle title="treatment_update_total_bill" required />
+              <AppInput
+                value={String(values.totalTreatmentFee ?? '0')}
+                placeholder={t('treatment_update_total_bill')}
+                onChangeText={value =>
+                  setFieldValue('totalTreatmentFee', value)
+                }
+                clearButtonMode="always"
+                errMessage={errors.totalTreatmentFee}
+                keyboardType="numeric"
+              />
+            </Box>
+
+            <Box gap={sizes._8sdp}>
               <FormTitle title="treatment_create_note" required />
               <AppInputMultipleLine
                 value={values.note}
@@ -169,29 +261,63 @@ export const TreatmentInfo: FC<Props> = ({ treatment }) => {
                 placeholder="treatment_create_cosmetics_placeholder"
                 value={undefined}
               />
+
               {values.cosmetics.map(item => (
                 <CosmeticItem
-                  key={item.id}
+                  key={item.sku} // nhớ dùng key unique, ưu tiên sku/id
                   item={item}
-                  edited={true}
+                  edited
                   onChange={value => {
-                    const temp = [...values.cosmetics];
-                    const newListCosmetic = temp.map(e => {
-                      if (e.id === value.id) {
-                        return {
-                          ...e,
-                          quantity: value.quantity,
-                        };
-                      } else {
-                        return {
-                          ...e,
-                        };
+                    const newListCosmetic = values.cosmetics.map(e => {
+                      if (e.sku === value.sku) {
+                        return { ...e, quantity: value.quantity };
                       }
+                      return e;
                     });
                     setFieldValue('cosmetics', newListCosmetic);
                   }}
                 />
               ))}
+            </Box>
+            {/* Hình ảnh */}
+            <Box gap={sizes._8sdp}>
+              <Box horizontal justify="space-between">
+                <AppText
+                  translationKey="treatment_image"
+                  fontFamily="content_semibold"
+                />
+                <TouchableOpacity
+                  onPress={() => attachmentPickerRef.current?.open()}
+                  hitSlop={{
+                    top: sizes._12sdp,
+                    bottom: sizes._12sdp,
+                    left: sizes._12sdp,
+                    right: sizes._12sdp,
+                  }}
+                >
+                  <SelectImageIcon />
+                </TouchableOpacity>
+              </Box>
+              <Box>
+                <GridImage
+                  onDelete={image => {
+                    if (startsWithHttp(image.originalUrl)) {
+                      setFieldValue(
+                        'images',
+                        values.images?.filter(x => x.id !== image.id),
+                      );
+                    } else {
+                      const newLocalImages = images.filter(
+                        e => e.fileName !== image.fileName,
+                      );
+
+                      setImages(newLocalImages);
+                    }
+                  }}
+                  localImages={images}
+                  remoteImages={values.images}
+                />
+              </Box>
             </Box>
           </ScrollView>
 
@@ -232,6 +358,15 @@ export const TreatmentInfo: FC<Props> = ({ treatment }) => {
             ref={cosmeticsSelectRef}
             onSelect={value => {
               setFieldValue('cosmetics', value);
+            }}
+          />
+          <AttachmentPicker
+            isMultiple
+            ref={attachmentPickerRef}
+            max_amount={6}
+            onConfirm={data => {
+              // Chỉ lưu local vào state riêng, KHÔNG overwrite remote images trong Formik
+              setImages(data);
             }}
           />
         </React.Fragment>

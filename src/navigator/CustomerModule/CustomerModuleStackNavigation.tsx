@@ -11,6 +11,7 @@ import {
   CreateBillScreen,
   CreateCustomerScreen,
   CreateTreatmentScreen,
+  CustomerCostScreen,
   CustomerDetailScreen,
   TreatmentDetailScreen,
 } from '@src/screens';
@@ -57,6 +58,10 @@ export const CustomerModuleStack = () => {
     {
       name: APP_SCREEN.CREATE_BILL,
       component: CreateBillScreen,
+    },
+    {
+      name: APP_SCREEN.CUSTOMER_COST,
+      component: CustomerCostScreen,
     },
   ];
   return (

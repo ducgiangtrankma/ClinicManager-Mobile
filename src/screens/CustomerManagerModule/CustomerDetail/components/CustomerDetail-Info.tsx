@@ -5,56 +5,90 @@ import {
   AppSelectForm,
   AppText,
   Box,
+  FormTitle,
+  globalLoading,
   SelectCustomerType,
   SelectCustomerTypeRef,
-  FormTitle,
+  SelectGender,
+  SelectGenderRef,
+  showErrorMessage,
 } from '@src/components';
 import {
   CreateCustomerFormEntity,
-  CUSTOMER_TYPE,
-  customersDummy,
-  Sex,
+  CustomerDetailEntity,
+  Gender,
 } from '@src/models';
-import { CUSTOMER_TYPE_DATA, sizes } from '@src/utils';
+import { CustomerService } from '@src/services';
+import {
+  CUSTOMER_TYPE_DATA,
+  GENDER_DATA,
+  renderGender,
+  sizes,
+} from '@src/utils';
 import { Formik, FormikProps } from 'formik';
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
 
-interface Props {}
+interface Props {
+  customerInfo: CustomerDetailEntity;
+  onUpdateSuccess: () => void;
+}
 
-export const CustomerDetailInfo: FC<Props> = () => {
+export const CustomerDetailInfo: FC<Props> = ({
+  customerInfo,
+  onUpdateSuccess,
+}) => {
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const selectCustomerTypeRef = useRef<SelectCustomerTypeRef>(null);
-  const formikRef = useRef<FormikProps<CreateCustomerFormEntity>>(null);
+  const selectGenderRef = useRef<SelectGenderRef>(null);
 
-  // Mock data - lấy khách hàng đầu tiên để demo
-  const customerData = customersDummy[0];
+  const formikRef = useRef<FormikProps<CreateCustomerFormEntity>>(null);
 
   // Lazy initialization - chỉ tạo khi cần edit
   const getInitialValues = (): CreateCustomerFormEntity => ({
-    name: customerData.profile.name,
-    gender: customerData.gender as Sex,
-    type: customerData.type as CUSTOMER_TYPE,
-    phoneNumber: customerData.phoneNumber,
-    stepTreatment: [],
-    images: [],
-    leather_classification: customerData.leather_classification,
-    maternity: '',
-    medical_history: customerData.medical_history,
-    pre_treatment: customerData.pre_treatment,
-    other_info: customerData.other_info,
-    skin_condition: customerData.skin_condition,
-    routine: '',
-    diagnostic: customerData.diagnostic,
-    note: '',
+    name: customerInfo.name,
+    gender: customerInfo.gender,
+    type: customerInfo.type,
+    phoneNumber: customerInfo.phoneNumber,
+    stepTreatment: customerInfo.stepTreatment,
+    images: customerInfo.images,
+    leatherClassification: customerInfo.leatherClassification,
+    maternity: customerInfo.maternity,
+    medicalHistory: customerInfo.medicalHistory,
+    preTreatment: customerInfo.preTreatment,
+    otherInfo: customerInfo.otherInfo,
+    skinCondition: customerInfo.skinCondition,
+    routine: customerInfo.routine,
+    diagnostic: customerInfo.diagnostic,
+    note: customerInfo.note,
   });
 
-  const handleSave = (values: CreateCustomerFormEntity) => {
-    console.log('Saving customer info:', values);
-    // TODO: Call API to update customer info
+  const handleSave = async (values: CreateCustomerFormEntity) => {
+    // Combine form values with images
+    try {
+      globalLoading.show();
+
+      const createCustomerPayload = {
+        ...values,
+        images: values.images.map(e => e.id), // Array of string IDs
+      };
+      console.log('Saving medical info:', createCustomerPayload);
+      await CustomerService.updateCustomer(
+        customerInfo.id,
+        createCustomerPayload,
+      );
+      onUpdateSuccess();
+    } catch (error: any) {
+      console.log('error', error);
+      showErrorMessage('error.title', error.message);
+      throw error;
+    } finally {
+      globalLoading.hide();
+    }
+
     setIsEditing(false);
   };
 
@@ -103,29 +137,29 @@ export const CustomerDetailInfo: FC<Props> = () => {
     >
       <Box gap={sizes._16sdp}>
         {/* Tên khách hàng */}
-        {renderField('customer_create_name', customerData.profile.name, true)}
+        {renderField('customer_create_name', customerInfo.name, true)}
 
         {/* Số điện thoại */}
         {renderField(
           'customer_create_phoneNumber',
-          customerData.phoneNumber,
+          customerInfo.phoneNumber,
           true,
         )}
-
-        {/* Loại khách hàng */}
-        <Box gap={sizes._8sdp}>
-          <FormTitle title="customer_create_type" required />
-          <AppText color={Colors.content} fontFamily="content_regular">
-            {CUSTOMER_TYPE_DATA.find(e => e.value === customerData.type)
-              ?.label || t('empty_value')}
-          </AppText>
-        </Box>
 
         {/* Giới tính */}
         <Box gap={sizes._8sdp}>
           <FormTitle title="customer_create_gender" />
           <AppText color={Colors.content} fontFamily="content_regular">
-            {customerData.gender === Sex.NAM ? t('male') : t('female')}
+            {renderGender(customerInfo.gender as Gender)}
+          </AppText>
+        </Box>
+
+        {/* Loại khách hàng */}
+        <Box gap={sizes._8sdp}>
+          <FormTitle title="customer_create_type" required />
+          <AppText color={Colors.content} fontFamily="content_regular">
+            {CUSTOMER_TYPE_DATA.find(e => e.value === customerInfo.type)
+              ?.label || t('empty_value')}
           </AppText>
         </Box>
       </Box>
@@ -141,6 +175,10 @@ export const CustomerDetailInfo: FC<Props> = () => {
     >
       {formikProps => (
         <>
+          {console.log(
+            'formikProps',
+            CUSTOMER_TYPE_DATA.find(e => e.value === formikProps.values.type),
+          )}
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
@@ -164,6 +202,22 @@ export const CustomerDetailInfo: FC<Props> = () => {
                 true,
               )}
 
+              {/* Giới tính */}
+              <Box gap={sizes._8sdp}>
+                <AppText
+                  translationKey="customer_create_gender"
+                  fontFamily="content_semibold"
+                />
+                <AppSelectForm
+                  onPress={() => selectGenderRef.current?.open()}
+                  placeholder="select_gender_title"
+                  errMessage={formikProps.errors.gender}
+                  value={GENDER_DATA.find(
+                    e => e.value === formikProps.values.gender,
+                  )}
+                />
+              </Box>
+
               {/* Loại khách hàng */}
               <Box gap={sizes._8sdp}>
                 <FormTitle title="customer_create_type" required />
@@ -175,16 +229,6 @@ export const CustomerDetailInfo: FC<Props> = () => {
                     e => e.value === formikProps.values.type,
                   )}
                 />
-              </Box>
-
-              {/* Giới tính */}
-              <Box gap={sizes._8sdp}>
-                <FormTitle title="customer_create_gender" />
-                <AppText color={Colors.content} fontFamily="content_regular">
-                  {formikProps.values.gender === Sex.NAM
-                    ? t('male')
-                    : t('female')}
-                </AppText>
               </Box>
             </Box>
           </ScrollView>
@@ -223,6 +267,19 @@ export const CustomerDetailInfo: FC<Props> = () => {
             onSelect={value => {
               formikProps.setFieldValue('type', value.value);
             }}
+            valueSelect={
+              formikRef.current?.values?.type || CUSTOMER_TYPE_DATA[0].value
+            }
+          />
+          <SelectGender
+            ref={selectGenderRef}
+            onSelect={value => {
+              formikProps.setFieldValue('gender', value.value);
+              selectGenderRef.current?.close();
+            }}
+            valueSelect={
+              formikRef.current?.values?.gender || GENDER_DATA[1].value
+            }
           />
         </>
       )}

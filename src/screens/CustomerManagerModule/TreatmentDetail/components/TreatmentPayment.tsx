@@ -1,6 +1,11 @@
 import { useAppTheme } from '@src/common';
-import { AppButton, AppInput, Box, FormTitle } from '@src/components';
-import { TreatmentEntity, TreatmentPaymentFormValuesEntity } from '@src/models';
+import { AppButton, AppInput, AppText, Box, FormTitle } from '@src/components';
+import {
+  BillType,
+  CreateBillPayload,
+  TreatmentDetailEntity,
+  TreatmentPaymentFormValuesEntity,
+} from '@src/models';
 import { APP_SCREEN, navigate } from '@src/navigator';
 import {
   formatMoney,
@@ -8,64 +13,125 @@ import {
   treatmentPaymentValidationSchema,
 } from '@src/utils';
 import { Formik } from 'formik';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
 interface Props {
-  treatment: TreatmentEntity;
+  treatment: TreatmentDetailEntity;
+  onUpdateSuccess?: () => void;
 }
 export const TreatmentPayment: FC<Props> = ({ treatment }) => {
   const { t } = useTranslation();
   const { Colors } = useAppTheme();
+
   const initialTreatmentPaymentValues: TreatmentPaymentFormValuesEntity = {
-    total_treatment_fee: treatment.total_treatment_fee,
+    totalTreatmentFee: treatment.totalTreatmentFee,
     paid: treatment.paid,
     debt: treatment.debt,
     newPaid: 0,
+    voucher: null,
   };
+
+  const handleExportBill = useCallback(
+    (values: TreatmentPaymentFormValuesEntity) => {
+      // Navigate to create bill screen with payment data
+      const createBillPayload: CreateBillPayload = {
+        customer: treatment.customer.id,
+        type: BillType.TREATMENT,
+        treatmentId: treatment.id,
+        paid: Number(values.newPaid),
+      };
+      navigate(APP_SCREEN.CREATE_BILL, {
+        bill: createBillPayload,
+      });
+    },
+    [treatment.customer.id, treatment.id],
+  );
   return (
     <Box style={styles.container}>
       <Formik
         initialValues={initialTreatmentPaymentValues}
         enableReinitialize
         validationSchema={treatmentPaymentValidationSchema(t)}
-        onSubmit={values => {
-          console.log('values', values);
-          navigate(APP_SCREEN.CREATE_BILL);
-        }}
+        onSubmit={handleExportBill}
       >
         {({ handleSubmit, errors, values, setFieldValue }) => (
           <React.Fragment>
-            <Box gap={sizes._8sdp}>
+            <Box
+              gap={sizes._8sdp}
+              horizontal
+              align="center"
+              justify="space-between"
+            >
               <FormTitle title="treatment_update_total_bill" required />
-              <AppInput
-                value={formatMoney(treatment.total_treatment_fee).toString()}
-                onChangeText={() => {}}
-                clearButtonMode="always"
-                errMessage={errors.total_treatment_fee}
-              />
+              <AppText
+                color={Colors.content}
+                fontFamily="content_bold"
+                fontSize="18"
+              >
+                {formatMoney(treatment.totalTreatmentFee)}
+              </AppText>
             </Box>
-            <Box gap={sizes._8sdp}>
+            <Box
+              gap={sizes._8sdp}
+              horizontal
+              align="center"
+              justify="space-between"
+            >
               <FormTitle title="treatment_update_paid" required />
-              <AppInput
-                value={formatMoney(treatment.paid).toString()}
-                onChangeText={() => {}}
-                clearButtonMode="always"
-                errMessage={errors.paid}
-              />
+              <AppText
+                color={Colors.content}
+                fontFamily="content_bold"
+                fontSize="18"
+              >
+                {formatMoney(treatment.paid)}
+              </AppText>
             </Box>
+            <Box
+              gap={sizes._8sdp}
+              horizontal
+              align="center"
+              justify="space-between"
+            >
+              <FormTitle title="treatment_update_debt" required />
+              <AppText
+                color={Colors.red}
+                fontFamily="content_bold"
+                fontSize="18"
+              >
+                {formatMoney(treatment.debt)}
+              </AppText>
+            </Box>
+            <Box
+              style={[
+                styles.divider,
+                {
+                  backgroundColor: Colors.divider,
+                },
+              ]}
+            />
 
             <Box gap={sizes._8sdp}>
               <FormTitle title="treatment_update_current_paid" required />
               <AppInput
-                value={formatMoney(values.newPaid).toString()}
+                value={values.newPaid.toString()}
                 onChangeText={value => setFieldValue('newPaid', Number(value))}
                 clearButtonMode="always"
                 keyboardType="number-pad"
                 errMessage={errors.newPaid}
               />
             </Box>
+            {/* <Box gap={sizes._8sdp}>
+              <FormTitle title="treatment_voucher" />
+              <AppInput
+                value={values.voucher ?? ''}
+                placeholder={t('treatment_voucher_placeholder')}
+                onChangeText={value => setFieldValue('voucher', Number(value))}
+                clearButtonMode="always"
+                errMessage={errors.newPaid}
+              />
+            </Box> */}
             <Box
               horizontal
               gap={sizes._16sdp}
@@ -78,18 +144,9 @@ export const TreatmentPayment: FC<Props> = ({ treatment }) => {
               ]}
             >
               <AppButton
-                title="step_button_title_back"
-                onPress={() => {}}
-                style={[
-                  styles.actionButton,
-                  { backgroundColor: Colors.disableButtonBackground },
-                ]}
-                titleColor={Colors.black}
-              />
-              <AppButton
                 title="export_bill"
                 onPress={handleSubmit}
-                style={styles.actionButton}
+                style={[styles.actionButton, { backgroundColor: Colors.error }]}
               />
             </Box>
           </React.Fragment>
@@ -115,5 +172,14 @@ const styles = StyleSheet.create({
   actionButton: {
     flex: 1,
     borderRadius: sizes._12sdp,
+  },
+  createPayment: {
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  divider: {
+    width: '100%',
+    height: sizes._1sdp,
   },
 });

@@ -11,6 +11,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { AppText } from '../AppText';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -29,7 +30,7 @@ export const AppSelectForm: FC<Props> = ({
   ...props
 }) => {
   const { Colors } = useAppTheme();
-
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -46,7 +47,7 @@ export const AppSelectForm: FC<Props> = ({
       >
         <View {...props} style={[styles.input]}>
           {value ? (
-            <AppText>{value.label}</AppText>
+            <AppText>{t(value.label)}</AppText>
           ) : (
             <AppText numberOfLines={1} translationKey={placeholder} />
           )}

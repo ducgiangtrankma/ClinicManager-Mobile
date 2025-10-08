@@ -1,21 +1,73 @@
-import { AttachmentEntity } from '../AttachmentEntity';
-import { CUSTOMER_TYPE } from '../CustomerEntity';
+import { AttachmentEntity, LocalFileEntity } from '../AttachmentEntity';
 import { TreatmentEntity } from '../TreatmentEntity';
-import { Sex } from '../UserEntity';
 
 export interface CreateCustomerFormEntity {
   name: string;
-  gender: Sex;
-  type: CUSTOMER_TYPE;
+  gender: string;
+  type: string;
   stepTreatment: TreatmentEntity[];
   images: AttachmentEntity[];
   phoneNumber: string;
-  leather_classification: string;
+  leatherClassification: string;
   maternity: string;
-  medical_history: string;
-  pre_treatment: string; // điều trị trước đó
-  other_info: string; // thông tin khác
-  skin_condition: string; // tình trạng da hiện tại
+  medicalHistory: string;
+  preTreatment: string; // điều trị trước đó
+  otherInfo: string; // thông tin khác
+  skinCondition: string; // tình trạng da hiện tại
+  routine: string;
+  diagnostic: string; // chuẩn đoán
+  note: string;
+}
+
+export interface CreateCustomerBodyData {
+  name: string;
+  gender: string;
+  type: string;
+  stepTreatment: TreatmentEntity[];
+  images: LocalFileEntity[];
+  phoneNumber: string;
+  leatherClassification: string;
+  maternity: string;
+  medicalHistory: string;
+  preTreatment: string; // điều trị trước đó
+  otherInfo: string; // thông tin khác
+  skinCondition: string; // tình trạng da hiện tại
+  routine: string;
+  diagnostic: string; // chuẩn đoán
+  note: string;
+}
+
+export interface CreateCustomerPayload {
+  name: string;
+  gender: string;
+  type: string;
+  stepTreatment: TreatmentEntity[];
+  images: string[];
+  phoneNumber: string;
+  leatherClassification: string;
+  maternity: string;
+  medicalHistory: string;
+  preTreatment: string; // điều trị trước đó
+  otherInfo: string; // thông tin khác
+  skinCondition: string; // tình trạng da hiện tại
+  routine: string;
+  diagnostic: string; // chuẩn đoán
+  note: string;
+}
+
+export interface UpdateCustomerPayload {
+  name: string;
+  gender: string;
+  type: string;
+  stepTreatment: TreatmentEntity[];
+  images: string[];
+  phoneNumber: string;
+  leatherClassification: string;
+  maternity: string;
+  medicalHistory: string;
+  preTreatment: string; // điều trị trước đó
+  otherInfo: string; // thông tin khác
+  skinCondition: string; // tình trạng da hiện tại
   routine: string;
   diagnostic: string; // chuẩn đoán
   note: string;

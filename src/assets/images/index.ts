@@ -14,6 +14,7 @@ export const LightImage = {
   enso: require('./onboarding/enso.png'),
   star: require('./onboarding/star.png'),
   emptyList: require('./EmptyList.png'),
+  blankAvatar: require('./blankAvatar.png'),
 };
 
 export const DarkImage = {
@@ -32,4 +33,5 @@ export const DarkImage = {
   enso: require('./onboarding/enso.png'),
   star: require('./onboarding/star.png'),
   emptyList: require('./EmptyList.png'),
+  blankAvatar: require('./blankAvatar.png'),
 };

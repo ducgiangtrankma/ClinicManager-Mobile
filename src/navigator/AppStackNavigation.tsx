@@ -6,10 +6,12 @@ import {
 
 import React from 'react';
 
+import { useSelector } from '@src/common';
 import {
   ForgotPasswordScreen,
   OnBoardingScreen,
   SignInScreen,
+  VerifyOtpScreen,
 } from '@src/screens';
 import { DrawerNavigator } from './Drawer';
 import { APP_SCREEN, UnAuthenticationPramsList } from './ScreenTypes';
@@ -17,6 +19,7 @@ import { APP_SCREEN, UnAuthenticationPramsList } from './ScreenTypes';
 const AuthStackNavigation = createStackNavigator<UnAuthenticationPramsList>();
 
 export const AuthStack = () => {
+  const { showOnboarding } = useSelector(x => x.appReducer);
   const defaultScreenOptions: StackNavigationOptions = {
     animationTypeForReplace: 'pop',
     gestureEnabled: false,
@@ -24,17 +27,25 @@ export const AuthStack = () => {
     cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
   };
 
+  const onBoardingScreen: {
+    name: keyof UnAuthenticationPramsList;
+    component: React.ComponentType<Element>;
+  } = {
+    name: APP_SCREEN.ONBOARDING,
+    component: OnBoardingScreen,
+  };
+
   const screens: {
     name: keyof UnAuthenticationPramsList;
     component: React.ComponentType<Element>;
   }[] = [
     {
-      name: APP_SCREEN.ONBOARDING,
-      component: OnBoardingScreen,
-    },
-    {
       name: APP_SCREEN.SIGNIN,
       component: SignInScreen,
+    },
+    {
+      name: APP_SCREEN.VERIFY_OTP,
+      component: VerifyOtpScreen,
     },
     {
       name: APP_SCREEN.FORGOT_PASSWORD,
@@ -44,14 +55,29 @@ export const AuthStack = () => {
 
   return (
     <AuthStackNavigation.Navigator>
-      {screens.map(screen => (
-        <AuthStackNavigation.Screen
-          key={screen.name}
-          name={screen.name}
-          component={screen.component}
-          options={defaultScreenOptions}
-        />
-      ))}
+      {showOnboarding ? (
+        <>
+          {[onBoardingScreen, ...screens].map(screen => (
+            <AuthStackNavigation.Screen
+              key={screen.name}
+              name={screen.name}
+              component={screen.component}
+              options={defaultScreenOptions}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          {screens.map(screen => (
+            <AuthStackNavigation.Screen
+              key={screen.name}
+              name={screen.name}
+              component={screen.component}
+              options={defaultScreenOptions}
+            />
+          ))}
+        </>
+      )}
     </AuthStackNavigation.Navigator>
   );
 };

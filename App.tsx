@@ -8,7 +8,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { I18nextProvider } from 'react-i18next';
 import { i18next } from '@src/utils';
 import FlashMessage from 'react-native-flash-message';
-import { GlobalLoading, globalLoadingRef } from '@src/components';
+import {
+  CreateCustomerLoadingProgress,
+  GlobalLoading,
+  globalLoadingRef,
+} from '@src/components';
 import { Platform } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -55,6 +59,7 @@ const App: FC<Props> = () => {
                 <AppContainer />
                 <RXStore />
                 <GlobalLoading ref={globalLoadingRef} />
+                <CreateCustomerLoadingProgress />
                 <FlashMessage position="top" hideOnPress={true} />
               </Suspense>
             </I18nextProvider>

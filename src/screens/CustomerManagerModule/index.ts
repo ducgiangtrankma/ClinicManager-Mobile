@@ -5,3 +5,4 @@ export * from './CustomerDetail';
 export * from './TreatmentDetail';
 export * from './CreateTreatment';
 export * from './Bill';
+export * from './CustomerCost';

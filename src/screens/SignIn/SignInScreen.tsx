@@ -48,8 +48,8 @@ export const SignInScreen: FC<Props> = () => {
   const validationSignUpSchema = signUpValidationSchema(t);
 
   const initialSignInValues: SignInFormValuesEntity = {
-    email: defaultEmail ?? '',
-    password: '',
+    email: defaultEmail ?? 'tranducgiangact@gmail.com',
+    password: '1234567a',
   };
   const initialSignUpValues: SignUpFormValuesEntity = {
     email: '',
@@ -90,9 +90,9 @@ export const SignInScreen: FC<Props> = () => {
         email,
         password,
       });
-      //   navigate(APP_SCREEN.VERIFY_OTP, {
-      //     email: value.email,
-      //   });
+      navigate(APP_SCREEN.VERIFY_OTP, {
+        email: value.email,
+      });
     } catch (error: any) {
       console.log('error.message', error.message);
       showErrorMessage('error.title', error.message);

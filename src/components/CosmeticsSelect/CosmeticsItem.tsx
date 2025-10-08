@@ -11,7 +11,7 @@ interface Props {
   item: ProductSelected;
   edited: boolean;
 
-  onChange: (value: { id: string; quantity: number }) => void;
+  onChange: (value: { sku: string; quantity: number }) => void;
 }
 export const CosmeticItem: FC<Props> = ({ item, edited, onChange }) => {
   const { Colors } = useAppTheme();
@@ -30,7 +30,7 @@ export const CosmeticItem: FC<Props> = ({ item, edited, onChange }) => {
         }
         setCount(newCount);
         onChange({
-          id: product.id,
+          sku: product.sku,
           quantity: newCount,
         });
 
@@ -40,7 +40,7 @@ export const CosmeticItem: FC<Props> = ({ item, edited, onChange }) => {
         const newCount = count + 1;
         setCount(newCount);
         onChange({
-          id: product.id,
+          sku: product.sku,
           quantity: newCount,
         });
       }
@@ -57,6 +57,7 @@ export const CosmeticItem: FC<Props> = ({ item, edited, onChange }) => {
       ]}
     >
       <AppText>{item.name}</AppText>
+
       <>
         {edited ? (
           <View style={styles.countContainer}>

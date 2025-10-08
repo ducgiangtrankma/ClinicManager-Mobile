@@ -5,16 +5,18 @@ import {
   EmptyList,
   PageContainer,
 } from '@src/components';
-import { CustomerEntity, customersDummy } from '@src/models';
+import { CustomerEntity } from '@src/models';
 
+import { useFocusEffect } from '@react-navigation/native';
 import { FilterIcon } from '@src/assets';
 import { useCustomerQuery } from '@src/services';
 import { sizes } from '@src/utils';
 import React, { FC, useCallback, useRef } from 'react';
 import { TouchableOpacity } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
-import { CustomerItem } from './components/CustomerItem';
 import { CustomerFilter, CustomerFilterRef } from './components/CustomerFilter';
+import { CustomerItem } from './components/CustomerItem';
+import { CustomerItemSkeleton } from './components/CustomerSkeleton';
 
 interface Props {}
 export const CustomerHomeScreen: FC<Props> = () => {
@@ -29,7 +31,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
     isRefetching,
   } = useCustomerQuery(10);
 
-  const customers = data?.pages.flatMap(p => p.customers) ?? customersDummy;
+  const customers = data?.pages.flatMap(p => p.customers) ?? [];
   const renderItem = useCallback(
     ({ item, index }: { item: CustomerEntity; index: number }) => {
       return (
@@ -59,6 +61,13 @@ export const CustomerHomeScreen: FC<Props> = () => {
 
   console.log('isFetching', isFetching);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [refetch]),
+  );
+
   return (
     <PageContainer>
       <AppHeader
@@ -78,23 +87,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
           </TouchableOpacity>
         }
       />
-      <AppList
-        data={customers ?? []}
-        renderItem={renderItem}
-        canLoadMore={hasNextPage}
-        canRefresh
-        onLoadMore={handleLoadMore}
-        onRefresh={handleRefresh}
-        refreshing={isRefetching}
-        keyExtractor={(item: CustomerEntity) => `${item?.id}`}
-        ListFooterComponent={
-          isFetchingNextPage ? (
-            <AppActivityIndicator animating={isFetchingNextPage} />
-          ) : null
-        }
-        ListEmptyComponent={<EmptyList description="customer_emptyList" />}
-      />
-      {/* {isFetching ? (
+      {isFetching ? (
         <CustomerItemSkeleton count={6} />
       ) : (
         <AppList
@@ -113,7 +106,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
           }
           ListEmptyComponent={<EmptyList description="customer_emptyList" />}
         />
-      )} */}
+      )}
       <CustomerFilter ref={customerFilterRef} />
     </PageContainer>
   );

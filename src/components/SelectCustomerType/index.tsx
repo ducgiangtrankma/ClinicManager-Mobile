@@ -3,6 +3,7 @@ import {
   _screen_height,
   ACTIVE_OPACITY_TOUCH,
   CUSTOMER_TYPE_DATA,
+  OptionItem,
   sizes,
 } from '@src/utils';
 import React, {
@@ -23,6 +24,7 @@ import { Box } from '../Box';
 import { CustomerTypeItem, CustomerTypeSelectEntity } from './CustomerTypeItem';
 interface Props {
   onSelect: (value: CustomerTypeSelectEntity) => void;
+  valueSelect?: string;
 }
 export interface SelectCustomerTypeRef {
   open(): void;
@@ -34,9 +36,12 @@ export const SelectCustomerType = forwardRef<SelectCustomerTypeRef, Props>(
   (props, ref) => {
     const bottomSheetRef: React.RefObject<BottomSheetModalRef> =
       React.createRef<any>();
-    const [selected, setSelected] = useState<CustomerTypeSelectEntity>(
-      CUSTOMER_TYPE_DATA[0],
-    );
+    const typeValue =
+      CUSTOMER_TYPE_DATA.find(e => e.value === props.valueSelect) ??
+      CUSTOMER_TYPE_DATA[0];
+
+    const [selected, setSelected] = useState<OptionItem>(typeValue);
+
     useImperativeHandle(
       ref,
       () => ({

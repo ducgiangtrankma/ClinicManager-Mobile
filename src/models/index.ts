@@ -8,3 +8,5 @@ export * from './PaginationEntity';
 export * from './ScheduleEntity';
 export * from './TreatmentEntity';
 export * from './ProductEntity';
+export * from './BillEntity';
+export * from './CustomerCostEntity';

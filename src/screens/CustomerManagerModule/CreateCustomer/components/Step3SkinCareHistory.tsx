@@ -22,10 +22,10 @@ export const Step3SkinCareHistory: FC<Props> = ({ formik }) => {
           fontFamily="content_semibold"
         />
         <AppInputMultipleLine
-          value={values.pre_treatment}
+          value={values.preTreatment}
           placeholder={t('customer_create_pre_treatment_placeholder')}
           onChangeText={value => setFieldValue('pre_treatment', value)}
-          errMessage={errors.pre_treatment}
+          errMessage={errors.preTreatment}
           clearButtonMode="always"
           multiline
         />
@@ -38,10 +38,10 @@ export const Step3SkinCareHistory: FC<Props> = ({ formik }) => {
           fontFamily="content_semibold"
         />
         <AppInputMultipleLine
-          value={values.skin_condition}
+          value={values.skinCondition}
           placeholder={t('customer_create_skin_condition_placeholder')}
           onChangeText={value => setFieldValue('skin_condition', value)}
-          errMessage={errors.skin_condition}
+          errMessage={errors.skinCondition}
           clearButtonMode="always"
           multiline
         />

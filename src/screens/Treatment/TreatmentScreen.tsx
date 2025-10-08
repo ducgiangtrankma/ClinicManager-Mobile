@@ -1,19 +1,49 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { useAppTheme } from '@src/common';
-import { AppButton, Box } from '@src/components';
+import { AppButton, Box, showErrorMessage } from '@src/components';
 import { TreatmentStepIndicator } from '@src/components/TreatmentStepIndicator';
-import { customersDummy } from '@src/models';
+import { TreatmentEntity } from '@src/models';
+
 import { APP_SCREEN, navigate } from '@src/navigator';
+import { TreatmentService } from '@src/services';
 import { sizes } from '@src/utils';
-import React, { FC } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-interface Props {}
-export const TreatmentScreen: FC<Props> = () => {
+interface Props {
+  customerId: string;
+  onCreateSuccess: () => void;
+}
+export const TreatmentScreen: FC<Props> = ({ customerId, onCreateSuccess }) => {
   const { Colors } = useAppTheme();
+
+  const [treatments, stepTreatments] = useState<TreatmentEntity[]>([]);
+
+  const getListTreatment = useCallback(async () => {
+    try {
+      const response = await TreatmentService.getListTreatment(customerId);
+      stepTreatments(response.data);
+    } catch (error: any) {
+      console.log('error', error);
+      showErrorMessage('error.title', error.message);
+    }
+  }, [customerId]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getListTreatment();
+      onCreateSuccess();
+      return () => {};
+    }, [getListTreatment, onCreateSuccess]),
+  );
+
   return (
     <Box style={styles.container}>
       <Box style={styles.stepContainer}>
-        <TreatmentStepIndicator treatments={customersDummy[0].treatments} />
+        <TreatmentStepIndicator
+          treatments={treatments}
+          onRefresh={getListTreatment}
+        />
       </Box>
       <Box
         style={[
@@ -26,7 +56,11 @@ export const TreatmentScreen: FC<Props> = () => {
       >
         <AppButton
           title="customer_create_treatment"
-          onPress={() => navigate(APP_SCREEN.CREATE_TREATMENT)}
+          onPress={() =>
+            navigate(APP_SCREEN.CREATE_TREATMENT, {
+              customerId: customerId,
+            })
+          }
         />
       </Box>
     </Box>

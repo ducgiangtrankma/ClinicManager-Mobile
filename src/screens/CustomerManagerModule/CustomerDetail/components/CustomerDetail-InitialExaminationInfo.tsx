@@ -9,27 +9,42 @@ import {
   AttachmentPicker,
   AttachmentPickerRef,
   Box,
+  FormTitle,
+  globalLoading,
   GridImage,
   SelectLeatherClassification,
   SelectLeatherClassificationRef,
   SelectMaternity,
   SelectMaternityRef,
-  FormTitle,
+  showErrorMessage,
 } from '@src/components';
 import {
+  AttachmentEntity,
   CreateCustomerFormEntity,
-  customersDummy,
+  CustomerDetailEntity,
   LocalFileEntity,
 } from '@src/models';
-import { LEATHER_CLASSIFICATION_DATA, MATERNITY, sizes } from '@src/utils';
+import { AttachmentService, CustomerService } from '@src/services';
+import {
+  LEATHER_CLASSIFICATION_DATA,
+  MATERNITY_DATA,
+  sizes,
+  startsWithHttp,
+} from '@src/utils';
 import { Formik, FormikProps } from 'formik';
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface Props {}
+interface Props {
+  customerInfo: CustomerDetailEntity;
+  onUpdateSuccess: () => void;
+}
 
-export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
+export const CustomerDetailInitialExaminationInfo: FC<Props> = ({
+  customerInfo,
+  onUpdateSuccess,
+}) => {
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
@@ -41,37 +56,62 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
 
   const [images, setImages] = useState<LocalFileEntity[]>([]);
 
-  // Mock data - lấy khách hàng đầu tiên để demo
-  const customerData = customersDummy[0];
-
   // Lazy initialization - chỉ tạo khi cần edit
   const getInitialValues = (): CreateCustomerFormEntity => ({
-    name: customerData.profile.name,
-    gender: customerData.gender as any,
-    type: customerData.type as any,
-    phoneNumber: customerData.phoneNumber,
+    name: customerInfo.name,
+    gender: customerInfo.gender,
+    type: customerInfo.type,
+    phoneNumber: customerInfo.phoneNumber,
     stepTreatment: [],
-    images: [],
-    leather_classification: customerData.leather_classification,
-    maternity: MATERNITY[0].value, // Default value
-    medical_history: customerData.medical_history,
-    pre_treatment: customerData.pre_treatment,
-    other_info: customerData.other_info,
-    skin_condition: customerData.skin_condition,
-    routine: '',
-    diagnostic: customerData.diagnostic,
-    note: '',
+    images: customerInfo.images,
+    leatherClassification: customerInfo.leatherClassification,
+    maternity: customerInfo.maternity,
+    medicalHistory: customerInfo.medicalHistory,
+    preTreatment: customerInfo.preTreatment,
+    otherInfo: customerInfo.otherInfo,
+    skinCondition: customerInfo.skinCondition,
+    routine: customerInfo.routine,
+    diagnostic: customerInfo.diagnostic,
+    note: customerInfo.note,
   });
 
-  const handleSave = (values: CreateCustomerFormEntity) => {
+  const handleSave = async (values: CreateCustomerFormEntity) => {
     // Combine form values with images
-    const finalData = {
-      ...values,
-      images: images,
-    };
+    try {
+      globalLoading.show();
+      let imageIds: string[] = [];
+      // Upload images nếu có
+      if (images && images.length > 0) {
+        try {
+          const uploadResponse = await AttachmentService.upload(images);
+          // Giả sử response trả về array of attachments với id
+          if (uploadResponse.data && uploadResponse.data.success) {
+            imageIds = uploadResponse.data.success.map(
+              (attachment: AttachmentEntity) => attachment.id,
+            );
+          }
+        } catch (uploadError: any) {
+          showErrorMessage('error.title', uploadError.message);
+        }
+      }
+      const createCustomerPayload = {
+        ...values,
+        images: [...imageIds, ...values.images.map(e => e.id)], // Array of string IDs
+      };
+      await CustomerService.updateCustomer(
+        customerInfo.id,
+        createCustomerPayload,
+      );
+      // goBack();
+      onUpdateSuccess();
+    } catch (error: any) {
+      console.log('error', error);
+      showErrorMessage('error.title', error.message);
+      throw error;
+    } finally {
+      globalLoading.hide();
+    }
 
-    console.log('Saving medical info:', finalData);
-    // TODO: Call API to update customer medical info
     setIsEditing(false);
   };
 
@@ -112,7 +152,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
       />
     </Box>
   );
-
+  // Deletion is handled inline in GridImage.onDelete below
   // Render View Mode - Không dùng Formik
   const renderViewMode = () => (
     <ScrollView
@@ -125,9 +165,9 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
           <FormTitle title="customer_create_leather_classification" />
           <AppText color={Colors.content} fontFamily="content_regular">
             {LEATHER_CLASSIFICATION_DATA.find(
-              e => e.value === customerData.leather_classification,
+              e => e.value === customerInfo.leatherClassification,
             )?.label ||
-              customerData.leather_classification ||
+              customerInfo.leatherClassification ||
               t('empty_value')}
           </AppText>
         </Box>
@@ -136,35 +176,35 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
         <Box gap={sizes._8sdp}>
           <FormTitle title="customer_create_maternity" />
           <AppText color={Colors.content} fontFamily="content_regular">
-            {MATERNITY.find(e => e.value === MATERNITY[0].value)?.label ||
-              t('empty_value')}
+            {MATERNITY_DATA.find(e => e.value === customerInfo.maternity)
+              ?.label || t('empty_value')}
           </AppText>
         </Box>
 
         {/* Tiền sử bệnh */}
         {renderField(
           'customer_create_medical_history',
-          customerData.medical_history,
+          customerInfo.medicalHistory,
           true,
         )}
 
         {/* Điều trị trước đó */}
         {renderField(
           'customer_create_pre_treatment',
-          customerData.pre_treatment,
+          customerInfo.preTreatment,
         )}
 
         {/* Tình trạng da hiện tại */}
         {renderField(
           'customer_create_skin_condition',
-          customerData.skin_condition,
+          customerInfo.skinCondition,
         )}
 
         {/* Chuẩn đoán */}
-        {renderField('customer_create_diagnostic', customerData.diagnostic)}
+        {renderField('customer_create_diagnostic', customerInfo.diagnostic)}
 
         {/* Thông tin khác */}
-        {renderField('customer_create_note', customerData.other_info)}
+        {renderField('customer_create_note', customerInfo.otherInfo)}
 
         {/* Hình ảnh */}
         <Box gap={sizes._8sdp}>
@@ -173,7 +213,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
             fontFamily="content_semibold"
           />
           <Box>
-            <GridImage localImages={[]} remoteImages={customerData.images} />
+            <GridImage remoteImages={customerInfo.images} />
           </Box>
         </Box>
       </Box>
@@ -200,9 +240,9 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
                 <AppSelectForm
                   onPress={() => selectLeatherClassificationRef.current?.open()}
                   placeholder="customer_create_leather_classification_placeholder"
-                  errMessage={formikProps.errors.leather_classification}
+                  errMessage={formikProps.errors.leatherClassification}
                   value={LEATHER_CLASSIFICATION_DATA.find(
-                    e => e.value === formikProps.values.leather_classification,
+                    e => e.value === formikProps.values.leatherClassification,
                   )}
                 />
               </Box>
@@ -214,7 +254,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
                   onPress={() => selectMaternityRef.current?.open()}
                   placeholder="customer_create_maternity_placeholder"
                   errMessage={formikProps.errors.maternity}
-                  value={MATERNITY.find(
+                  value={MATERNITY_DATA.find(
                     e => e.value === formikProps.values.maternity,
                   )}
                 />
@@ -223,7 +263,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
               {/* Tiền sử bệnh */}
               {renderEditableMultilineField(
                 formikProps,
-                'medical_history',
+                'medicalHistory',
                 'customer_create_medical_history',
                 'customer_create_medical_history_placeholder',
                 true,
@@ -232,7 +272,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
               {/* Điều trị trước đó */}
               {renderEditableMultilineField(
                 formikProps,
-                'pre_treatment',
+                'preTreatment',
                 'customer_create_pre_treatment',
                 'customer_create_pre_treatment_placeholder',
               )}
@@ -240,7 +280,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
               {/* Tình trạng da hiện tại */}
               {renderEditableMultilineField(
                 formikProps,
-                'skin_condition',
+                'skinCondition',
                 'customer_create_skin_condition',
                 'customer_create_skin_condition_placeholder',
               )}
@@ -256,7 +296,7 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
               {/* Thông tin khác */}
               {renderEditableMultilineField(
                 formikProps,
-                'other_info',
+                'otherInfo',
                 'customer_create_note',
                 'customer_create_note_placeholder',
               )}
@@ -281,7 +321,26 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
                   </TouchableOpacity>
                 </Box>
                 <Box>
-                  <GridImage localImages={images} remoteImages={[]} />
+                  <GridImage
+                    onDelete={image => {
+                      if (startsWithHttp(image.originalUrl)) {
+                        formikProps.setFieldValue(
+                          'images',
+                          formikProps.values.images.filter(
+                            x => x.id !== image.id,
+                          ),
+                        );
+                      } else {
+                        const newLocalImages = images.filter(
+                          e => e.fileName !== image.fileName,
+                        );
+
+                        setImages(newLocalImages);
+                      }
+                    }}
+                    localImages={images}
+                    remoteImages={formikProps.values.images}
+                  />
                 </Box>
               </Box>
             </Box>
@@ -319,25 +378,29 @@ export const CustomerDetailInitialExaminationInfo: FC<Props> = () => {
           <SelectLeatherClassification
             ref={selectLeatherClassificationRef}
             onSelect={value => {
-              formikProps.setFieldValue('leather_classification', value);
+              formikProps.setFieldValue('leatherClassification', value.value);
             }}
+            valueSelect={
+              formikRef.current?.values?.leatherClassification ||
+              LEATHER_CLASSIFICATION_DATA[0].value
+            }
           />
           <SelectMaternity
             ref={selectMaternityRef}
             onSelect={value => {
-              formikProps.setFieldValue('maternity', value);
+              formikProps.setFieldValue('maternity', value.value);
             }}
+            valueSelect={
+              formikRef.current?.values?.maternity || MATERNITY_DATA[0].value
+            }
           />
           <AttachmentPicker
             isMultiple
             ref={attachmentPickerRef}
             max_amount={6}
             onConfirm={data => {
+              // Chỉ lưu local vào state riêng, KHÔNG overwrite remote images trong Formik
               setImages(data);
-              // Also update formik field if needed
-              if (formikRef.current) {
-                formikRef.current.setFieldValue('images', data);
-              }
             }}
           />
         </>

@@ -2,11 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppStateEntity, ScheduleType, UserEntity } from '@src/models';
 
 const initialAppState: AppStateEntity = {
-  accessToken: 'undefined',
+  accessToken: undefined,
   refreshToken: undefined,
   user: undefined,
   showOnboarding: true,
   scheduleType: ScheduleType.MONTH_CALENDAR,
+  shouldRefreshHome: false,
 };
 
 const slice = createSlice({
@@ -54,6 +55,19 @@ const slice = createSlice({
       state.accessToken = undefined;
       state.refreshToken = undefined;
     },
+    resetRefreshHomeFlag: state => {
+      state.shouldRefreshHome = false;
+    },
+  },
+  extraReducers: builder => {
+    builder.addCase('customer/createSuccesss' as any, (state, action) => {
+      // Set flag để HomeScreen biết cần refresh
+      state.shouldRefreshHome = true;
+      console.log(
+        '📢 AppReducer: Create customer successfully!',
+        action.payload,
+      );
+    });
   },
 });
 const appReducer = slice.reducer;
@@ -64,4 +78,5 @@ export const {
   onLogout,
   onDisableOnboarding,
   onChangeScheduleType,
+  resetRefreshHomeFlag,
 } = slice.actions;

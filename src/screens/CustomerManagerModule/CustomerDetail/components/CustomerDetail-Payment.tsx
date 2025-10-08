@@ -1,20 +1,54 @@
-import { AppText, Box, CustomerCost, CustomerCostRef } from '@src/components';
-import { sizes } from '@src/utils';
-import React, { FC, useRef } from 'react';
+import {
+  AppText,
+  Box,
+  CustomerCost,
+  CustomerCostRef,
+  showErrorMessage,
+} from '@src/components';
+import { formatMoney, sizes } from '@src/utils';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { PaymentItem } from './PaymentItem';
-import { useAppTheme } from '@src/common';
-import { customersDummy } from '@src/models';
 
-interface Props {}
-export const CustomerDetailPayment: FC<Props> = () => {
+import { useFocusEffect } from '@react-navigation/native';
+import { useAppTheme } from '@src/common';
+import { CustomerDetailEntity, PaymentHistory } from '@src/models';
+import { PaymentService } from '@src/services';
+import { PaymentItem } from './PaymentItem';
+import { APP_SCREEN, navigate } from '@src/navigator';
+
+interface Props {
+  customerInfo: CustomerDetailEntity;
+}
+export const CustomerDetailPayment: FC<Props> = ({ customerInfo }) => {
   const { Colors } = useAppTheme();
   const customerCostRef = useRef<CustomerCostRef>(null);
+  const [payments, setPayments] = useState<PaymentHistory[]>([]);
+
+  const getPaymentHistory = useCallback(async () => {
+    try {
+      const response = await PaymentService.getPaymentHistory(customerInfo.id);
+      setPayments(response.data);
+    } catch (error: any) {
+      console.log('error', error);
+      showErrorMessage('error.title', error.message);
+    }
+  }, [customerInfo.id]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getPaymentHistory();
+      return () => {};
+    }, [getPaymentHistory]),
+  );
+
+  console.log('payments', payments);
   return (
     <Box style={styles.container}>
       <TouchableOpacity
         onPress={() =>
-          customerCostRef.current?.open(customersDummy[0].treatments)
+          navigate(APP_SCREEN.CUSTOMER_COST, {
+            customerId: customerInfo.id,
+          })
         }
       >
         <AppText
@@ -37,31 +71,34 @@ export const CustomerDetailPayment: FC<Props> = () => {
       >
         <Box horizontal justify="space-between">
           <AppText fontFamily="content_bold">Tổng chi phí điều trị: </AppText>
-          <AppText fontFamily="content_semibold">122.400.000 đ</AppText>
+          <AppText fontFamily="content_semibold">
+            {formatMoney(customerInfo.totalTreatmentFee)} đ
+          </AppText>
         </Box>
         <Box horizontal justify="space-between">
           <AppText fontFamily="content_bold">
             Tổng số tiền đã thanh toán
           </AppText>
-          <AppText color={Colors.green}>122.400.000 đ</AppText>
+          <AppText color={Colors.green}>
+            {' '}
+            {formatMoney(customerInfo.paid)} đ
+          </AppText>
         </Box>
         <Box horizontal justify="space-between">
           <AppText fontFamily="content_bold">Công nợ</AppText>
-          <AppText color={Colors.red}>122.400.000 đ</AppText>
+          <AppText color={Colors.red}>
+            {' '}
+            {formatMoney(customerInfo.debt)} đ
+          </AppText>
         </Box>
       </Box>
       <ScrollView
         contentContainerStyle={{ paddingBottom: sizes._48sdp }}
         showsVerticalScrollIndicator={false}
       >
-        <PaymentItem />
-        <PaymentItem />
-        <PaymentItem />
-        <PaymentItem />
-        <PaymentItem />
-        <PaymentItem />
-        <PaymentItem />
-        <PaymentItem />
+        {payments.map(item => (
+          <PaymentItem key={item.id} item={item} />
+        ))}
       </ScrollView>
       <CustomerCost ref={customerCostRef} />
     </Box>

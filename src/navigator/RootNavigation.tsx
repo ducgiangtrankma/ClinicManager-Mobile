@@ -1,10 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
+import { useSelector } from '@src/common';
+import { CreateFacilityScreen } from '@src/screens';
 import { AppStack, AuthStack } from './AppStackNavigation';
 import { APP_SCREEN, RootStackParamList } from './ScreenTypes';
-import { CreateFacilityScreen } from '@src/screens';
-import { useSelector } from '@src/common';
 const RootStack = createStackNavigator<RootStackParamList>();
 export const RootNavigation = () => {
   const { accessToken } = useSelector(x => x.appReducer);
@@ -12,15 +12,17 @@ export const RootNavigation = () => {
     <RootStack.Navigator>
       <>
         {!accessToken ? (
-          <RootStack.Screen
-            name={APP_SCREEN.AUTH_STACK}
-            component={AuthStack}
-            options={{
-              animationTypeForReplace: 'pop',
-              gestureEnabled: false,
-              headerShown: false,
-            }}
-          />
+          <React.Fragment>
+            <RootStack.Screen
+              name={APP_SCREEN.AUTH_STACK}
+              component={AuthStack}
+              options={{
+                animationTypeForReplace: 'pop',
+                gestureEnabled: false,
+                headerShown: false,
+              }}
+            />
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <RootStack.Screen

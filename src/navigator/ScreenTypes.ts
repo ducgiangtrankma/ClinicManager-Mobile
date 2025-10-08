@@ -1,4 +1,4 @@
-import { TreatmentEntity } from '@src/models';
+import { CreateBillPayload } from '@src/models';
 
 export enum APP_SCREEN {
   AUTHENTICATION = 'AUTHENTICATION',
@@ -23,6 +23,7 @@ export enum APP_SCREEN {
   TREATMENT_DETAIL = 'TREATMENT_DETAIL',
   CREATE_BILL = 'CREATE_BILL',
   SCHEDULE = 'SCHEDULE',
+  CUSTOMER_COST = 'CUSTOMER_COST',
 
   WAREHOUSE_TAB = 'WAREHOUSE_TAB',
 }
@@ -49,13 +50,22 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.WAREHOUSE_TAB]: undefined;
   [APP_SCREEN.CUSTOMER_LIST]: undefined;
   [APP_SCREEN.CREATE_CUSTOMER]: undefined;
-  [APP_SCREEN.CUSTOMER_DETAIL]: undefined;
-  [APP_SCREEN.CREATE_TREATMENT]: undefined;
-  [APP_SCREEN.TREATMENT_DETAIL]: {
-    treatment: TreatmentEntity;
+  [APP_SCREEN.CUSTOMER_DETAIL]: {
+    customerId: string;
   };
-  [APP_SCREEN.CREATE_BILL]: undefined;
+  [APP_SCREEN.CREATE_TREATMENT]: {
+    customerId: string;
+  };
+  [APP_SCREEN.TREATMENT_DETAIL]: {
+    treatmentId: string;
+  };
+  [APP_SCREEN.CREATE_BILL]: {
+    bill: CreateBillPayload;
+  };
   [APP_SCREEN.SCHEDULE]: undefined;
+  [APP_SCREEN.CUSTOMER_COST]: {
+    customerId: string;
+  };
 };
 
 export type RootStackParamList = {

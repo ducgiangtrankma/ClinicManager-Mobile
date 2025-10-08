@@ -165,7 +165,7 @@ const PlusIcon = (props: any) => (
     <Path
       id="primary"
       d="M12,20a1,1,0,0,1-1-1V13H5a1,1,0,0,1,0-2h6V5a1,1,0,0,1,2,0v6h6a1,1,0,0,1,0,2H13v6A1,1,0,0,1,12,20Z"
-      fill="white"
+      fill={props.color ?? 'white'}
     />
   </Svg>
 );

@@ -1,32 +1,47 @@
 import { useAppTheme } from '@src/common';
 import { AppText, Box } from '@src/components';
-import { sizes } from '@src/utils';
-import React, { FC } from 'react';
+import { BillStatus, PaymentHistory } from '@src/models';
+import { formatDateTime, formatMoney, sizes } from '@src/utils';
+import React, { FC, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 
-interface Props {}
-export const PaymentItem: FC<Props> = () => {
+interface Props {
+  item: PaymentHistory;
+}
+export const PaymentItem: FC<Props> = ({ item }) => {
   const { Colors } = useAppTheme();
+  const renderPaymentStatus = useCallback(
+    (status: BillStatus) => {
+      if (status === BillStatus.SUCCESS)
+        return <AppText color={Colors.green}>Thành công</AppText>;
+      if (status === BillStatus.WAIT_FOR_PAYMENT)
+        return <AppText color={Colors.error}>Chờ chuyển khoản</AppText>;
+      if (status === BillStatus.ERROR)
+        return <AppText color={Colors.red}>Lỗi thanh toán</AppText>;
+      if (status === BillStatus.PENDING)
+        return <AppText color={Colors.blackGray}>Chờ thanh toán</AppText>;
 
+      return <></>;
+    },
+    [Colors.blackGray, Colors.error, Colors.green, Colors.red],
+  );
   return (
     <Box style={[styles.container, { backgroundColor: Colors.white }]}>
       <Box style={[styles.card]}>
         <Box horizontal justify="space-between">
-          <AppText fontFamily="content_bold">Buổi 1</AppText>
-          <AppText fontSize="14">18:12 21/02/2025</AppText>
+          <AppText fontFamily="content_bold">{item.treatment.title}</AppText>
+          <AppText fontSize="14">
+            {formatDateTime(item.createdAt, 'dd/mm/yyyy HH:mm')}
+          </AppText>
         </Box>
         <Box horizontal justify="space-between">
           <Box>
-            <AppText fontFamily="content_semibold">Tổng hoá đơn</AppText>
-            <AppText>200.000.000₫ </AppText>
+            <AppText fontFamily="content_semibold">Số tiền thanh toán</AppText>
+            <AppText>{formatMoney(item.paymentTotal)}₫ </AppText>
           </Box>
-          <Box>
-            <AppText fontFamily="content_semibold">Đã thanh toán</AppText>
-            <AppText>200.000.000₫ </AppText>
-          </Box>
-          <Box>
-            <AppText fontFamily="content_semibold">Công nợ</AppText>
-            <AppText>200.000.000₫ </AppText>
+          <Box align="flex-end">
+            <AppText fontFamily="content_semibold">Trạng thái</AppText>
+            {renderPaymentStatus(item.status)}
           </Box>
         </Box>
       </Box>

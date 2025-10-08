@@ -13,12 +13,14 @@ interface Props {
   showBack: boolean;
   rightContent?: ReactNode;
   disableMarginBottom?: boolean;
+  customGoBackEvent?: () => void;
 }
 export const AppHeader: FC<Props> = ({
   title,
   showBack,
   rightContent,
   disableMarginBottom = false,
+  customGoBackEvent,
 }) => {
   const { Colors } = useAppTheme();
   const navigation = useNavigation();
@@ -38,7 +40,13 @@ export const AppHeader: FC<Props> = ({
       <Box>
         {showBack ? (
           <TouchableOpacity
-            onPress={() => goBack()}
+            onPress={() => {
+              if (customGoBackEvent) {
+                customGoBackEvent();
+              } else {
+                goBack();
+              }
+            }}
             hitSlop={{
               top: sizes._24sdp,
               bottom: sizes._24sdp,

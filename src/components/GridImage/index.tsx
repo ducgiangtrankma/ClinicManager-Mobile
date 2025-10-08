@@ -1,4 +1,5 @@
-import { VideoIcon } from '@src/assets';
+import { CloseIcon, VideoIcon } from '@src/assets';
+import { useAppTheme } from '@src/common';
 import {
   AppRemoteImage,
   AppText,
@@ -18,7 +19,7 @@ import {
   localFilesToGridImages,
   sizes,
 } from '@src/utils';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Video from 'react-native-video';
 const WIDTH_CONTAINER = _screen_width - sizes._48sdp;
@@ -28,6 +29,7 @@ interface Props {
   localImages?: LocalFileEntity[];
   remoteImages?: AttachmentEntity[];
   onPressImage?: (index: number) => void;
+  onDelete?: (image: GridImageEntity) => void;
 }
 
 interface ImageDimensions {
@@ -299,17 +301,38 @@ export const GridImage: FC<Props> = ({
   localImages,
   remoteImages,
   onPressImage,
+  onDelete,
 }) => {
+  const { Colors } = useAppTheme();
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [fullScreenVisible, setFullScreenVisible] = useState<boolean>(false);
+  const localFormatImages = useMemo(
+    () => localFilesToGridImages(localImages ?? []),
+    [localImages],
+  );
+  const remoteFormatImages = useMemo(
+    () => attachmentsToGridImages(remoteImages ?? []),
+    [remoteImages],
+  );
+  const images: GridImageEntity[] = useMemo(
+    () => [...localFormatImages, ...remoteFormatImages],
+    [localFormatImages, remoteFormatImages],
+  );
 
-  let images: GridImageEntity[];
-  if (localImages) {
-    images = localFilesToGridImages(localImages ?? []);
-  } else {
-    images = attachmentsToGridImages(remoteImages ?? []);
-  }
+  const getItemKey = useCallback(
+    (index: number) =>
+      images[index]?.id ||
+      (images[index] as any)?.fileName ||
+      images[index]?.originalUrl ||
+      String(index),
+    [images],
+  );
 
+  // if (localImages) {
+  //   images = localFilesToGridImages(localImages ?? []);
+  // } else {
+  //   images = attachmentsToGridImages(remoteImages ?? []);
+  // }
   // Tạo layout thông minh dựa trên kích thước và số lượng ảnh
   const layout = useMemo(() => {
     if (!images || images.length === 0) {
@@ -343,7 +366,6 @@ export const GridImage: FC<Props> = ({
   if (!images || images.length === 0) {
     return null;
   }
-
   return (
     <Box style={styles.container}>
       {layout.map((row, rowIndex) => (
@@ -353,7 +375,7 @@ export const GridImage: FC<Props> = ({
         >
           {row.items.map(item => (
             <TouchableOpacity
-              key={`image-${item.index}`}
+              key={getItemKey(item.index)}
               style={[
                 styles.imageContainer,
                 {
@@ -402,6 +424,19 @@ export const GridImage: FC<Props> = ({
                   thumbnailUri={images[item.index].thumbnailUrl}
                   resizeMode={'cover'}
                 />
+              )}
+              {onDelete && (
+                <TouchableOpacity
+                  onPress={() => onDelete(images[item.index])}
+                  style={[
+                    {
+                      backgroundColor: Colors.red,
+                    },
+                    styles.deleteButton,
+                  ]}
+                >
+                  <CloseIcon fill={Colors.white} />
+                </TouchableOpacity>
               )}
             </TouchableOpacity>
           ))}
@@ -472,6 +507,15 @@ const styles = StyleSheet.create({
     borderRadius: sizes._24sdp,
     width: sizes._48sdp,
     height: sizes._48sdp,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    position: 'absolute',
+    right: 0,
+    borderRadius: sizes._99sdp,
+    width: sizes._28sdp,
+    height: sizes._28sdp,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -5,7 +5,7 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import queryString from 'query-string';
 import DeviceInfo from 'react-native-device-info';
 
-const apiUrl = __DEV__ ? 'http://10.254.236.108:8001/api/v1' : AppConfig.apiUrl;
+const apiUrl = __DEV__ ? 'http://localhost:8002/api/v1' : AppConfig.apiUrl;
 // const apiUrl = 'http://192.168.0.108:8001/api/v1';
 
 // const apiUrl = 'http://192.168.0.114:8001/api/v1';
@@ -52,6 +52,7 @@ axiosClient.interceptors.request.use(
     const deviceId = await DeviceInfo.getUniqueId();
     config.headers['x-request-source'] = 'app';
     config.headers['device-id'] = deviceId;
+    config.headers['store-id'] = store.getState().facilityReducer.facility?.id;
     config.headers['x-lang'] = store.getState().languageReducer.appLanguage;
     return config;
   },
@@ -61,18 +62,20 @@ export async function refresh_Token() {
   try {
     const refreshToken = store.getState().appReducer.refreshToken;
     const deviceId = await DeviceInfo.getUniqueId();
+    const storeId = store.getState().languageReducer.appLanguage;
     const response = await AxiosInstance.post(
       `${apiUrl}/auth/refreshToken`,
       { refreshToken },
       {
         headers: {
-          // Authorization: 'Bearer ' + store.getState().appReducer.refreshToken,
           'device-id': deviceId,
+          'store-id': storeId,
         },
       },
     );
     return response.data.data;
   } catch (error) {
+    console.log('Refresh Token Error', error);
     return null;
   }
 }

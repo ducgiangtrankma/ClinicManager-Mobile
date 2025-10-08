@@ -1,5 +1,11 @@
 import React, { FC, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 
 import { StepDoneIcon, StepInprogressIcon } from '@src/assets';
@@ -12,11 +18,15 @@ import { APP_SCREEN, navigate } from '@src/navigator';
 
 interface Props {
   treatments: TreatmentEntity[];
+  onRefresh: () => void;
 }
 const BOX_CONTENT_HEIGHT = sizes._260sdp;
 const BOX_CONTENT_PADDING_BOTTOM = sizes._12sdp;
 const STEP_BOX_SIZE = sizes._32sdp;
-export const TreatmentStepIndicator: FC<Props> = ({ treatments }) => {
+export const TreatmentStepIndicator: FC<Props> = ({
+  treatments,
+  onRefresh,
+}) => {
   const { Colors } = useAppTheme();
   const [selectedStep, setSelectedStep] = useState<number>(0);
 
@@ -33,7 +43,7 @@ export const TreatmentStepIndicator: FC<Props> = ({ treatments }) => {
       <TouchableOpacity
         onPress={() =>
           navigate(APP_SCREEN.TREATMENT_DETAIL, {
-            treatment: treatment,
+            treatmentId: treatment.id,
           })
         }
         activeOpacity={ACTIVE_OPACITY_TOUCH}
@@ -55,9 +65,7 @@ export const TreatmentStepIndicator: FC<Props> = ({ treatments }) => {
             Ngày thực hiện:
           </AppText>
           <AppText fontFamily="content_regular" color={Colors.content}>
-            {new Date(treatment.implementation_date).toLocaleDateString(
-              'vi-VN',
-            )}
+            {new Date(treatment.implementationDate).toLocaleDateString('vi-VN')}
           </AppText>
         </Box>
 
@@ -107,16 +115,13 @@ export const TreatmentStepIndicator: FC<Props> = ({ treatments }) => {
 
   if (treatments.length === 0) {
     return (
-      <Animated.View style={styles.container} entering={FadeInUp.delay(100)}>
-        <Box style={styles.contentBox}>
-          <AppText
-            translationKey="empty_string"
-            fontFamily="content_regular"
-            color={Colors.content}
-          >
-            Chưa có liệu trình điều trị nào
-          </AppText>
-        </Box>
+      <Animated.View style={[styles.container]} entering={FadeInUp.delay(100)}>
+        <AppText
+          translationKey="treatment_empty"
+          fontFamily="content_regular"
+          color={Colors.content}
+          textAlign="center"
+        />
       </Animated.View>
     );
   }
@@ -133,6 +138,14 @@ export const TreatmentStepIndicator: FC<Props> = ({ treatments }) => {
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={onRefresh}
+            colors={[Colors.green]}
+            tintColor={Colors.green}
+          />
+        }
       >
         <Box horizontal style={styles.mainContainer}>
           {/* Step Indicator - Bên trái */}

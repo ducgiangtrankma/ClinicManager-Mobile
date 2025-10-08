@@ -8,7 +8,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { LocationIcon, LogoutIcon } from '@src/assets';
 import { dispatch, useAppTheme, useSelector } from '@src/common';
 import { AppText, Box } from '@src/components';
-import { onLogout } from '@src/redux';
+import { onClearFacility, onLogout } from '@src/redux';
 import { sizes } from '@src/utils';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -59,7 +59,12 @@ export const DrawerContent = (props: any) => {
           },
         ]}
       >
-        <TouchableOpacity onPress={() => dispatch(onLogout())}>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(onClearFacility());
+            dispatch(onLogout());
+          }}
+        >
           <Box horizontal justify="space-between">
             <Box horizontal gap={sizes._8sdp}>
               <LogoutIcon />

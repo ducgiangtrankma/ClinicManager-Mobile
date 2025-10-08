@@ -1,6 +1,11 @@
 import { DeleteUser } from '@src/assets';
 import { useAppTheme } from '@src/common';
-import { AppHeader, Box, PageContainer } from '@src/components';
+import {
+  AppHeader,
+  Box,
+  PageContainer,
+  showErrorMessage,
+} from '@src/components';
 import {
   CustomerDetailMenubarEntity,
   CustomerInfoMenuBar,
@@ -8,11 +13,15 @@ import {
 } from '@src/components/CustomerInfoMenuBar';
 import { TreatmentScreen } from '@src/screens/Treatment';
 import { DEFAULT_HIT_SLOP } from '@src/utils';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { CustomerDetailInfo } from './components/CustomerDetail-Info';
 import { CustomerDetailInitialExaminationInfo } from './components/CustomerDetail-InitialExaminationInfo';
 import { CustomerDetailPayment } from './components/CustomerDetail-Payment';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { APP_SCREEN, RootStackParamList } from '@src/navigator';
+import { CustomerService } from '@src/services';
+import { CustomerDetailEntity } from '@src/models';
 
 interface Props {}
 export const CustomerDetailScreen: FC<Props> = () => {
@@ -23,15 +32,58 @@ export const CustomerDetailScreen: FC<Props> = () => {
     queryParam: '',
     type: MenuType.INFO,
   });
+  const route =
+    useRoute<RouteProp<RootStackParamList, APP_SCREEN.CUSTOMER_DETAIL>>();
+
+  const customerId = route.params?.customerId;
+
+  const [customerInfo, setCustomerInfo] = useState<CustomerDetailEntity>();
+
+  const getCustomerDetail = useCallback(async () => {
+    try {
+      if (customerId) {
+        const response = await CustomerService.getCustomerDetail(customerId);
+        setCustomerInfo(response.data);
+      }
+    } catch (error: any) {
+      showErrorMessage('error.title', error.message);
+    }
+  }, [customerId, setCustomerInfo]);
+
+  useEffect(() => {
+    getCustomerDetail();
+  }, [getCustomerDetail]);
 
   const renderContentInfo = useCallback(() => {
-    if (menuSelect.type === MenuType.INFO) return <CustomerDetailInfo />;
+    if (!customerInfo) return <Box />;
+    if (menuSelect.type === MenuType.INFO)
+      return (
+        <CustomerDetailInfo
+          customerInfo={customerInfo}
+          onUpdateSuccess={getCustomerDetail}
+        />
+      );
     if (menuSelect.type === MenuType.INITIAL_EXAMINATION_INFORMATION)
-      return <CustomerDetailInitialExaminationInfo />;
-    if (menuSelect.type === MenuType.TREATMENT) return <TreatmentScreen />;
-    if (menuSelect.type === MenuType.PAYMENT) return <CustomerDetailPayment />;
+      return (
+        <CustomerDetailInitialExaminationInfo
+          customerInfo={customerInfo}
+          onUpdateSuccess={getCustomerDetail}
+        />
+      );
+    if (menuSelect.type === MenuType.TREATMENT)
+      return (
+        <TreatmentScreen
+          customerId={customerInfo.id}
+          onCreateSuccess={getCustomerDetail}
+        />
+      );
+    if (menuSelect.type === MenuType.PAYMENT)
+      return <CustomerDetailPayment customerInfo={customerInfo} />;
     return <></>;
-  }, [menuSelect.type]);
+  }, [customerInfo, getCustomerDetail, menuSelect.type]);
+
+  if (!customerId) return <Box />;
+
   return (
     <PageContainer>
       <AppHeader

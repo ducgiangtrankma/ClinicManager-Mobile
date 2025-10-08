@@ -1,10 +1,10 @@
-import { CreateFacilityFormEntity } from '@src/models';
+import { CreateFacilityFormEntity, FacilityEntity } from '@src/models';
 import axiosClient from './axiosClient';
 import { store } from '@src/redux';
-const FACILITY_URL = '';
+const FACILITY_URL = '/store';
 export const FacilityService = {
   getFacility: () => {
-    return axiosClient.get<any>(`${FACILITY_URL}`, {
+    return axiosClient.get<FacilityEntity[]>(`${FACILITY_URL}`, {
       headers: {
         Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
       },

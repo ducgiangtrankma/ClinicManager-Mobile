@@ -1,3 +1,4 @@
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { useAppTheme } from '@src/common';
 import {
   AppButton,
@@ -11,21 +12,32 @@ import {
   DateTimePicker,
   DateTimePickerReft,
   FormTitle,
+  globalLoading,
   PageContainer,
   SelectCosmetics,
   SelectCosmeticsRef,
+  showErrorMessage,
+  showSuccessMessage,
 } from '@src/components';
 
-import { TreatmentCreateFormValuesEntity } from '@src/models';
+import {
+  CreateTreatmentPayload,
+  TreatmentCreateFormValuesEntity,
+} from '@src/models';
+import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
+import { TreatmentService } from '@src/services';
 import { formatDateTime, sizes, treatmentValidationSchema } from '@src/utils';
 import dayjs from 'dayjs';
 import { Formik } from 'formik';
-import React, { FC, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
 
 interface Props {}
 export const CreateTreatmentScreen: FC<Props> = () => {
+  const route =
+    useRoute<RouteProp<RootStackParamList, APP_SCREEN.CREATE_TREATMENT>>();
+  const customerId = route?.params?.customerId;
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
   const datetimePickerRef = useRef<DateTimePickerReft>(null);
@@ -37,7 +49,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
     title: '',
     note: '',
     cosmetics: [],
-    total_treatment_fee: 0,
+    totalTreatmentFee: 0,
     debt: 0,
     paid: 0,
   });
@@ -48,6 +60,35 @@ export const CreateTreatmentScreen: FC<Props> = () => {
     [t],
   );
 
+  const _handleCreateTreatment = useCallback(
+    async (values: TreatmentCreateFormValuesEntity) => {
+      try {
+        if (customerId) {
+          const body: CreateTreatmentPayload = {
+            title: values.title,
+            note: values.note,
+            implementationDate: values.implementation_date,
+            cosmetics: values.cosmetics,
+            customer: customerId,
+            totalTreatmentFee: Number(values.totalTreatmentFee),
+            debt: Number(values.debt),
+            paid: Number(values.paid),
+          };
+          console.log('_handleCreateTreatment', body);
+          await TreatmentService.createTreatment(body);
+          showSuccessMessage('action_success_message', 'empty_string');
+          goBack();
+        }
+      } catch (error: any) {
+        console.log('error', error);
+        showErrorMessage('error.title', error.message);
+      } finally {
+        globalLoading.hide();
+      }
+    },
+    [customerId],
+  );
+
   return (
     <PageContainer>
       <AppHeader title="treatment_create_header" showBack />
@@ -56,20 +97,15 @@ export const CreateTreatmentScreen: FC<Props> = () => {
           initialValues={getInitialValues()}
           validationSchema={validationSchema}
           onSubmit={values => {
-            console.log('values', values);
+            _handleCreateTreatment(values);
           }}
         >
           {({ handleSubmit, errors, values, setFieldValue }) => (
             <React.Fragment>
               <ScrollView
-                style={{ flex: 1 }}
+                style={styles.container}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                  flexGrow: 1,
-                  paddingBottom: sizes._120sdp, // Reduced từ 256sdp
-                  gap: sizes._16sdp,
-                  padding: sizes._16sdp, // Add padding cho content
-                }}
+                contentContainerStyle={styles.content}
               >
                 <Box gap={sizes._8sdp}>
                   <FormTitle title="treatment_create_title" required />
@@ -111,6 +147,19 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                   />
                 </Box>
                 <Box gap={sizes._8sdp}>
+                  <FormTitle title="treatment_create_fee" />
+                  <AppInput
+                    value={values.totalTreatmentFee?.toString()}
+                    placeholder={t('treatment_create_fee_placeholder')}
+                    onChangeText={value =>
+                      setFieldValue('totalTreatmentFee', value)
+                    }
+                    errMessage={errors.totalTreatmentFee}
+                    clearButtonMode="always"
+                    keyboardType="numeric"
+                  />
+                </Box>
+                <Box gap={sizes._8sdp}>
                   <AppText
                     translationKey="treatment_create_cosmetics"
                     fontFamily="content_semibold"
@@ -121,7 +170,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                     errMessage={errors.implementation_date}
                     value={undefined}
                   />
-                  {values.cosmetics.map(item => (
+                  {/* {values.cosmetics.map(item => (
                     <CosmeticItem
                       key={item.id}
                       item={item}
@@ -139,6 +188,22 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                               ...e,
                             };
                           }
+                        });
+                        setFieldValue('cosmetics', newListCosmetic);
+                      }}
+                    />
+                  ))} */}
+                  {values.cosmetics.map(item => (
+                    <CosmeticItem
+                      key={item.sku} // nhớ dùng key unique, ưu tiên sku/id
+                      item={item}
+                      edited
+                      onChange={value => {
+                        const newListCosmetic = values.cosmetics.map(e => {
+                          if (e.sku === value.sku) {
+                            return { ...e, quantity: value.quantity };
+                          }
+                          return e;
                         });
                         setFieldValue('cosmetics', newListCosmetic);
                       }}
@@ -205,5 +270,11 @@ const styles = StyleSheet.create({
   actionButton: {
     flex: 1,
     borderRadius: sizes._12sdp,
+  },
+  content: {
+    flexGrow: 1,
+    paddingBottom: sizes._120sdp, // Reduced từ 256sdp
+    gap: sizes._16sdp,
+    padding: sizes._16sdp, // Add padding cho content
   },
 });

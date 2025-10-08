@@ -5,19 +5,25 @@ export interface TreatmentCreateFormValuesEntity {
   title: string;
   note: string;
   cosmetics: ProductSelected[];
-  // cosmetics: {
-  //   id: string;
-  //   quantity: number;
-  //   price: number;
-  //   origin_price: number;
-  // }[];
-  total_treatment_fee: number; // tổng số tiền điều trị của liệu trình
-  debt: number; // công nợ
-  paid: number; //Số tiền đã thanh toán
+  totalTreatmentFee: number; // tổng số tiền điều trị của liệu trình
+  debt: number;
+  paid: number;
+}
+
+export interface TreatmentUpdateFormValuesEntity {
+  implementation_date: string;
+  title: string;
+  note: string;
+  cosmetics: ProductSelected[];
+  totalTreatmentFee: number; // tổng số tiền điều trị của liệu trình
+  debt: number;
+  paid: number;
+  images: any[];
 }
 export interface TreatmentPaymentFormValuesEntity {
-  total_treatment_fee: number;
+  totalTreatmentFee: number;
   paid: number;
   debt: number;
   newPaid: number;
+  voucher: string | null;
 }

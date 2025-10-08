@@ -12,8 +12,11 @@ const slice = createSlice({
     onSelectFacility: (state, { payload }: PayloadAction<FacilityEntity>) => {
       state.facility = payload;
     },
+    onClearFacility: state => {
+      state.facility = undefined;
+    },
   },
 });
 const facilityReducer = slice.reducer;
 export default facilityReducer;
-export const { onSelectFacility } = slice.actions;
+export const { onSelectFacility, onClearFacility } = slice.actions;

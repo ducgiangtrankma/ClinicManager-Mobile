@@ -1,31 +1,34 @@
 import { CallIcon, CheckIcon } from '@src/assets';
 import { useAppTheme } from '@src/common';
-import { AppText, Avatar, Box } from '@src/components';
+import { AppText, Box } from '@src/components';
 import { CustomerEntity } from '@src/models';
 import { APP_SCREEN, navigate } from '@src/navigator';
 import {
   _screen_width,
   ACTIVE_OPACITY_TOUCH,
   callNumber,
-  isSuccessTreatment,
   sizes,
 } from '@src/utils';
 
 import React, { FC } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface Props {
   item: CustomerEntity;
 }
 
 export const CustomerItem: FC<Props> = ({ item }) => {
-  const { Colors } = useAppTheme();
+  const { Colors, Images } = useAppTheme();
 
   return (
     <Box style={[styles.shadowWrap, { backgroundColor: Colors.white }]}>
       <TouchableOpacity
         activeOpacity={ACTIVE_OPACITY_TOUCH}
-        onPress={() => navigate(APP_SCREEN.CUSTOMER_DETAIL)}
+        onPress={() =>
+          navigate(APP_SCREEN.CUSTOMER_DETAIL, {
+            customerId: item.id,
+          })
+        }
       >
         <Box
           horizontal
@@ -34,9 +37,16 @@ export const CustomerItem: FC<Props> = ({ item }) => {
           gap={sizes._16sdp}
           style={[styles.card]}
         >
-          <Avatar size={sizes._32sdp} uri={item.profile.avatar.iconUrl} />
+          <Image
+            source={Images.blankAvatar}
+            style={{
+              width: sizes._32sdp,
+              height: sizes._32sdp,
+              borderRadius: sizes._990sdp,
+            }}
+          />
           <Box gap={sizes._12sdp} style={styles.infoContainer}>
-            <AppText fontFamily="content_bold">{item.profile.name}</AppText>
+            <AppText fontFamily="content_bold">{item.name}</AppText>
             <TouchableOpacity
               style={{ width: _screen_width * 0.3 }}
               activeOpacity={ACTIVE_OPACITY_TOUCH}
@@ -48,9 +58,7 @@ export const CustomerItem: FC<Props> = ({ item }) => {
               </Box>
             </TouchableOpacity>
           </Box>
-          {isSuccessTreatment(item.treatments) && (
-            <CheckIcon color={Colors.green} />
-          )}
+          {item.completed && <CheckIcon color={Colors.green} />}
         </Box>
       </TouchableOpacity>
     </Box>

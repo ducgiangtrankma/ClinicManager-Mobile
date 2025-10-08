@@ -3,3 +3,6 @@ export * from './facility-service';
 export * from './axiosClient';
 export * from './auth-service';
 export * from './customer-service';
+export * from './attachment-service';
+export * from './treatment-service';
+export * from './payment-service';
