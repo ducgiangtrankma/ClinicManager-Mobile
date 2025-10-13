@@ -1,21 +1,27 @@
-import { cosmeticsDummy, ProductEntity, ProductSelected } from '@src/models';
-import { _screen_height, sizes } from '@src/utils';
+import { useAppTheme } from '@src/common';
+import { ProductEntity, ProductSelected } from '@src/models';
+import { useProductListQuery } from '@src/services';
+import { _screen_height, _screen_width, sizes } from '@src/utils';
 import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
+  useMemo,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { AppActivityIndicator } from '../AppActivityIndicator';
 import {
   BottomSheetModalContainer,
   BottomSheetModalRef,
 } from '../AppBottomSheet';
+import { AppInput } from '../AppInput';
 import { AppList } from '../AppList';
-import { Box } from '../Box';
-import { ProductItem } from './ProductItem';
 import { AppText } from '../AppText';
-import { useAppTheme } from '@src/common';
+import { Box } from '../Box';
+import { EmptyList } from '../EmptyList';
+import { ProductItem } from './ProductItem';
 
 interface Props {
   onSelect: (value: ProductSelected[]) => void;
@@ -30,6 +36,22 @@ export const SelectCosmetics = forwardRef<SelectCosmeticsRef, Props>(
   (props, ref) => {
     const { onSelect } = props;
     const { Colors } = useAppTheme();
+    const [keyword, setKeyword] = useState<string | undefined>(undefined);
+    const { t } = useTranslation();
+    const {
+      data,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+      refetch,
+      isRefetching,
+    } = useProductListQuery(20, keyword);
+
+    // Memo products để tránh re-create array mỗi lần render
+    const products = useMemo(
+      () => data?.pages.flatMap(p => p.products) ?? [],
+      [data?.pages],
+    );
 
     const bottomSheetRef: React.RefObject<BottomSheetModalRef> =
       React.createRef<any>();
@@ -67,6 +89,16 @@ export const SelectCosmetics = forwardRef<SelectCosmeticsRef, Props>(
       bottomSheetRef.current?.close();
     }, [bottomSheetRef, listSelected, onSelect]);
 
+    const handleLoadMore = useCallback(() => {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+    const handleRefresh = useCallback(() => {
+      refetch();
+    }, [refetch]);
+
     return (
       <BottomSheetModalContainer
         currentSnapPoints={['1%', `${currentSnapPointsMax}%`]}
@@ -74,13 +106,40 @@ export const SelectCosmetics = forwardRef<SelectCosmeticsRef, Props>(
         title="select_cosmetic_title"
       >
         <Box style={styles.container}>
-          <AppList
-            style={{ height: _screen_height * 0.5 }}
-            data={cosmeticsDummy}
-            renderItem={renderItem}
-            canRefresh
-            keyExtractor={(item: ProductEntity) => `${item?.id}`}
-          />
+          <Box
+            style={{
+              marginHorizontal: sizes._16sdp,
+              marginBottom: sizes._16sdp,
+            }}
+          >
+            <AppInput
+              value={keyword}
+              onChangeText={value => setKeyword(value)}
+              placeholder={t('product_search_placeholder')}
+              clearButtonMode="while-editing"
+            />
+          </Box>
+
+          <Box style={{ height: _screen_width * 0.8 }}>
+            <AppList
+              data={products ?? []}
+              renderItem={renderItem}
+              canLoadMore={hasNextPage}
+              canRefresh
+              onLoadMore={handleLoadMore}
+              onRefresh={handleRefresh}
+              refreshing={isRefetching}
+              keyExtractor={(item: ProductEntity) => `${item?.id}`}
+              ListFooterComponent={
+                isFetchingNextPage ? (
+                  <AppActivityIndicator animating={isFetchingNextPage} />
+                ) : null
+              }
+              ListEmptyComponent={
+                <EmptyList description="customer_emptyList" />
+              }
+            />
+          </Box>
           <Box
             direction="horizontal"
             justify="space-between"

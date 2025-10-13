@@ -56,7 +56,7 @@ export const CosmeticItem: FC<Props> = ({ item, edited, onChange }) => {
         },
       ]}
     >
-      <AppText>{item.name}</AppText>
+      <AppText style={{ flex: 1 }}>{item.name}</AppText>
 
       <>
         {edited ? (

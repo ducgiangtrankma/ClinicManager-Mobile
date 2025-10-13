@@ -6,3 +6,4 @@ export * from './TreatmentDetail';
 export * from './CreateTreatment';
 export * from './Bill';
 export * from './CustomerCost';
+export * from './CreateSchedule';

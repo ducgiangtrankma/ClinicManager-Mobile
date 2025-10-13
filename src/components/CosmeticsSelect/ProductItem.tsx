@@ -95,7 +95,7 @@ export const ProductItem: FC<Props> = ({
         },
       ]}
     >
-      <AppText>{item.name}</AppText>
+      <AppText style={{ flex: 1 }}>{item.name}</AppText>
       {isSelected(item) && (
         <>
           {edited ? (

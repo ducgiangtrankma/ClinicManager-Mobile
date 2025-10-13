@@ -23,7 +23,7 @@ export const DayEventGroup = ({
   index,
   language,
 }: DayMoodGroupProps) => {
-  const scheduleTime = getInfoFromTime(schedule.implementationTime);
+  const scheduleTime = getInfoFromTime(schedule.implementationDate);
   return (
     <Box style={styles.dayGroup}>
       <Box style={styles.dateHeader}>
@@ -40,7 +40,7 @@ export const DayEventGroup = ({
             fontFamily="content_regular"
             style={styles.dateMonth}
           >
-            {getMonthLabel(schedule.implementationTime, language)}
+            {getMonthLabel(schedule.implementationDate, language)}
           </AppText>
         </Box>
         <Box style={styles.dayLabelContainer}>
@@ -49,14 +49,14 @@ export const DayEventGroup = ({
             fontFamily="content_bold"
             style={styles.todayLabel}
           >
-            {schedule.title}
+            {schedule.customer?.name ?? 'Chưa có thông tin khách hàng'}
           </AppText>
           <AppText
             fontSize="12"
             fontFamily="content_medium"
             style={styles.dayLabel}
           >
-            {getDayOfWeek(schedule.implementationTime, language)}
+            {getDayOfWeek(schedule.implementationDate, language)}
           </AppText>
         </Box>
       </Box>

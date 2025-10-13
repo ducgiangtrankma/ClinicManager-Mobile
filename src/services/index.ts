@@ -6,3 +6,6 @@ export * from './customer-service';
 export * from './attachment-service';
 export * from './treatment-service';
 export * from './payment-service';
+export * from './category-service';
+export * from './product-service';
+export * from './schedule-service';

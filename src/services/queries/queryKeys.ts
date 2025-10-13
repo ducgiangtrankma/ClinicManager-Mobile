@@ -9,12 +9,57 @@ export const queryKeys = {
   },
   customerList: {
     all: (userId?: string) => ['customerList', userId] as const,
-    listCustomer: (userId: string, limit: number) =>
+    listCustomer: (
+      userId: string,
+      limit: number,
+      keyword?: string,
+      fromDate?: string,
+      toDate?: string,
+    ) =>
       [
         ...queryKeys.customerList.all(userId),
         'listCustomer',
         {
           limit: limit,
+          keyword,
+          fromDate,
+          toDate,
+        },
+      ] as const,
+  },
+  categoryList: {
+    all: (storeId?: string) => ['categoryList', storeId] as const,
+    listCategory: (storeId: string, limit: number, keyword?: string) =>
+      [
+        ...queryKeys.categoryList.all(storeId),
+        'listCategory',
+        {
+          limit: limit,
+          keyword,
+        },
+      ] as const,
+  },
+  productList: {
+    all: (storeId?: string) => ['productList', storeId] as const,
+    listProduct: (storeId: string, limit: number, keyword?: string) =>
+      [
+        ...queryKeys.productList.all(storeId),
+        'listProduct',
+        {
+          limit: limit,
+          keyword,
+        },
+      ] as const,
+  },
+  scheduleList: {
+    all: (storeId?: string) => ['scheduleList', storeId] as const,
+    listSchedule: (storeId: string, startDate?: string, endDate?: string) =>
+      [
+        ...queryKeys.scheduleList.all(storeId),
+        'listSchedule',
+        {
+          startDate: startDate,
+          endDate: endDate,
         },
       ] as const,
   },

@@ -269,6 +269,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
     diagnostic: '', // chuẩn đoán
     note: '',
   });
+  console.log('getInitialValues', getInitialValues());
 
   const _handleCreateCustomer = useCallback(
     async (customerData: CreateCustomerBodyData) => {
@@ -298,6 +299,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
         await CustomerService.createCustomer(createCustomerPayload);
         goBack();
       } catch (error: any) {
+        console.log('error', error);
         showErrorMessage('error.title', error.message);
         throw error;
       } finally {
@@ -317,6 +319,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
             initialValues={getInitialValues()}
             validationSchema={getValidationSchema()}
             onSubmit={values => {
+              console.log('values', values);
               const finalData = {
                 ...values,
                 images: images,
@@ -421,7 +424,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
         valueSelect={formikRef.current?.values?.gender || GENDER_DATA[1].value}
         onSelect={value => {
           if (formikRef.current) {
-            formikRef.current.setFieldValue('maternity', value.value);
+            formikRef.current.setFieldValue('gender', value.value);
           }
         }}
       />

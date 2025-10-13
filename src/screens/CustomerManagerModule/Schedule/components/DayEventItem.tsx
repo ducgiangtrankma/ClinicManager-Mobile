@@ -26,7 +26,7 @@ export const ScheduleEntryItem = ({
             fontFamily="content_medium"
             color={Colors.content}
           >
-            {dayjs(schedule.implementationTime).format('hh:mm A')}
+            {dayjs(schedule.implementationDate).format('hh:mm A')}
           </AppText>
         </Box>
         <Box style={styles.timelineContent}>
@@ -61,7 +61,7 @@ export const ScheduleEntryItem = ({
             color={Colors.content}
             style={styles.entryDescription}
           >
-            {schedule.description}
+            {schedule.note !== '' ? schedule.note : 'Lịch hẹn chưa có nội dung'}
           </AppText>
         </Box>
       </Box>

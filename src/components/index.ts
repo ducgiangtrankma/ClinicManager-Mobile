@@ -37,3 +37,4 @@ export * from './CosmeticsSelect/CosmeticsItem';
 export * from './BackButton';
 export * from './CreateCustomerProgress';
 export * from './SelectGender';
+export * from './SelectCategory';

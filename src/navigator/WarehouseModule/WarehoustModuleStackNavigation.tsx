@@ -8,6 +8,13 @@ import React from 'react';
 
 import { APP_SCREEN, AuthenticationPramsList } from '../ScreenTypes';
 import { WarehouseMainTab } from './WarehouseModuleTabNavigator';
+import {
+  CategoryDetailScreen,
+  CreateCategoryScreen,
+  CreateProductScreen,
+  ProductDetailScreen,
+} from '@src/screens';
+import { Platform } from 'react-native';
 
 const WarehouseModuleStackNavigation =
   createStackNavigator<AuthenticationPramsList>();
@@ -17,8 +24,10 @@ export const WarehouseModuleStack = () => {
     animationTypeForReplace: 'pop',
     gestureEnabled: false,
     headerShown: false,
-    // cardStyleInterpolator: forZoom,
-    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+    cardStyleInterpolator:
+      Platform.OS === 'ios'
+        ? CardStyleInterpolators.forFadeFromBottomAndroid
+        : CardStyleInterpolators.forNoAnimation, // Nguyên nhân gây flick UI khi chuyển màn trên android
   };
   const screens: {
     name: keyof AuthenticationPramsList;
@@ -27,6 +36,22 @@ export const WarehouseModuleStack = () => {
     {
       name: APP_SCREEN.WAREHOUSE_TAB,
       component: WarehouseMainTab,
+    },
+    {
+      name: APP_SCREEN.CREATE_CATEGORY,
+      component: CreateCategoryScreen,
+    },
+    {
+      name: APP_SCREEN.CREATE_PRODUCT,
+      component: CreateProductScreen,
+    },
+    {
+      name: APP_SCREEN.PRODUCT_DETAIL,
+      component: ProductDetailScreen,
+    },
+    {
+      name: APP_SCREEN.CATEGORY_DETAIL,
+      component: CategoryDetailScreen,
     },
   ];
   return (

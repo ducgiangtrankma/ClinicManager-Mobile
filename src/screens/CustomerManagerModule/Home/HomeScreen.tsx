@@ -1,7 +1,9 @@
 import {
   AppActivityIndicator,
   AppHeader,
+  AppInput,
   AppList,
+  Box,
   EmptyList,
   PageContainer,
 } from '@src/components';
@@ -9,27 +11,43 @@ import { CustomerEntity } from '@src/models';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { FilterIcon } from '@src/assets';
-import { useCustomerQuery } from '@src/services';
+import { useCustomerListQuery } from '@src/services';
 import { sizes } from '@src/utils';
-import React, { FC, useCallback, useRef } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
-import { CustomerFilter, CustomerFilterRef } from './components/CustomerFilter';
+import {
+  CustomerFilter,
+  CustomerFilterRef,
+  CustomerFilterValue,
+} from './components/CustomerFilter';
 import { CustomerItem } from './components/CustomerItem';
 import { CustomerItemSkeleton } from './components/CustomerSkeleton';
+import { useTranslation } from 'react-i18next';
 
 interface Props {}
 export const CustomerHomeScreen: FC<Props> = () => {
+  const { t } = useTranslation();
   const customerFilterRef = useRef<CustomerFilterRef>(null);
+  const [keyword, setKeyword] = useState<string | undefined>(undefined);
+  const [fromDate, setFromDate] = useState<string | undefined>(undefined);
+  const [toDate, setToDate] = useState<string | undefined>(undefined);
+
+  const handleFilterChange = useCallback((filter: CustomerFilterValue) => {
+    console.log('Filter changed:', filter);
+    setFromDate(filter.fromDate);
+    setToDate(filter.toDate);
+  }, []);
+
   const {
     data,
-    isFetching,
+    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     refetch,
     isRefetching,
-  } = useCustomerQuery(10);
+  } = useCustomerListQuery(10, keyword, fromDate, toDate);
 
   const customers = data?.pages.flatMap(p => p.customers) ?? [];
   const renderItem = useCallback(
@@ -59,8 +77,6 @@ export const CustomerHomeScreen: FC<Props> = () => {
     refetch();
   }, [refetch]);
 
-  console.log('isFetching', isFetching);
-
   useFocusEffect(
     React.useCallback(() => {
       refetch();
@@ -87,7 +103,16 @@ export const CustomerHomeScreen: FC<Props> = () => {
           </TouchableOpacity>
         }
       />
-      {isFetching ? (
+      <Box
+        style={{ marginHorizontal: sizes._16sdp, marginBottom: sizes._16sdp }}
+      >
+        <AppInput
+          onChangeText={value => setKeyword(value)}
+          placeholder={t('customer_search_placeholder')}
+          clearButtonMode="while-editing"
+        />
+      </Box>
+      {isLoading ? (
         <CustomerItemSkeleton count={6} />
       ) : (
         <AppList
@@ -107,7 +132,10 @@ export const CustomerHomeScreen: FC<Props> = () => {
           ListEmptyComponent={<EmptyList description="customer_emptyList" />}
         />
       )}
-      <CustomerFilter ref={customerFilterRef} />
+      <CustomerFilter
+        ref={customerFilterRef}
+        onFilterChange={handleFilterChange}
+      />
     </PageContainer>
   );
 };

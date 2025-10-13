@@ -23,6 +23,14 @@ export const useTabActions = () => {
     navigate(APP_SCREEN.CREATE_CUSTOMER);
   }, []);
 
+  const productAction = useCallback(() => {
+    navigate(APP_SCREEN.CREATE_PRODUCT);
+  }, []);
+
+  const categoryAction = useCallback(() => {
+    navigate(APP_SCREEN.CREATE_CATEGORY);
+  }, []);
+
   // Hàm action cho SCHEDULE tab
   const scheduleAction = useCallback(() => {
     console.log('Action schedule tab');
@@ -39,8 +47,16 @@ export const useTabActions = () => {
         title: t('action.add.appointment'),
         action: scheduleAction,
       },
+      [APP_SCREEN.PRODUCT_SCREEN]: {
+        title: t('action.add.product'),
+        action: productAction,
+      },
+      [APP_SCREEN.CATEGORY_SCREEN]: {
+        title: t('action.category.product'),
+        action: categoryAction,
+      },
     }),
-    [homeAction, scheduleAction, t],
+    [categoryAction, homeAction, productAction, scheduleAction, t],
   );
 
   // Hàm để lấy action cho tab hiện tại

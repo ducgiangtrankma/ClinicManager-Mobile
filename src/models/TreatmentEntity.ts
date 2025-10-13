@@ -24,10 +24,21 @@ export interface CreateTreatmentPayload {
   title: string;
   implementationDate: string; //'2024-01-15'
   note: string;
-  cosmetics: ProductSelected[];
+  cosmetics: CosmeticPayload[];
   totalTreatmentFee: number;
   debt: number;
   paid: number;
+}
+
+export interface CosmeticPayload {
+  sku: string;
+  name: string;
+  description: string;
+  inventory: number;
+  price: number;
+  originPrice: number;
+  quantity: number;
+  id: string;
 }
 
 export interface TreatmentDetailEntity {

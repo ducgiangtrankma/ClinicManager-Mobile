@@ -1,33 +1,30 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useAppTheme } from '@src/common';
-import { AppText, PageContainer } from '@src/components';
+import { TabbarPlusButton } from '@src/components';
+import { CategoryScreen, ProductScreen } from '@src/screens';
 import { APP_FONTS } from '@src/themes';
 import { sizes } from '@src/utils';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { EmptyComponent } from '../EmptyComponent';
+import { APP_SCREEN } from '../ScreenTypes';
+import { CategoryTabIcon, ProductTabIcon } from '@src/assets';
 
 const Tab = createBottomTabNavigator();
+const renderProductIcon = (focused: boolean, color: string) => {
+  return focused ? <ProductTabIcon color={color} /> : <ProductTabIcon />;
+};
 
-// Temporary screens for Warehouse Module
-const WarehouseHomeScreen = () => (
-  <PageContainer>
-    <AppText fontSize="24" textAlign="center">
-      Warehouse Home
-    </AppText>
-  </PageContainer>
-);
-
-const WarehouseInventoryScreen = () => (
-  <PageContainer>
-    <AppText fontSize="24" textAlign="center">
-      Warehouse Inventory
-    </AppText>
-  </PageContainer>
-);
-
+const renderCategoryIcon = (focused: boolean, color: string) => {
+  return focused ? <CategoryTabIcon color={color} /> : <CategoryTabIcon />;
+};
 const WarehouseMainTab = () => {
   const { t } = useTranslation();
   const { Colors } = useAppTheme();
+
+  const [currentFocusedTab, setCurrentFocusedTab] = useState<string>(
+    APP_SCREEN.CUSTOMER_LIST,
+  );
 
   return (
     <Tab.Navigator
@@ -44,19 +41,38 @@ const WarehouseMainTab = () => {
       }}
     >
       <Tab.Screen
-        name="WarehouseHome"
-        component={WarehouseHomeScreen}
+        name={APP_SCREEN.PRODUCT_SCREEN}
+        component={ProductScreen}
         options={{
           headerShown: false,
           tabBarLabel: t('warehouse.homeTab.name'),
+          tabBarIcon: ({ focused }) => renderProductIcon(focused, Colors.green),
+        }}
+        listeners={{
+          focus: () => setCurrentFocusedTab(APP_SCREEN.PRODUCT_SCREEN),
+        }}
+      />
+      <Tab.Screen
+        name={'Plus Button'}
+        component={EmptyComponent}
+        options={{
+          headerShown: false,
+          tabBarLabel: () => null,
+          // eslint-disable-next-line react/no-unstable-nested-components
+          tabBarIcon: () => <TabbarPlusButton currentTab={currentFocusedTab} />,
         }}
       />
       <Tab.Screen
         name="WarehouseInventory"
-        component={WarehouseInventoryScreen}
+        component={CategoryScreen}
         options={{
           headerShown: false,
           tabBarLabel: t('warehouse.inventoryTab.name'),
+          tabBarIcon: ({ focused }) =>
+            renderCategoryIcon(focused, Colors.green),
+        }}
+        listeners={{
+          focus: () => setCurrentFocusedTab(APP_SCREEN.CATEGORY_SCREEN),
         }}
       />
     </Tab.Navigator>

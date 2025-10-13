@@ -10,7 +10,13 @@ import axiosClient from './axiosClient';
 const customerUrl = '/customer';
 
 export const CustomerService = {
-  getListCustomer: (params: { page?: number; limit?: number }) => {
+  getListCustomer: (params: {
+    page?: number;
+    limit?: number;
+    keyword?: string;
+    fromDate?: string;
+    toDate?: string;
+  }) => {
     return axiosClient.get<{
       customers: CustomerEntity[];
       pagination: PaginationEntity;
@@ -43,6 +49,14 @@ export const CustomerService = {
   },
   updateCustomer: (customerId: string, updateData: UpdateCustomerPayload) => {
     return axiosClient.put<any>(`${customerUrl}/${customerId}`, updateData, {
+      headers: {
+        Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
+      },
+      timeout: 5000,
+    });
+  },
+  deleteCustomer: (customerId: string) => {
+    return axiosClient.delete<any>(`${customerUrl}/${customerId}`, {
       headers: {
         Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
       },

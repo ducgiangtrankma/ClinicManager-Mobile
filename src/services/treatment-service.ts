@@ -23,6 +23,7 @@ export const TreatmentService = {
     });
   },
   createTreatment: (body: CreateTreatmentPayload) => {
+    console.log('createTreatment', body);
     return axiosClient.post<any>(`${treatmentUrl}`, body, {
       headers: {
         Authorization: 'Bearer ' + store.getState().appReducer.accessToken,

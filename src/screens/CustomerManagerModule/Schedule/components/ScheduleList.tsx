@@ -40,12 +40,12 @@ export const ScheduleEntriesList = ({
       style={[styles.container, style]}
       showsVerticalScrollIndicator={false}
     >
-      {displayData?.map((tracking, index) => {
+      {displayData?.map((schedule, index) => {
         return (
           <DayEventGroup
             index={index}
-            key={`${tracking.id}`}
-            schedule={tracking}
+            key={`${schedule.id}`}
+            schedule={schedule}
             dataLength={data.length}
             language={language}
           />
@@ -67,12 +67,12 @@ export const MoodEntriesView = ({
 
   return (
     <Box style={[styles.viewContainer, style]}>
-      {displayData?.map((tracking, index) => {
+      {displayData?.map((schedule, index) => {
         return (
           <DayEventGroup
             index={index}
-            key={`${tracking.id}`}
-            schedule={tracking}
+            key={`${schedule.id}`}
+            schedule={schedule}
             dataLength={data.length}
             language={language}
           />

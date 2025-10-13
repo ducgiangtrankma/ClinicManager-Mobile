@@ -21,12 +21,19 @@ import {
 } from '@src/components';
 
 import {
+  CosmeticPayload,
   CreateTreatmentPayload,
   TreatmentCreateFormValuesEntity,
 } from '@src/models';
 import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
 import { TreatmentService } from '@src/services';
-import { formatDateTime, sizes, treatmentValidationSchema } from '@src/utils';
+import {
+  calcTotalPrice,
+  formatDateTime,
+  formatMoney,
+  sizes,
+  treatmentValidationSchema,
+} from '@src/utils';
 import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import React, { FC, useCallback, useRef } from 'react';
@@ -64,11 +71,23 @@ export const CreateTreatmentScreen: FC<Props> = () => {
     async (values: TreatmentCreateFormValuesEntity) => {
       try {
         if (customerId) {
+          const cosmeticsPayload: CosmeticPayload[] = values.cosmetics.map(
+            e => ({
+              sku: e.sku,
+              name: e.name,
+              description: e.description,
+              inventory: Number(e.inventory),
+              quantity: Number(e.quantity),
+              price: Number(e.price),
+              originPrice: Number(e.originPrice),
+              id: e.id,
+            }),
+          );
           const body: CreateTreatmentPayload = {
             title: values.title,
             note: values.note,
             implementationDate: values.implementation_date,
-            cosmetics: values.cosmetics,
+            cosmetics: cosmeticsPayload,
             customer: customerId,
             totalTreatmentFee: Number(values.totalTreatmentFee),
             debt: Number(values.debt),
@@ -159,40 +178,24 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                     keyboardType="numeric"
                   />
                 </Box>
+
                 <Box gap={sizes._8sdp}>
-                  <AppText
-                    translationKey="treatment_create_cosmetics"
-                    fontFamily="content_semibold"
-                  />
+                  <Box horizontal align="center">
+                    <AppText
+                      translationKey="treatment_create_cosmetics"
+                      fontFamily="content_semibold"
+                    />
+                    <AppText color={Colors.red}>
+                      : {formatMoney(calcTotalPrice(values.cosmetics))} vnđ
+                    </AppText>
+                  </Box>
                   <AppSelectForm
                     onPress={() => cosmeticsSelectRef.current?.open()}
                     placeholder="treatment_create_cosmetics_placeholder"
                     errMessage={errors.implementation_date}
                     value={undefined}
                   />
-                  {/* {values.cosmetics.map(item => (
-                    <CosmeticItem
-                      key={item.id}
-                      item={item}
-                      edited={true}
-                      onChange={value => {
-                        const temp = [...values.cosmetics];
-                        const newListCosmetic = temp.map(e => {
-                          if (e.id === value.id) {
-                            return {
-                              ...e,
-                              quantity: value.quantity,
-                            };
-                          } else {
-                            return {
-                              ...e,
-                            };
-                          }
-                        });
-                        setFieldValue('cosmetics', newListCosmetic);
-                      }}
-                    />
-                  ))} */}
+
                   {values.cosmetics.map(item => (
                     <CosmeticItem
                       key={item.sku} // nhớ dùng key unique, ưu tiên sku/id

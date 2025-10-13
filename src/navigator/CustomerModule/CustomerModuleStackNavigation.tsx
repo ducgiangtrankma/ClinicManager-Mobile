@@ -10,6 +10,7 @@ import { APP_SCREEN, AuthenticationPramsList } from '../ScreenTypes';
 import {
   CreateBillScreen,
   CreateCustomerScreen,
+  CreateScheduleScreen,
   CreateTreatmentScreen,
   CustomerCostScreen,
   CustomerDetailScreen,
@@ -62,6 +63,10 @@ export const CustomerModuleStack = () => {
     {
       name: APP_SCREEN.CUSTOMER_COST,
       component: CustomerCostScreen,
+    },
+    {
+      name: APP_SCREEN.CREATE_SCHEDULE,
+      component: CreateScheduleScreen,
     },
   ];
   return (

@@ -3,8 +3,10 @@ import { useAppTheme } from '@src/common';
 import {
   AppHeader,
   Box,
+  globalLoading,
   PageContainer,
   showErrorMessage,
+  showSuccessMessage,
 } from '@src/components';
 import {
   CustomerDetailMenubarEntity,
@@ -14,17 +16,19 @@ import {
 import { TreatmentScreen } from '@src/screens/Treatment';
 import { DEFAULT_HIT_SLOP } from '@src/utils';
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { CustomerDetailInfo } from './components/CustomerDetail-Info';
 import { CustomerDetailInitialExaminationInfo } from './components/CustomerDetail-InitialExaminationInfo';
 import { CustomerDetailPayment } from './components/CustomerDetail-Payment';
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { APP_SCREEN, RootStackParamList } from '@src/navigator';
+import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
 import { CustomerService } from '@src/services';
 import { CustomerDetailEntity } from '@src/models';
+import { useTranslation } from 'react-i18next';
 
 interface Props {}
 export const CustomerDetailScreen: FC<Props> = () => {
+  const { t } = useTranslation();
   const { Colors } = useAppTheme();
   const [menuSelect, setMenuSelect] = useState<CustomerDetailMenubarEntity>({
     id: '1',
@@ -82,6 +86,37 @@ export const CustomerDetailScreen: FC<Props> = () => {
     return <></>;
   }, [customerInfo, getCustomerDetail, menuSelect.type]);
 
+  const deleteCustomer = useCallback(async () => {
+    try {
+      if (customerId) {
+        globalLoading.show();
+        await CustomerService.deleteCustomer(customerId);
+        showSuccessMessage('action_success_message', 'empty_string');
+        goBack();
+      }
+    } catch (error: any) {
+      showErrorMessage('error.title', error.message);
+    } finally {
+      globalLoading.hide();
+    }
+  }, [customerId]);
+
+  const _handleDeleteProduct = useCallback(async () => {
+    if (customerId) {
+      Alert.alert(t('delete_confirm_title'), t('delete_confirm_desciption'), [
+        {
+          text: t('delete_rollback'),
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel', // On iOS, this makes the button appear as a cancel button
+        },
+        {
+          text: t('delete_ok'),
+          onPress: () => deleteCustomer(),
+        },
+      ]);
+    }
+  }, [deleteCustomer, customerId, t]);
+
   if (!customerId) return <Box />;
 
   return (
@@ -90,7 +125,10 @@ export const CustomerDetailScreen: FC<Props> = () => {
         showBack
         title="customer_detail_title"
         rightContent={
-          <TouchableOpacity hitSlop={DEFAULT_HIT_SLOP}>
+          <TouchableOpacity
+            hitSlop={DEFAULT_HIT_SLOP}
+            onPress={_handleDeleteProduct}
+          >
             <DeleteUser color={Colors.error} />
           </TouchableOpacity>
         }

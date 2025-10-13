@@ -4,11 +4,17 @@ import {
   Gender,
   GridImageEntity,
   LocalFileEntity,
+  ProductSelected,
+  ScheduleEntity,
 } from '@src/models';
 import { TreatmentEntity } from '@src/models/TreatmentEntity';
 import { Linking, PermissionsAndroid, Platform } from 'react-native';
 import dayjs from 'dayjs';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
+import {
+  DayEvents,
+  EventType,
+} from '@src/components/ScheduleCalendarBase/MonthCalendar';
 function callNumber(phone: string) {
   let phoneNumber = phone;
   if (Platform.OS !== 'android') {
@@ -238,4 +244,50 @@ export const renderGender = (gender: Gender) => {
 export const startsWithHttp = (s: unknown): boolean => {
   return typeof s === 'string' && /^\s*https?:\/\//i.test(s);
 };
+
+export const calcTotalPrice = (products: ProductSelected[]): number => {
+  if (!products?.length) return 0;
+  return products.reduce((sum, item) => sum + item.price * item.quantity, 0);
+};
+
+export function convertToDayEvents(items: ScheduleEntity[]): DayEvents {
+  const result: DayEvents = {};
+
+  for (const item of items) {
+    // Parse ngày/giờ từ implementationDate
+    const d = new Date(item.implementationDate);
+    // Lấy theo múi giờ máy (24h). Nếu bạn muốn UTC, đổi sang d.getUTCHours()/getUTCMinutes()
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const dateKey = `${yyyy}-${mm}-${dd}`;
+
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mi = String(d.getMinutes()).padStart(2, '0');
+    const time = `${hh}:${mi}`;
+
+    // Title fallback: treatment.title -> note -> 'Điều trị'
+    const title =
+      item?.treatment?.title?.trim() || (item?.note ?? '').trim() || 'Điều trị';
+
+    const event = {
+      id: String(item.id),
+      title,
+      type: EventType.TREATMENT, // mặc định theo yêu cầu
+      time,
+    };
+
+    if (!result[dateKey]) result[dateKey] = [];
+    result[dateKey].push(event);
+  }
+
+  // Sắp xếp các event trong cùng ngày theo time tăng dần (tuỳ chọn)
+  for (const key of Object.keys(result)) {
+    result[key].sort((a, b) =>
+      (a.time ?? '00:00').localeCompare(b.time ?? '00:00'),
+    );
+  }
+
+  return result;
+}
 export { callNumber, isSuccessTreatment };

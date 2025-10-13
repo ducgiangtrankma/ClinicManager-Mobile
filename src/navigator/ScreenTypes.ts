@@ -24,8 +24,15 @@ export enum APP_SCREEN {
   CREATE_BILL = 'CREATE_BILL',
   SCHEDULE = 'SCHEDULE',
   CUSTOMER_COST = 'CUSTOMER_COST',
+  CREATE_SCHEDULE = 'CREATE_SCHEDULE',
 
   WAREHOUSE_TAB = 'WAREHOUSE_TAB',
+  PRODUCT_SCREEN = 'PRODUCT_SCREEN',
+  CATEGORY_SCREEN = 'CATEGORY_SCREEN',
+  CREATE_PRODUCT = 'CREATE_PRODUCT',
+  CREATE_CATEGORY = 'CREATE_CATEGORY',
+  PRODUCT_DETAIL = 'PRODUCT_DETAIL',
+  CATEGORY_DETAIL = 'CATEGORY_DETAIL',
 }
 export type UnAuthenticationPramsList = {
   [APP_SCREEN.ONBOARDING]: undefined;
@@ -50,6 +57,9 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.WAREHOUSE_TAB]: undefined;
   [APP_SCREEN.CUSTOMER_LIST]: undefined;
   [APP_SCREEN.CREATE_CUSTOMER]: undefined;
+  [APP_SCREEN.CREATE_SCHEDULE]: {
+    date: string;
+  };
   [APP_SCREEN.CUSTOMER_DETAIL]: {
     customerId: string;
   };
@@ -65,6 +75,18 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.SCHEDULE]: undefined;
   [APP_SCREEN.CUSTOMER_COST]: {
     customerId: string;
+  };
+
+  [APP_SCREEN.WAREHOUSE_MODULE]: undefined;
+  [APP_SCREEN.PRODUCT_SCREEN]: undefined;
+  [APP_SCREEN.CATEGORY_SCREEN]: undefined;
+  [APP_SCREEN.CREATE_PRODUCT]: undefined;
+  [APP_SCREEN.CREATE_CATEGORY]: undefined;
+  [APP_SCREEN.PRODUCT_DETAIL]: {
+    productId: string;
+  };
+  [APP_SCREEN.CATEGORY_DETAIL]: {
+    categoryId: string;
   };
 };
 
