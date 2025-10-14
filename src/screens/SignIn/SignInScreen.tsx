@@ -76,6 +76,7 @@ export const SignInScreen: FC<Props> = () => {
         }),
       );
     } catch (error: any) {
+      console.log('error', error);
       showErrorMessage('error.title', error.message);
     } finally {
       globalLoading.hide();

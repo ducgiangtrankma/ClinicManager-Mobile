@@ -1,6 +1,7 @@
 import { _screen_height, _screen_width, sizes } from '@src/utils';
 import React, { useCallback, useImperativeHandle, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
 import {
   BottomSheetModalContainer,
@@ -50,23 +51,52 @@ export const TimePicker = React.forwardRef<BottomSheetModalRef, Props>(
         // showConfirmButton={true}
       >
         <Box>
-          <DatePicker
-            style={styles.datePicker}
-            locale="vi"
-            date={initialDate}
-            // onDateChange={mode ? setDate : setTime}
-            onDateChange={value => {
-              setInitialDate(value);
+          <Box
+            style={{
+              marginTop: Platform.OS === 'ios' ? sizes._24sdp : sizes._6sdp,
             }}
-            mode={'datetime'}
-            // androidVariant="iosClone"
-            // minimumDate={new Date()}
-          />
+          >
+            {Platform.OS === 'android' ? (
+              <DatePicker
+                style={styles.datePicker}
+                locale="vi"
+                date={initialDate}
+                // onDateChange={mode ? setDate : setTime}
+                onDateChange={value => {
+                  setInitialDate(value);
+                }}
+                mode={'datetime'}
+                // modal
+              />
+            ) : (
+              <DateTimePicker
+                style={styles.datePicker}
+                locale="vi"
+                value={initialDate}
+                // onDateChange={mode ? setDate : setTime}
+                onChange={(event, date) => {
+                  date && setInitialDate(date);
+                }}
+                mode={'datetime'}
+                // androidVariant="iosClone"
+                // minimumDate={new Date()}
+              />
+            )}
+          </Box>
+
           <Box
             direction="horizontal"
             justify="space-between"
             gap={sizes._8sdp}
-            style={[styles.footer, { borderTopColor: Colors.divider }]}
+            style={[
+              styles.footer,
+              Platform.OS === 'android'
+                ? {
+                    borderTopColor: Colors.divider,
+                    borderTopWidth: sizes._1sdp,
+                  }
+                : {},
+            ]}
           >
             <TouchableOpacity
               onPress={() => bottomSheetRef.current?.close()}
@@ -106,7 +136,6 @@ const styles = StyleSheet.create({
     paddingVertical: sizes._16sdp,
   },
   footer: {
-    borderTopWidth: sizes._1sdp,
     paddingTop: sizes._24sdp,
     paddingHorizontal: sizes._16sdp,
   },

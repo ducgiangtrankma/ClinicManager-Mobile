@@ -36,7 +36,7 @@ export const Step4DiagnosisAndNotes: FC<Props> = ({
           fontFamily="content_semibold"
         />
         <AppInputMultipleLine
-          value={values.diagnostic}
+          defaultValue={values.diagnostic}
           placeholder={t('customer_create_diagnostic_placeholder')}
           onChangeText={value => setFieldValue('diagnostic', value)}
           errMessage={errors.diagnostic}
@@ -52,7 +52,7 @@ export const Step4DiagnosisAndNotes: FC<Props> = ({
           fontFamily="content_semibold"
         />
         <AppInputMultipleLine
-          value={values.note}
+          defaultValue={values.note}
           placeholder={t('customer_create_note_placeholder')}
           onChangeText={value => setFieldValue('note', value)}
           errMessage={errors.note}

@@ -424,6 +424,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
         onSelect={value => {
           if (formikRef.current) {
             formikRef.current.setFieldValue('gender', value.value);
+            selectGenderRef.current.close();
           }
         }}
       />
