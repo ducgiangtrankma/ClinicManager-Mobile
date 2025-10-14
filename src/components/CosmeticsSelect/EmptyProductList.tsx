@@ -9,7 +9,7 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 interface Props {
   description: TranslationKeys;
 }
-export const EmptyListCategory: FC<Props> = ({ description }) => {
+export const EmptyListProduct: FC<Props> = ({ description }) => {
   const { Images, Colors } = useAppTheme();
   return (
     <Box align="center">
@@ -21,13 +21,13 @@ export const EmptyListCategory: FC<Props> = ({ description }) => {
       />
       <TouchableOpacity
         style={{ marginTop: sizes._24sdp }}
-        onPress={() => navigate(APP_SCREEN.CREATE_CATEGORY)}
+        onPress={() => navigate(APP_SCREEN.WAREHOUSE_MODULE)}
       >
         <AppText
           fontFamily="content_bold"
           style={styles.title}
           color={Colors.green}
-          translationKey="add_category"
+          translationKey="add_product"
         />
       </TouchableOpacity>
     </Box>

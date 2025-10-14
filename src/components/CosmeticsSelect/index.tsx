@@ -20,8 +20,8 @@ import { AppInput } from '../AppInput';
 import { AppList } from '../AppList';
 import { AppText } from '../AppText';
 import { Box } from '../Box';
-import { EmptyList } from '../EmptyList';
 import { ProductItem } from './ProductItem';
+import { EmptyListProduct } from './EmptyProductList';
 
 interface Props {
   onSelect: (value: ProductSelected[]) => void;
@@ -136,7 +136,7 @@ export const SelectCosmetics = forwardRef<SelectCosmeticsRef, Props>(
                 ) : null
               }
               ListEmptyComponent={
-                <EmptyList description="customer_emptyList" />
+                <EmptyListProduct description="product_emptyList" />
               }
             />
           </Box>

@@ -68,9 +68,9 @@ export const Step2MedicalInfo: FC<Props> = ({
           fontFamily="content_semibold"
         />
         <AppInputMultipleLine
-          defaultValue={values.medicalHistory}
+          value={values.medicalHistory}
           placeholder={t('customer_create_medical_history_placeholder')}
-          onChangeText={value => setFieldValue('medical_history', value)}
+          onChangeText={value => setFieldValue('medicalHistory', value)}
           errMessage={errors.medicalHistory}
           clearButtonMode="while-editing"
           multiline

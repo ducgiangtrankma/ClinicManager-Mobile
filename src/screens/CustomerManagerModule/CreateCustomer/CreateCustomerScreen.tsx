@@ -318,13 +318,10 @@ export const CreateCustomerScreen: FC<Props> = () => {
             initialValues={getInitialValues()}
             validationSchema={getValidationSchema()}
             onSubmit={values => {
-              console.log('values', values);
               const finalData = {
                 ...values,
                 images: images,
               };
-
-              console.log('Final form data:', finalData);
               _handleCreateCustomer(finalData);
             }}
           >
