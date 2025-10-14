@@ -269,7 +269,6 @@ export const CreateCustomerScreen: FC<Props> = () => {
     diagnostic: '', // chuẩn đoán
     note: '',
   });
-  console.log('getInitialValues', getInitialValues());
 
   const _handleCreateCustomer = useCallback(
     async (customerData: CreateCustomerBodyData) => {

@@ -33,7 +33,7 @@ export const useTabActions = () => {
 
   // Hàm action cho SCHEDULE tab
   const scheduleAction = useCallback(() => {
-    console.log('Action schedule tab');
+    navigate(APP_SCREEN.CREATE_SCHEDULE);
   }, []);
 
   // Định nghĩa các action cho từng tab với useMemo

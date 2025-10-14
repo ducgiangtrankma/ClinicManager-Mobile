@@ -147,7 +147,7 @@
       "select_gender_title":"Chọn giới tính",
       "select_maternity_title":"Chọn tình trạng thai sản",
       "validation.step_incomplete":"Vui lòng hoàn thành tất cả thông tin bắt buộc",
-      "schedule_list_title":"Lịch hẹn hôm nay",
+      "schedule_list_title":"Lịch hẹn - ",
       "schedule_title":"Quản lý lịch hẹn",
       "customer_detail_menu_1":"Thông tin cở bản",
       "customer_detail_menu_2":"Khám ban đầu",
@@ -228,6 +228,10 @@
       "customer_filter_delete":"Xoá bộ lọc",
       "schedule_create":"Thêm lịch hẹn",
       "schedule_create_date":"Ngày hẹn",
-      "schedule_create_note":"Nội dung"
+      "schedule_create_note":"Nội dung",
+      "time_picker_title":"Chọn thời gian",
+      "schedule_detail_error":"Không có thông tin lịch hẹn",
+      "schedule_detail_title":"Chi tiết lịch hẹn",
+      "schedule_detail_customer":"Khách hàng"
     }
  }

@@ -7,3 +7,4 @@ export * from './CreateTreatment';
 export * from './Bill';
 export * from './CustomerCost';
 export * from './CreateSchedule';
+export * from './ScheduleDetail';

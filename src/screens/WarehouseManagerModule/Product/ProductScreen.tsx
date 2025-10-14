@@ -28,6 +28,7 @@ export const ProductScreen: FC<Props> = () => {
     isFetchingNextPage,
     refetch,
     isRefetching,
+    isLoading,
   } = useProductListQuery(10, keyword);
 
   const renderItem = useCallback(({ item }: { item: ProductEntity }) => {
@@ -90,7 +91,13 @@ export const ProductScreen: FC<Props> = () => {
               <AppActivityIndicator animating={isFetchingNextPage} />
             ) : null
           }
-          ListEmptyComponent={<EmptyList description="product_emptyList" />}
+          ListEmptyComponent={
+            isLoading ? (
+              <AppActivityIndicator animating={isLoading} />
+            ) : (
+              <EmptyList description="product_emptyList" />
+            )
+          }
         />
       </Box>
     </PageContainer>

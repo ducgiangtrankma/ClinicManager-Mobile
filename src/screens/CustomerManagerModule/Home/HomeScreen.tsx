@@ -9,11 +9,11 @@ import {
 } from '@src/components';
 import { CustomerEntity } from '@src/models';
 
-import { useFocusEffect } from '@react-navigation/native';
 import { FilterIcon } from '@src/assets';
 import { useCustomerListQuery } from '@src/services';
 import { sizes } from '@src/utils';
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import {
@@ -23,7 +23,6 @@ import {
 } from './components/CustomerFilter';
 import { CustomerItem } from './components/CustomerItem';
 import { CustomerItemSkeleton } from './components/CustomerSkeleton';
-import { useTranslation } from 'react-i18next';
 
 interface Props {}
 export const CustomerHomeScreen: FC<Props> = () => {
@@ -77,12 +76,16 @@ export const CustomerHomeScreen: FC<Props> = () => {
     refetch();
   }, [refetch]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      refetch();
-      return () => {};
-    }, [refetch]),
-  );
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     refetch();
+  //     return () => {};
+  //   }, [refetch]),
+  // );
 
   return (
     <PageContainer>

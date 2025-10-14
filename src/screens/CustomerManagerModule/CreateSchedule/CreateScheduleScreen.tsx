@@ -6,12 +6,12 @@ import {
   AppInput,
   AppSelectForm,
   Box,
-  DateTimePicker,
-  DateTimePickerReft,
   FormTitle,
   globalLoading,
   PageContainer,
   showErrorMessage,
+  TimePicker,
+  TimePickerRef,
 } from '@src/components';
 import { CreateScheduleFormValuesEntity } from '@src/models';
 import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
@@ -30,7 +30,8 @@ export const CreateScheduleScreen: FC<Props> = () => {
   const { Colors } = useAppTheme();
   const { facility } = useSelector(x => x.facilityReducer);
   const defaultDate = route.params?.date;
-  const datetimePickerRef = useRef<DateTimePickerReft>(null);
+
+  const timePickerRef = useRef<TimePickerRef>(null);
   // Lazy initialization - tối ưu performance
   const getInitialValues = (): CreateScheduleFormValuesEntity => ({
     store: facility?.id ?? '',
@@ -76,14 +77,14 @@ export const CreateScheduleScreen: FC<Props> = () => {
               <Box gap={sizes._8sdp}>
                 <FormTitle title="schedule_create_date" required />
                 <AppSelectForm
-                  onPress={() => datetimePickerRef.current?.open()}
+                  onPress={() => timePickerRef.current?.open()}
                   placeholder="schedule_create_date"
                   errMessage={errors.implementationDate}
                   value={{
                     id: '1',
                     label: formatDateTime(
                       values.implementationDate,
-                      'dd/mm/yyyy',
+                      'dd/mm/yyyy HH:mm',
                     ),
                     value: values.implementationDate,
                   }}
@@ -116,10 +117,17 @@ export const CreateScheduleScreen: FC<Props> = () => {
                   style={styles.actionButton}
                 />
               </Box>
-              <DateTimePicker
-                ref={datetimePickerRef}
-                value={values.implementationDate}
-                onChange={date => setFieldValue('implementationDate', date)}
+
+              <TimePicker
+                currentDate={
+                  values.implementationDate
+                    ? new Date(values.implementationDate)
+                    : new Date()
+                }
+                ref={timePickerRef}
+                onConfirm={value => {
+                  setFieldValue('implementationDate', value);
+                }}
               />
             </React.Fragment>
           )}

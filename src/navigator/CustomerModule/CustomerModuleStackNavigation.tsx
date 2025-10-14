@@ -14,6 +14,7 @@ import {
   CreateTreatmentScreen,
   CustomerCostScreen,
   CustomerDetailScreen,
+  ScheduleDetailScreen,
   TreatmentDetailScreen,
 } from '@src/screens';
 import { CustomerMainTab } from './CustomerModuleTabNavigator';
@@ -67,6 +68,10 @@ export const CustomerModuleStack = () => {
     {
       name: APP_SCREEN.CREATE_SCHEDULE,
       component: CreateScheduleScreen,
+    },
+    {
+      name: APP_SCREEN.SCHEDULE_DETAIL,
+      component: ScheduleDetailScreen,
     },
   ];
   return (

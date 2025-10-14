@@ -1,4 +1,4 @@
-import { CreateBillPayload } from '@src/models';
+import { CreateBillPayload, ScheduleEntity } from '@src/models';
 
 export enum APP_SCREEN {
   AUTHENTICATION = 'AUTHENTICATION',
@@ -25,6 +25,7 @@ export enum APP_SCREEN {
   SCHEDULE = 'SCHEDULE',
   CUSTOMER_COST = 'CUSTOMER_COST',
   CREATE_SCHEDULE = 'CREATE_SCHEDULE',
+  SCHEDULE_DETAIL = 'SCHEDULE_DETAIL',
 
   WAREHOUSE_TAB = 'WAREHOUSE_TAB',
   PRODUCT_SCREEN = 'PRODUCT_SCREEN',
@@ -59,6 +60,9 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.CREATE_CUSTOMER]: undefined;
   [APP_SCREEN.CREATE_SCHEDULE]: {
     date: string;
+  };
+  [APP_SCREEN.SCHEDULE_DETAIL]: {
+    schedule: ScheduleEntity;
   };
   [APP_SCREEN.CUSTOMER_DETAIL]: {
     customerId: string;

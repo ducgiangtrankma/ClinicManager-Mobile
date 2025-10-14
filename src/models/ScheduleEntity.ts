@@ -26,3 +26,23 @@ export interface Customer {
   name: string;
   id: string;
 }
+
+export enum EventType {
+  APPOINTMENT = 'appointment',
+  TREATMENT = 'treatment',
+  CONSULTATION = 'consultation',
+  FOLLOW_UP = 'follow_up',
+  REMINDER = 'reminder',
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  type: EventType;
+  time?: string;
+  color?: string;
+}
+
+export interface DayEvents {
+  [date: string]: CalendarEvent[];
+}

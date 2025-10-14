@@ -27,6 +27,7 @@ export const CategoryScreen: FC<Props> = () => {
     isFetchingNextPage,
     refetch,
     isRefetching,
+    isLoading,
   } = useCategoryListQuery(10, keyword);
 
   const renderItem = useCallback(({ item }: { item: CategoryEntity }) => {
@@ -90,7 +91,11 @@ export const CategoryScreen: FC<Props> = () => {
             ) : null
           }
           ListEmptyComponent={
-            <EmptyListCategory description="category_empty" />
+            isLoading ? (
+              <AppActivityIndicator animating={isLoading} />
+            ) : (
+              <EmptyListCategory description="category_empty" />
+            )
           }
         />
       </Box>

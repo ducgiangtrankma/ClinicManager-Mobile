@@ -1,5 +1,6 @@
 import {
   CreateScheduleFormValuesEntity,
+  DayEvents,
   ScheduleEntity,
   UpdateScheduleFormValuesEntity,
 } from '@src/models';
@@ -9,6 +10,15 @@ const scheduleUrl = '/schedule';
 export const ScheduleService = {
   getListSchedule: (params?: { startDate?: string; endDate?: string }) => {
     return axiosClient.get<ScheduleEntity[]>(`${scheduleUrl}`, {
+      headers: {
+        Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
+      },
+      params,
+      timeout: 5000,
+    });
+  },
+  getCalendarEvents: (params?: { month: string; year: string }) => {
+    return axiosClient.get<DayEvents>(`${scheduleUrl}/calendar-events`, {
       headers: {
         Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
       },

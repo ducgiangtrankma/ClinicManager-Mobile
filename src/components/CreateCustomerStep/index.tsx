@@ -11,6 +11,7 @@ import Animated, {
 import { StepDoneIcon, StepInprogressIcon } from '@src/assets';
 import { useAppTheme } from '@src/common';
 import { _screen_width, sizes } from '@src/utils';
+import { Box } from '../Box';
 
 interface Props {
   currentStep: number;
@@ -48,7 +49,7 @@ export const CreateCustomerProgress: FC<Props> = ({ currentStep }) => {
     >
       <View style={styles.container}>
         {DATA.map((item, index) => (
-          <View key={item.id} style={styles.processContainer}>
+          <Box key={item.id} style={styles.processContainer}>
             {index <= currentStep ? (
               <StepDoneIcon color={Colors.green} />
             ) : (
@@ -77,7 +78,7 @@ export const CreateCustomerProgress: FC<Props> = ({ currentStep }) => {
                 )}
               </View>
             )}
-          </View>
+          </Box>
         ))}
       </View>
     </Animated.View>

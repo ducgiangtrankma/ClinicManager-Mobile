@@ -9,8 +9,6 @@ import {
   AppText,
   Box,
   CosmeticItem,
-  DateTimePicker,
-  DateTimePickerReft,
   FormTitle,
   globalLoading,
   PageContainer,
@@ -18,6 +16,8 @@ import {
   SelectCosmeticsRef,
   showErrorMessage,
   showSuccessMessage,
+  TimePicker,
+  TimePickerRef,
 } from '@src/components';
 
 import {
@@ -34,7 +34,6 @@ import {
   sizes,
   treatmentValidationSchema,
 } from '@src/utils';
-import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import React, { FC, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,12 +46,13 @@ export const CreateTreatmentScreen: FC<Props> = () => {
   const customerId = route?.params?.customerId;
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
-  const datetimePickerRef = useRef<DateTimePickerReft>(null);
+  // const datetimePickerRef = useRef<DateTimePickerReft>(null);
+  const timePickerRef = useRef<TimePickerRef>(null);
   const cosmeticsSelectRef = useRef<SelectCosmeticsRef>(null);
 
   // Lazy initialization - tối ưu performance
   const getInitialValues = (): TreatmentCreateFormValuesEntity => ({
-    implementation_date: dayjs().format('YYYY-MM-DD'),
+    implementation_date: new Date().toISOString(),
     title: '',
     note: '',
     cosmetics: [],
@@ -93,7 +93,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
             debt: Number(values.debt),
             paid: Number(values.paid),
           };
-          console.log('_handleCreateTreatment', body);
+          globalLoading.show();
           await TreatmentService.createTreatment(body);
           showSuccessMessage('action_success_message', 'empty_string');
           goBack();
@@ -142,14 +142,14 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                     required
                   />
                   <AppSelectForm
-                    onPress={() => datetimePickerRef.current?.open()}
+                    onPress={() => timePickerRef.current?.open()}
                     placeholder="customer_create_maternity_placeholder"
                     errMessage={errors.implementation_date}
                     value={{
                       id: '1',
                       label: formatDateTime(
                         values.implementation_date,
-                        'dd/mm/yyyy',
+                        'dd/mm/yyyy HH:mm',
                       ),
                       value: values.implementation_date,
                     }}
@@ -240,10 +240,23 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                   style={styles.actionButton}
                 />
               </Box>
-              <DateTimePicker
+              {/* <DateTimePicker
                 ref={datetimePickerRef}
                 value={values.implementation_date}
                 onChange={date => setFieldValue('implementation_date', date)}
+              /> */}
+              <TimePicker
+                currentDate={
+                  values.implementation_date
+                    ? new Date(values.implementation_date)
+                    : new Date()
+                }
+                ref={timePickerRef}
+                onConfirm={value => {
+                  console.log('TimePicker value:', value);
+                  console.log('TimePicker ISO:', value.toISOString());
+                  setFieldValue('implementation_date', value.toISOString());
+                }}
               />
               <SelectCosmetics
                 ref={cosmeticsSelectRef}

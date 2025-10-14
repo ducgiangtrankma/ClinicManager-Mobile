@@ -1,17 +1,15 @@
-import { ScheduleEntity } from '@src/models';
-import { convertToDayEvents } from '@src/utils';
 import dayjs from 'dayjs';
 import React, { FC, useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Box } from '../Box';
-import { CalendarEvent, MonthCalendar } from './MonthCalendar';
+import { CalendarEvent, DayEvents, MonthCalendar } from './MonthCalendar';
 interface Props {
-  schedules: ScheduleEntity[];
+  calendarEvents: DayEvents | undefined;
   onSelectDate: (date: string) => void;
 }
 
 export const ScheduleCalendarBase: FC<Props> = ({
-  schedules,
+  calendarEvents,
   onSelectDate,
 }) => {
   const [selectedDate, setSelectedDate] = useState(
@@ -19,7 +17,7 @@ export const ScheduleCalendarBase: FC<Props> = ({
   );
   const handleEventPress = (date: string, events: CalendarEvent[]) => {
     const eventTitles = events.map(e => `${e.time} - ${e.title}`).join('\n');
-    Alert.alert(`Sự kiện ngày ${date}`, eventTitles, [{ text: 'OK' }]);
+    console.log('eventTitles', eventTitles);
   };
 
   const handleDatePress = (date: string) => {
@@ -33,7 +31,7 @@ export const ScheduleCalendarBase: FC<Props> = ({
   return (
     <Box style={styles.container}>
       <MonthCalendar
-        events={convertToDayEvents(schedules)}
+        events={calendarEvents}
         onEventPress={handleEventPress}
         onDatePress={handleDatePress}
         selectedDate={selectedDate}

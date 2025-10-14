@@ -62,6 +62,15 @@ export const queryKeys = {
           endDate: endDate,
         },
       ] as const,
+    calendarEvents: (storeId: string, month: string, year: string) =>
+      [
+        ...queryKeys.scheduleList.all(storeId),
+        'calendarEvents',
+        {
+          month: month,
+          endDate: year,
+        },
+      ] as const,
   },
 } as const;
 

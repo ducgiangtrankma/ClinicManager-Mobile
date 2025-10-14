@@ -1,4 +1,6 @@
-import { dispatch, useAppTheme, useSelector } from '@src/common';
+import { useFocusEffect } from '@react-navigation/native';
+import { PlusIcon } from '@src/assets';
+import { useAppTheme, useSelector } from '@src/common';
 import {
   AppActivityIndicator,
   AppHeader,
@@ -9,22 +11,30 @@ import {
   ScheduleCalendarBase,
 } from '@src/components';
 import { ScheduleType } from '@src/models';
-import { ACTIVE_OPACITY_TOUCH, DEFAULT_HIT_SLOP, sizes } from '@src/utils';
+import { APP_SCREEN, navigate } from '@src/navigator';
+import { useCalendarQuery, useScheduleQuery } from '@src/services';
+import {
+  ACTIVE_OPACITY_TOUCH,
+  DEFAULT_HIT_SLOP,
+  formatDateTime,
+  sizes,
+} from '@src/utils';
+import dayjs from 'dayjs';
 import React, { FC, useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
-import { ScheduleEntriesList } from './components/ScheduleList';
-import { ChangeCalendarModeIcon, PlusIcon } from '@src/assets';
-import { onChangeScheduleType } from '@src/redux';
-import { useScheduleQuery } from '@src/services';
-import dayjs from 'dayjs';
 import { EmptyListSchedule } from './components/EmptySchedule';
-import { APP_SCREEN, navigate } from '@src/navigator';
-import { useFocusEffect } from '@react-navigation/native';
+import { ScheduleEntriesList } from './components/ScheduleList';
 
 interface Props {}
 
 export const CustomerScheduleScreen: FC<Props> = () => {
+  const now = new Date();
+
+  const year = now.getFullYear().toString(); // 2025
+  const month = String(now.getMonth() + 1)
+    .padStart(2, '0')
+    .toString();
   const { appLanguage } = useSelector(x => x.languageReducer);
   const { scheduleType } = useSelector(x => x.appReducer);
   const { Colors } = useAppTheme();
@@ -34,39 +44,46 @@ export const CustomerScheduleScreen: FC<Props> = () => {
   const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
 
   const { data, isLoading, refetch } = useScheduleQuery(startDate, endDate);
+  const {
+    data: calendarData,
+
+    refetch: calendarRefetch,
+  } = useCalendarQuery(month, year);
+
   const refreshing = false;
   const onRefresh = useCallback(() => {
     refetch();
-  }, [refetch]);
+    calendarRefetch();
+  }, [calendarRefetch, refetch]);
 
-  const onChangeScheduleCalendarMode = useCallback(() => {
-    if (scheduleType === ScheduleType.MONTH_CALENDAR) {
-      dispatch(onChangeScheduleType({ type: ScheduleType.FULL_CALENDAR }));
-    } else {
-      dispatch(onChangeScheduleType({ type: ScheduleType.MONTH_CALENDAR }));
-    }
-  }, [scheduleType]);
+  // const onChangeScheduleCalendarMode = useCallback(() => {
+  //   if (scheduleType === ScheduleType.MONTH_CALENDAR) {
+  //     dispatch(onChangeScheduleType({ type: ScheduleType.FULL_CALENDAR }));
+  //   } else {
+  //     dispatch(onChangeScheduleType({ type: ScheduleType.MONTH_CALENDAR }));
+  //   }
+  // }, [scheduleType]);
 
   useFocusEffect(
     React.useCallback(() => {
       refetch();
+      calendarRefetch();
       return () => {};
-    }, [refetch]),
+    }, [calendarRefetch, refetch]),
   );
-
   return (
     <PageContainer disablePaddingBottom>
       <AppHeader
         title="schedule_title"
         showBack={false}
-        rightContent={
-          <TouchableOpacity
-            hitSlop={DEFAULT_HIT_SLOP}
-            onPress={onChangeScheduleCalendarMode}
-          >
-            <ChangeCalendarModeIcon />
-          </TouchableOpacity>
-        }
+        // rightContent={
+        //   <TouchableOpacity
+        //     hitSlop={DEFAULT_HIT_SLOP}
+        //     onPress={onChangeScheduleCalendarMode}
+        //   >
+        //     <ChangeCalendarModeIcon />
+        //   </TouchableOpacity>
+        // }
       />
       {scheduleType === ScheduleType.MONTH_CALENDAR ? (
         <ScrollView
@@ -83,7 +100,7 @@ export const CustomerScheduleScreen: FC<Props> = () => {
         >
           <Box style={styles.calendarContainer}>
             <ScheduleCalendarBase
-              schedules={data ?? []}
+              calendarEvents={calendarData}
               onSelectDate={date => {
                 setStartDate(date);
                 setEndDate(date);
@@ -101,7 +118,9 @@ export const CustomerScheduleScreen: FC<Props> = () => {
                 translationKey="schedule_list_title"
                 fontSize="18"
                 fontFamily="content_semibold"
-              />
+              >
+                {formatDateTime(startDate, 'dd/mm/yyyy')}
+              </AppText>
               <TouchableOpacity
                 onPress={() =>
                   navigate(APP_SCREEN.CREATE_SCHEDULE, {

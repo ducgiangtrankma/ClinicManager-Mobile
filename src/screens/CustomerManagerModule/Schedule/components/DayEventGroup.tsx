@@ -1,14 +1,16 @@
 import { AppText, Box } from '@src/components';
 import { AppLanguage, ScheduleEntity } from '@src/models';
 import {
+  ACTIVE_OPACITY_TOUCH,
   getDayOfWeek,
   getInfoFromTime,
   getMonthLabel,
   sizes,
 } from '@src/utils';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ScheduleEntryItem } from './DayEventItem';
+import { APP_SCREEN, navigate } from '@src/navigator';
 
 interface DayMoodGroupProps {
   schedule: ScheduleEntity;
@@ -25,7 +27,15 @@ export const DayEventGroup = ({
 }: DayMoodGroupProps) => {
   const scheduleTime = getInfoFromTime(schedule.implementationDate);
   return (
-    <Box style={styles.dayGroup}>
+    <TouchableOpacity
+      style={styles.dayGroup}
+      activeOpacity={ACTIVE_OPACITY_TOUCH}
+      onPress={() =>
+        navigate(APP_SCREEN.SCHEDULE_DETAIL, {
+          schedule: schedule,
+        })
+      }
+    >
       <Box style={styles.dateHeader}>
         <Box style={styles.dateBox}>
           <AppText
@@ -68,7 +78,7 @@ export const DayEventGroup = ({
           isLast={index === dataLength - 1}
         />
       </Box>
-    </Box>
+    </TouchableOpacity>
   );
 };
 
