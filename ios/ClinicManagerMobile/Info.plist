@@ -31,10 +31,12 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Clinic Manager có thể cần truy cập vào vị trí của bạn để cung cấp dịch vụ chính xác.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Clinic Manager có thể cần truy cập vào vị trí của bạn để cung cấp dịch vụ chính xác.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Clinic Manager cần truy cập camera của bạn để cập nhật hình ảnh cho từng khách hàng. Dữ liệu của bạn hoàn toàn được bảo mật và không thu thập nếu chưa được sự đồng ý.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Clinic Manager cần truy cập album của bạn để cập nhật hình ảnh cho từng khách hàng. Dữ liệu của bạn hoàn toàn được bảo mật và không thu thập nếu chưa được sự đồng ý.</string>
 	<key>RCTNewArchEnabled</key>

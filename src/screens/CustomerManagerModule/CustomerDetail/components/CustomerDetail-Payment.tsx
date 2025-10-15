@@ -1,4 +1,5 @@
 import {
+  AppButton,
   AppText,
   Box,
   CustomerCost,
@@ -11,7 +12,12 @@ import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { useAppTheme } from '@src/common';
-import { CustomerDetailEntity, PaymentHistory } from '@src/models';
+import {
+  BillType,
+  CreateBillPayload,
+  CustomerDetailEntity,
+  PaymentHistory,
+} from '@src/models';
 import { PaymentService } from '@src/services';
 import { PaymentItem } from './PaymentItem';
 import { APP_SCREEN, navigate } from '@src/navigator';
@@ -40,8 +46,19 @@ export const CustomerDetailPayment: FC<Props> = ({ customerInfo }) => {
       return () => {};
     }, [getPaymentHistory]),
   );
-
   console.log('payments', payments);
+
+  const handlePaymentAll = useCallback(() => {
+    const paymentPayload: CreateBillPayload = {
+      customer: customerInfo.id,
+      type: BillType.ALL,
+      treatmentId: null,
+      paid: Number(customerInfo.debt),
+    };
+    navigate(APP_SCREEN.CREATE_BILL, {
+      bill: paymentPayload,
+    });
+  }, [customerInfo.debt, customerInfo.id]);
   return (
     <Box style={styles.container}>
       <TouchableOpacity
@@ -101,6 +118,23 @@ export const CustomerDetailPayment: FC<Props> = ({ customerInfo }) => {
         ))}
       </ScrollView>
       <CustomerCost ref={customerCostRef} />
+      {Number(customerInfo.debt) > 0 && (
+        <Box
+          style={[
+            styles.actionContainer,
+            {
+              backgroundColor: Colors.defaultPageBackground,
+              borderTopColor: Colors.divider,
+            },
+          ]}
+        >
+          <AppButton
+            title="payment_all_button"
+            onPress={() => handlePaymentAll()}
+            style={styles.actionButton}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
@@ -111,5 +145,17 @@ const styles = StyleSheet.create({
   },
   cost: {
     textDecorationLine: 'underline',
+  },
+  actionContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: sizes._16sdp,
+    borderTopWidth: sizes._1sdp,
+  },
+  actionButton: {
+    flex: 1,
+    borderRadius: sizes._12sdp,
   },
 });

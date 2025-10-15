@@ -234,6 +234,7 @@
       "schedule_detail_title":"Chi tiết lịch hẹn",
       "schedule_detail_customer":"Khách hàng",
       "add_product":"Thêm sản phẩm",
-      "add_category":"Thêm danh mục sản phẩm"
+      "add_category":"Thêm danh mục sản phẩm",
+      "payment_all_button":"Thanh toán tất cả"
     }
  }

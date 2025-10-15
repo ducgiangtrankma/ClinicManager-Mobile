@@ -29,7 +29,9 @@ export const PaymentItem: FC<Props> = ({ item }) => {
     <Box style={[styles.container, { backgroundColor: Colors.white }]}>
       <Box style={[styles.card]}>
         <Box horizontal justify="space-between">
-          <AppText fontFamily="content_bold">{item.treatment.title}</AppText>
+          <AppText fontFamily="content_bold">
+            {item.treatment?.title ?? 'Thanh toán toàn bộ'}
+          </AppText>
           <AppText fontSize="14">
             {formatDateTime(item.createdAt, 'dd/mm/yyyy HH:mm')}
           </AppText>

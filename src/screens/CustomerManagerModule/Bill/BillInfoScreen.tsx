@@ -86,7 +86,7 @@ export const CreateBillScreen: FC<Props> = () => {
       {bill && (
         <ViewShot
           ref={viewShotRef}
-          style={styles.container}
+          style={[styles.container, { backgroundColor: Colors.white }]}
           captureMode="mount"
         >
           <ScrollView>
