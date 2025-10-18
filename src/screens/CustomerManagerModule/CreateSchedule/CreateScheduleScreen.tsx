@@ -16,7 +16,12 @@ import {
 import { CreateScheduleFormValuesEntity } from '@src/models';
 import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
 import { ScheduleService } from '@src/services';
-import { formatDateTime, scheduleValidationSchema, sizes } from '@src/utils';
+import {
+  addEventToNativeCalender,
+  formatDateTime,
+  scheduleValidationSchema,
+  sizes,
+} from '@src/utils';
 import dayjs from 'dayjs';
 import { Formik } from 'formik';
 import React, { FC, useCallback, useRef } from 'react';
@@ -39,6 +44,7 @@ export const CreateScheduleScreen: FC<Props> = () => {
     customer: undefined,
     treatment: undefined,
     note: '',
+    eventId: '',
   });
 
   // Memoize validation schema
@@ -51,7 +57,16 @@ export const CreateScheduleScreen: FC<Props> = () => {
     async (values: CreateScheduleFormValuesEntity) => {
       try {
         globalLoading.show();
-        await ScheduleService.createSchedule(values);
+        const eventId = await addEventToNativeCalender(
+          values.note ?? '',
+          values.implementationDate,
+          values.implementationDate,
+          values.note ?? '',
+        );
+        await ScheduleService.createSchedule({
+          ...values,
+          eventId,
+        });
         goBack();
       } catch (error: any) {
         showErrorMessage('error.title', error.message);

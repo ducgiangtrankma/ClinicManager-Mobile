@@ -9,12 +9,15 @@ import {
 } from '@src/models';
 import { TreatmentEntity } from '@src/models/TreatmentEntity';
 import { Linking, PermissionsAndroid, Platform } from 'react-native';
-import dayjs from 'dayjs';
+
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import {
   DayEvents,
   EventType,
 } from '@src/components/ScheduleCalendarBase/MonthCalendar';
+import dayjs from 'dayjs';
+
+import RNCalendarEvents from 'react-native-calendar-events';
 function callNumber(phone: string) {
   let phoneNumber = phone;
   if (Platform.OS !== 'android') {
@@ -289,5 +292,61 @@ export function convertToDayEvents(items: ScheduleEntity[]): DayEvents {
   }
 
   return result;
+}
+
+export async function ensureCalendarPermission() {
+  const status = await RNCalendarEvents.checkPermissions(false); // false = events
+  if (status !== 'authorized') {
+    const next = await RNCalendarEvents.requestPermissions(false);
+    if (next !== 'authorized') {
+      throw new Error('Chưa được cấp quyền truy cập Lịch');
+    }
+  }
+}
+
+export const addEventToNativeCalender = async (
+  eventTitle: string,
+  startDate: string, //ISO 8601 string
+  endDate: string, //ISO 8601 string,
+  eventNotes: string, //ISO 8601 string,
+) => {
+  await ensureCalendarPermission();
+  return RNCalendarEvents.saveEvent(eventTitle, {
+    startDate: new Date(startDate).toISOString(), // Thời gian bắt đầu sự kiện
+    endDate: new Date(endDate).toISOString(), // Thời gian kết thúc sự kiện
+    location: '',
+    notes: eventNotes,
+    alarms: [
+      {
+        date: -60, // Nhắc nhở trước 60 phút
+      },
+    ],
+  });
+};
+export const updateEventToNativeCalender = async (
+  eventId: string,
+  eventTitle: string,
+  startDate: string, //ISO 8601 string
+  endDate: string, //ISO 8601 string,
+  eventNotes: string, //ISO 8601 string,
+) => {
+  await ensureCalendarPermission();
+  return RNCalendarEvents.saveEvent(eventTitle, {
+    id: eventId, // ID của sự kiện cần chỉnh sửa
+    startDate: new Date(startDate).toISOString(), // Thời gian bắt đầu sự kiện
+    endDate: new Date(endDate).toISOString(), // Thời gian kết thúc sự kiện
+    location: '',
+    notes: eventNotes,
+    alarms: [
+      {
+        date: -60, // Nhắc nhở trước 10 phút
+      },
+    ],
+  });
+};
+
+export async function deleteEvent(eventId: string) {
+  await ensureCalendarPermission();
+  return await RNCalendarEvents.removeEvent(eventId);
 }
 export { callNumber, isSuccessTreatment };

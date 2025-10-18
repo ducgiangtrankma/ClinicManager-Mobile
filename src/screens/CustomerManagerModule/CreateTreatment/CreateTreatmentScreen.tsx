@@ -28,6 +28,7 @@ import {
 import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
 import { TreatmentService } from '@src/services';
 import {
+  addEventToNativeCalender,
   calcTotalPrice,
   formatDateTime,
   formatMoney,
@@ -44,6 +45,8 @@ export const CreateTreatmentScreen: FC<Props> = () => {
   const route =
     useRoute<RouteProp<RootStackParamList, APP_SCREEN.CREATE_TREATMENT>>();
   const customerId = route?.params?.customerId;
+  const customerName = route?.params?.customerName;
+
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
   // const datetimePickerRef = useRef<DateTimePickerReft>(null);
@@ -52,7 +55,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
 
   // Lazy initialization - tối ưu performance
   const getInitialValues = (): TreatmentCreateFormValuesEntity => ({
-    implementation_date: new Date().toISOString(),
+    implementationDate: new Date().toISOString(),
     title: '',
     note: '',
     cosmetics: [],
@@ -86,7 +89,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
           const body: CreateTreatmentPayload = {
             title: values.title,
             note: values.note,
-            implementationDate: values.implementation_date,
+            implementationDate: values.implementationDate,
             cosmetics: cosmeticsPayload,
             customer: customerId,
             totalTreatmentFee: Number(values.totalTreatmentFee),
@@ -94,7 +97,16 @@ export const CreateTreatmentScreen: FC<Props> = () => {
             paid: Number(values.paid),
           };
           globalLoading.show();
-          await TreatmentService.createTreatment(body);
+          const eventId = await addEventToNativeCalender(
+            `${customerName}-${body.title}`,
+            body.implementationDate,
+            body.implementationDate,
+            body.note,
+          );
+          await TreatmentService.createTreatment({
+            ...body,
+            eventId: eventId,
+          });
           showSuccessMessage('action_success_message', 'empty_string');
           goBack();
         }
@@ -105,7 +117,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
         globalLoading.hide();
       }
     },
-    [customerId],
+    [customerId, customerName],
   );
 
   return (
@@ -144,14 +156,14 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                   <AppSelectForm
                     onPress={() => timePickerRef.current?.open()}
                     placeholder="customer_create_maternity_placeholder"
-                    errMessage={errors.implementation_date}
+                    errMessage={errors.implementationDate}
                     value={{
                       id: '1',
                       label: formatDateTime(
-                        values.implementation_date,
+                        values.implementationDate,
                         'dd/mm/yyyy HH:mm',
                       ),
-                      value: values.implementation_date,
+                      value: values.implementationDate,
                     }}
                   />
                 </Box>
@@ -192,7 +204,7 @@ export const CreateTreatmentScreen: FC<Props> = () => {
                   <AppSelectForm
                     onPress={() => cosmeticsSelectRef.current?.open()}
                     placeholder="treatment_create_cosmetics_placeholder"
-                    errMessage={errors.implementation_date}
+                    errMessage={errors.implementationDate}
                     value={undefined}
                   />
 
@@ -247,15 +259,13 @@ export const CreateTreatmentScreen: FC<Props> = () => {
               /> */}
               <TimePicker
                 currentDate={
-                  values.implementation_date
-                    ? new Date(values.implementation_date)
+                  values.implementationDate
+                    ? new Date(values.implementationDate)
                     : new Date()
                 }
                 ref={timePickerRef}
                 onConfirm={value => {
-                  console.log('TimePicker value:', value);
-                  console.log('TimePicker ISO:', value.toISOString());
-                  setFieldValue('implementation_date', value.toISOString());
+                  setFieldValue('implementationDate', value.toISOString());
                 }}
               />
               <SelectCosmetics

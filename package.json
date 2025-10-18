@@ -37,6 +37,7 @@
     "react-fast-compare": "^3.2.2",
     "react-i18next": "^15.7.3",
     "react-native": "0.81.1",
+    "react-native-calendar-events": "^2.2.0",
     "react-native-calendars": "^1.1313.0",
     "react-native-config": "^1.5.9",
     "react-native-date-picker": "5.0.12",

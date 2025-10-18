@@ -12,9 +12,14 @@ import { StyleSheet } from 'react-native';
 
 interface Props {
   customerId: string;
+  customerName: string;
   onCreateSuccess: () => void;
 }
-export const TreatmentScreen: FC<Props> = ({ customerId, onCreateSuccess }) => {
+export const TreatmentScreen: FC<Props> = ({
+  customerId,
+  customerName,
+  onCreateSuccess,
+}) => {
   const { Colors } = useAppTheme();
 
   const [treatments, stepTreatments] = useState<TreatmentEntity[]>([]);
@@ -59,6 +64,7 @@ export const TreatmentScreen: FC<Props> = ({ customerId, onCreateSuccess }) => {
           onPress={() =>
             navigate(APP_SCREEN.CREATE_TREATMENT, {
               customerId: customerId,
+              customerName: customerName,
             })
           }
         />

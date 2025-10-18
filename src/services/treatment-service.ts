@@ -23,8 +23,7 @@ export const TreatmentService = {
     });
   },
   createTreatment: (body: CreateTreatmentPayload) => {
-    console.log('createTreatment', body);
-    return axiosClient.post<any>(`${treatmentUrl}`, body, {
+    return axiosClient.post<TreatmentEntity>(`${treatmentUrl}`, body, {
       headers: {
         Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
       },
@@ -52,6 +51,18 @@ export const TreatmentService = {
     return axiosClient.put<any>(`${treatmentUrl}/${treatmentId}`, updateData, {
       headers: {
         Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
+      },
+      timeout: 5000,
+    });
+  },
+
+  deleteTreatment: (treatmentId: string) => {
+    return axiosClient.delete<any>(`${treatmentUrl}/${treatmentId}`, {
+      headers: {
+        Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
+      },
+      params: {
+        restoreInventory: true,
       },
       timeout: 5000,
     });

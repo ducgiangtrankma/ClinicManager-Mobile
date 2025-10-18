@@ -5,7 +5,7 @@ export const treatmentValidationSchema = (
   t: TFunction<'translation', undefined>,
 ) =>
   Yup.object().shape({
-    implementation_date: Yup.string().required(t('value_not_empty')),
+    implementationDate: Yup.string().required(t('value_not_empty')),
     note: Yup.string().required(t('value_not_empty')),
     cosmetics: Yup.array(),
     title: Yup.string().required(t('value_not_empty')),

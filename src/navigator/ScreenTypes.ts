@@ -69,6 +69,7 @@ export type AuthenticationPramsList = {
   };
   [APP_SCREEN.CREATE_TREATMENT]: {
     customerId: string;
+    customerName: string;
   };
   [APP_SCREEN.TREATMENT_DETAIL]: {
     treatmentId: string;

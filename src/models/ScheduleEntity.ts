@@ -15,6 +15,7 @@ export interface ScheduleEntity {
   createdAt: string;
   updatedAt: string;
   id: string;
+  eventId: string;
 }
 
 export interface CreateBy {

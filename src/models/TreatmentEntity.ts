@@ -17,6 +17,7 @@ export interface TreatmentEntity {
   createdAt: string;
   updatedAt: string;
   id: string;
+  eventId: string | null;
 }
 
 export interface CreateTreatmentPayload {
@@ -28,6 +29,7 @@ export interface CreateTreatmentPayload {
   totalTreatmentFee: number;
   debt: number;
   paid: number;
+  eventId?: string;
 }
 
 export interface CosmeticPayload {
@@ -56,4 +58,5 @@ export interface TreatmentDetailEntity {
   createdAt: string;
   updatedAt: string;
   id: string;
+  eventId: string | null;
 }

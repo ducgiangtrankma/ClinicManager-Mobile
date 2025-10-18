@@ -55,7 +55,7 @@ export const CustomerScheduleScreen: FC<Props> = () => {
     refetch();
     calendarRefetch();
   }, [calendarRefetch, refetch]);
-
+  console.log('data', data);
   // const onChangeScheduleCalendarMode = useCallback(() => {
   //   if (scheduleType === ScheduleType.MONTH_CALENDAR) {
   //     dispatch(onChangeScheduleType({ type: ScheduleType.FULL_CALENDAR }));

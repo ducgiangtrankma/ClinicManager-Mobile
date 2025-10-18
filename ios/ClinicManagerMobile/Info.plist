@@ -31,6 +31,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Vui lòng cho phép Clinic Manager truy cập lịch của bạn. Dữ liệu của bạn sẽ không được chia sẻ nếu không được sự cho phép của bạn</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Clinic Manager có thể cần truy cập vào vị trí của bạn để cung cấp dịch vụ chính xác.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

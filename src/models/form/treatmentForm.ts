@@ -1,7 +1,7 @@
 import { ProductSelected } from '../ProductEntity';
 
 export interface TreatmentCreateFormValuesEntity {
-  implementation_date: string;
+  implementationDate: string;
   title: string;
   note: string;
   cosmetics: ProductSelected[];
@@ -11,7 +11,7 @@ export interface TreatmentCreateFormValuesEntity {
 }
 
 export interface TreatmentUpdateFormValuesEntity {
-  implementation_date: string;
+  implementationDate: string;
   title: string;
   note: string;
   cosmetics: ProductSelected[];

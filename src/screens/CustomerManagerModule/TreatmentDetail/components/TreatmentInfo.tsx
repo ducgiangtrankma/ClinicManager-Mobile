@@ -10,14 +10,14 @@ import {
   AttachmentPickerRef,
   Box,
   CosmeticItem,
-  DateTimePicker,
-  DateTimePickerReft,
   FormTitle,
   globalLoading,
   GridImage,
   SelectCosmetics,
   SelectCosmeticsRef,
   showErrorMessage,
+  TimePicker,
+  TimePickerRef,
 } from '@src/components';
 
 import {
@@ -33,6 +33,7 @@ import {
   sizes,
   startsWithHttp,
   treatmentValidationSchema,
+  updateEventToNativeCalender,
 } from '@src/utils';
 import { Formik } from 'formik';
 import React, { FC, useCallback, useRef, useState } from 'react';
@@ -43,21 +44,23 @@ interface Props {
   treatment: TreatmentDetailEntity;
   onUpdateSuccess: () => void;
 }
-export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
+export const TreatmentInfo: FC<Props> = ({
+  treatment,
+
+  onUpdateSuccess,
+}) => {
   const { t } = useTranslation();
   const { Colors } = useAppTheme();
   const [isEditing, setIsEditing] = useState(false);
-  const datetimePickerRef = useRef<DateTimePickerReft>(null);
+  // const datetimePickerRef = useRef<DateTimePickerReft>(null);
   const cosmeticsSelectRef = useRef<SelectCosmeticsRef>(null);
   const attachmentPickerRef = useRef<AttachmentPickerRef>(null);
-  console.log('treatment.cosmetics,', treatment.cosmetics);
+  const timePickerRef = useRef<TimePickerRef>(null);
 
   const [images, setImages] = useState<LocalFileEntity[]>([]);
   // Lazy initialization - chỉ tạo khi cần edit
   const getInitialValues = (): TreatmentUpdateFormValuesEntity => ({
-    implementation_date: new Date(treatment.implementationDate)
-      .toISOString()
-      .slice(0, 16),
+    implementationDate: treatment.implementationDate,
     title: treatment.title,
     note: treatment.note,
     cosmetics: treatment.cosmetics,
@@ -66,7 +69,7 @@ export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
     paid: treatment.paid,
     images: treatment.images,
   });
-  console.log('treatment.images', treatment.images);
+
   const handleSave = useCallback(
     async (values: TreatmentUpdateFormValuesEntity) => {
       try {
@@ -87,6 +90,15 @@ export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
             showErrorMessage('error.title', uploadError.message);
           }
         }
+        if (treatment.eventId) {
+          await updateEventToNativeCalender(
+            treatment.eventId,
+            `${treatment?.customer?.name ?? ''}-${values.title}`,
+            values.implementationDate,
+            values.implementationDate,
+            values.note,
+          );
+        }
 
         await TreatmentService.updateTreatment(treatment.id, {
           ...values,
@@ -102,7 +114,13 @@ export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
         globalLoading.hide();
       }
     },
-    [images, onUpdateSuccess, treatment.id],
+    [
+      images,
+      onUpdateSuccess,
+      treatment?.customer?.name,
+      treatment.eventId,
+      treatment.id,
+    ],
   );
   const handleCancel = () => {
     setIsEditing(false);
@@ -128,7 +146,7 @@ export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
       <Box gap={sizes._8sdp}>
         <FormTitle title="treatment_create_time_implementation_date" required />
         <AppText color={Colors.content} fontFamily="content_regular">
-          {formatDateTime(treatment.implementationDate, 'dd/mm/yyyy')}
+          {formatDateTime(treatment.implementationDate, 'dd/mm/yyyy HH:mm')}
         </AppText>
       </Box>
 
@@ -213,16 +231,16 @@ export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
                 required
               />
               <AppSelectForm
-                onPress={() => datetimePickerRef.current?.open()}
+                onPress={() => timePickerRef.current?.open()}
                 placeholder="customer_create_maternity_placeholder"
-                errMessage={errors.implementation_date}
+                errMessage={errors.implementationDate}
                 value={{
                   id: '1',
                   label: formatDateTime(
-                    values.implementation_date,
-                    'dd/mm/yyyy',
+                    values.implementationDate,
+                    'dd/mm/yyyy HH:mm',
                   ),
-                  value: values.implementation_date,
+                  value: values.implementationDate,
                 }}
               />
             </Box>
@@ -349,10 +367,16 @@ export const TreatmentInfo: FC<Props> = ({ treatment, onUpdateSuccess }) => {
             />
           </Box>
 
-          <DateTimePicker
-            ref={datetimePickerRef}
-            value={values.implementation_date}
-            onChange={date => setFieldValue('implementation_date', date)}
+          <TimePicker
+            currentDate={
+              values.implementationDate
+                ? new Date(values.implementationDate)
+                : new Date()
+            }
+            ref={timePickerRef}
+            onConfirm={value => {
+              setFieldValue('implementationDate', value.toISOString());
+            }}
           />
           <SelectCosmetics
             ref={cosmeticsSelectRef}

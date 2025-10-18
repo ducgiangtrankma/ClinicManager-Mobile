@@ -21,9 +21,11 @@ import {
 import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
 import {
   DEFAULT_HIT_SLOP,
+  deleteEvent,
   formatDateTime,
   scheduleValidationSchema,
   sizes,
+  updateEventToNativeCalender,
 } from '@src/utils';
 
 import { DeleteUser } from '@src/assets';
@@ -50,11 +52,21 @@ export const ScheduleDetailScreen: FC<Props> = () => {
     customer: schedule?.customer?.id,
     treatment: schedule?.treatment?.id,
     note: schedule?.note ?? '',
+    eventId: schedule?.eventId ?? '',
   });
 
   const handleSave = async (values: CreateScheduleFormValuesEntity) => {
     try {
       if (schedule?.id) {
+        if (values.eventId) {
+          await updateEventToNativeCalender(
+            values.eventId,
+            values.note ?? '',
+            values.implementationDate,
+            values.implementationDate,
+            values.note ?? '',
+          );
+        }
         const updatePayload: UpdateScheduleFormValuesEntity = {
           implementationDate: values.implementationDate,
           note: values.note,
@@ -208,6 +220,9 @@ export const ScheduleDetailScreen: FC<Props> = () => {
     try {
       if (schedule) {
         globalLoading.show();
+        if (schedule.eventId) {
+          await deleteEvent(schedule.eventId);
+        }
         await ScheduleService.deleteSchedule(schedule.id);
         showSuccessMessage('action_success_message', 'empty_string');
         goBack();

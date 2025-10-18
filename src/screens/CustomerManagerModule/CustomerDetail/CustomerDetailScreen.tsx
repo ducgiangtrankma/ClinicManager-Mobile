@@ -78,6 +78,7 @@ export const CustomerDetailScreen: FC<Props> = () => {
       return (
         <TreatmentScreen
           customerId={customerInfo.id}
+          customerName={customerInfo.name}
           onCreateSuccess={getCustomerDetail}
         />
       );
