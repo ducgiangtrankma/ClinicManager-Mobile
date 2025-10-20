@@ -9,3 +9,4 @@ export * from './payment-service';
 export * from './category-service';
 export * from './product-service';
 export * from './schedule-service';
+export * from './report-service';

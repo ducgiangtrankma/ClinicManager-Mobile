@@ -6,3 +6,4 @@ export * from './SignIn';
 export * from './ForgotPassword';
 export * from './VerifyOtp';
 export * from './WarehouseManagerModule';
+export * from './ReportModule';

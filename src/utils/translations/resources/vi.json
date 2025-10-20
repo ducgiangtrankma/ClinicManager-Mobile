@@ -89,6 +89,8 @@
       "customer.home.title":"Quản lý khách hàng",
       "warehouse.homeTab.name":"Sản phẩm",
       "warehouse.inventoryTab.name":"Danh mục",
+      "report.growth.name":"Tăng trưởng",
+      "report.revenue.name":"Doanh thu",
       "warehouse.product.title":"Quản lý sản phẩm",
       "warehouse.category.title":"Quản lý danh mục",
       "action.add.customer":"Thêm khách hàng",
@@ -132,6 +134,7 @@
       "drawer_facility":"Đổi cơ sở",
       "drawer_customer":"Quản lý khách hàng",
       "drawer_warehouse":"Quản lý kho",
+      "drawer_report":"Báo cáo",
       "step_button_tile_next":"Tiếp theo",
       "step_button_title_back":"Quay lại",
       "step_button_save":"Lưu",
@@ -235,6 +238,13 @@
       "schedule_detail_customer":"Khách hàng",
       "add_product":"Thêm sản phẩm",
       "add_category":"Thêm danh mục sản phẩm",
-      "payment_all_button":"Thanh toán tất cả"
+      "payment_all_button":"Thanh toán tất cả",
+      "store":"Cơ sở - ",
+      "totalNewCustomers":"Tổng số khách hàng mới:",
+      "report_growth_title":"Tăng trưởng khách hàng",
+      "year":"Năm ",
+      "year_picker_title":"Chọn năm",
+      "apply":"Áp dụng",
+      "cancel":"Huỷ"
     }
  }

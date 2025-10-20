@@ -39,3 +39,4 @@ export * from './CreateCustomerProgress';
 export * from './SelectGender';
 export * from './SelectCategory';
 export * from './TimePicker';
+export * from './YearPicker';

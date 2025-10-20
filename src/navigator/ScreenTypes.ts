@@ -7,6 +7,7 @@ export enum APP_SCREEN {
   MODULE_MENU = 'MODULE_MENU',
   CUSTOMER_MODULE = 'CUSTOMER_MODULE',
   WAREHOUSE_MODULE = 'WAREHOUSE_MODULE',
+  REPORT_MODULE = 'REPORT_MODULE',
   CREATE_FACILITY = 'CREATE_FACILITY',
   DRAWER = 'DRAWER',
   SIGNIN = 'SIGNIN',
@@ -26,6 +27,7 @@ export enum APP_SCREEN {
   CUSTOMER_COST = 'CUSTOMER_COST',
   CREATE_SCHEDULE = 'CREATE_SCHEDULE',
   SCHEDULE_DETAIL = 'SCHEDULE_DETAIL',
+  CUSTOMER_GROWTH = 'CUSTOMER_GROWTH',
 
   WAREHOUSE_TAB = 'WAREHOUSE_TAB',
   PRODUCT_SCREEN = 'PRODUCT_SCREEN',
@@ -53,6 +55,8 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.MODULE_MENU]: undefined;
   [APP_SCREEN.CUSTOMER_MODULE]: undefined;
   [APP_SCREEN.WAREHOUSE_MODULE]: undefined;
+  [APP_SCREEN.REPORT_MODULE]: undefined;
+
   [APP_SCREEN.CREATE_FACILITY]: undefined;
   [APP_SCREEN.CUSTOMER_TAB]: undefined;
   [APP_SCREEN.WAREHOUSE_TAB]: undefined;
@@ -82,7 +86,6 @@ export type AuthenticationPramsList = {
     customerId: string;
   };
 
-  [APP_SCREEN.WAREHOUSE_MODULE]: undefined;
   [APP_SCREEN.PRODUCT_SCREEN]: undefined;
   [APP_SCREEN.CATEGORY_SCREEN]: undefined;
   [APP_SCREEN.CREATE_PRODUCT]: undefined;
@@ -93,6 +96,8 @@ export type AuthenticationPramsList = {
   [APP_SCREEN.CATEGORY_DETAIL]: {
     categoryId: string;
   };
+
+  [APP_SCREEN.CUSTOMER_GROWTH]: undefined;
 };
 
 export type RootStackParamList = {

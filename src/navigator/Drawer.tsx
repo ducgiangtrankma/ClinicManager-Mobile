@@ -8,8 +8,14 @@ import { CustomerModuleStack } from './CustomerModule/CustomerModuleStackNavigat
 import { APP_SCREEN } from './ScreenTypes';
 import { WarehouseModuleStack } from './WarehouseModule/WarehoustModuleStackNavigation';
 import { DrawerContent } from './DrawerContent';
-import { FacilityIcon, GroupUserIcon, WarehouseIcon } from '@src/assets';
+import {
+  FacilityIcon,
+  GroupUserIcon,
+  ReportModuleIcon,
+  WarehouseIcon,
+} from '@src/assets';
 import { useTranslation } from 'react-i18next';
+import { ReportModuleStack } from './Report/ReportStackNavigation';
 
 const Drawer = createDrawerNavigator();
 export const DrawerNavigator: React.FunctionComponent = () => {
@@ -51,6 +57,15 @@ export const DrawerNavigator: React.FunctionComponent = () => {
           drawerIcon: ({ color }) => <WarehouseIcon color={color} />,
           headerShown: false,
           title: t('drawer_warehouse'),
+        }}
+      />
+      <Drawer.Screen
+        name={APP_SCREEN.REPORT_MODULE}
+        component={ReportModuleStack}
+        options={{
+          drawerIcon: ({ color }) => <ReportModuleIcon color={color} />,
+          headerShown: false,
+          title: t('drawer_report'),
         }}
       />
     </Drawer.Navigator>

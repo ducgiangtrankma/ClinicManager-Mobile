@@ -72,6 +72,11 @@ export const queryKeys = {
         },
       ] as const,
   },
+  customerYearGrowth: {
+    all: (userId?: string) => ['customerYearGrowth', userId] as const,
+    listGrowth: (year: string) =>
+      [...queryKeys.facilityList.all(year), 'customerYearGrowth'] as const,
+  },
 } as const;
 
 export type QueryKeys = typeof queryKeys;

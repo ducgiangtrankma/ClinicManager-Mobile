@@ -3,6 +3,8 @@ import {
   AttachmentEntity,
   Gender,
   GridImageEntity,
+  GrowthStoreChartData,
+  GrowthYearReportResponse,
   LocalFileEntity,
   ProductSelected,
   ScheduleEntity,
@@ -349,4 +351,19 @@ export async function deleteEvent(eventId: string) {
   await ensureCalendarPermission();
   return await RNCalendarEvents.removeEvent(eventId);
 }
+
+export const createStoreChartData = (
+  response: GrowthYearReportResponse,
+): GrowthStoreChartData[] => {
+  return response.stores.map(store => ({
+    storeId: store.storeId,
+    storeName: store.storeName,
+    totalNewCustomers: store.totalNewCustomers,
+    chartData: store.monthlyData.map(m => ({
+      label: m.monthName || String(m.month),
+      value: m.count,
+      dataPointText: String(m.count),
+    })),
+  }));
+};
 export { callNumber, isSuccessTreatment };
