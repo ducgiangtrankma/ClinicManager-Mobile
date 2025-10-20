@@ -110,6 +110,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
         style={{ marginHorizontal: sizes._16sdp, marginBottom: sizes._16sdp }}
       >
         <AppInput
+          value={keyword}
           onChangeText={value => setKeyword(value)}
           placeholder={t('customer_search_placeholder')}
           clearButtonMode="while-editing"
