@@ -6,14 +6,17 @@ import {
   YearPickerReft,
 } from '@src/components';
 import { useYearCustomerGrowthQuery } from '@src/services';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { YearGrowthChart } from './components/YearGrowthChart';
 
 import { GrowthStoreChartData } from '@src/models';
 import { createStoreChartData } from '@src/utils';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { useAppTheme } from '@src/common';
 interface Props {}
 export const CustomerGrowthScreen: FC<Props> = () => {
+  const { Colors } = useAppTheme();
   const now = new Date();
 
   const yearPickerRef: React.RefObject<YearPickerReft> = React.createRef<any>();
@@ -27,6 +30,10 @@ export const CustomerGrowthScreen: FC<Props> = () => {
     }
   }, [refetch, year]);
 
+  const onRefresh = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
   const charData: GrowthStoreChartData[] = useMemo(() => {
     // Perform expensive calculation here
     if (data) return createStoreChartData(data ?? []);
@@ -35,7 +42,7 @@ export const CustomerGrowthScreen: FC<Props> = () => {
 
   return (
     <PageContainer style={styles.container}>
-      <AppHeader title="report_growth_title" showBack />
+      <AppHeader title="report_growth_title" showBack={false} />
       <TouchableOpacity onPress={() => yearPickerRef.current.open()}>
         <AppText
           textAlign="center"
@@ -47,7 +54,17 @@ export const CustomerGrowthScreen: FC<Props> = () => {
           {year}
         </AppText>
       </TouchableOpacity>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={onRefresh}
+            colors={[Colors.green]}
+            tintColor={Colors.green}
+          />
+        }
+      >
         {charData.map(item => (
           <YearGrowthChart
             key={item.storeId}

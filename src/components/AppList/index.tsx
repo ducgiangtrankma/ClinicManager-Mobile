@@ -33,6 +33,7 @@ export const AppList = forwardRef<
               refreshing={refreshing}
               onRefresh={onRefresh}
               tintColor={Colors.activityIndicatorColor}
+              colors={[Colors.green]}
             />
           ) : undefined
         }

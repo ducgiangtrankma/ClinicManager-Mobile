@@ -366,4 +366,16 @@ export const createStoreChartData = (
     })),
   }));
 };
+
+export const getMonthRange = (year?: number, month?: number) => {
+  const base =
+    year && month
+      ? dayjs(`${year}-${String(month).padStart(2, '0')}-01`)
+      : dayjs();
+
+  return {
+    startDate: base.startOf('month').format('YYYY-MM-DD'),
+    endDate: base.endOf('month').format('YYYY-MM-DD'),
+  };
+};
 export { callNumber, isSuccessTreatment };

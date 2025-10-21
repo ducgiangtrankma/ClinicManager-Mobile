@@ -245,6 +245,16 @@
       "year":"Năm ",
       "year_picker_title":"Chọn năm",
       "apply":"Áp dụng",
-      "cancel":"Huỷ"
+      "cancel":"Huỷ",
+      "report_revenue":"Báo cáo doanh thu",
+      "expectedRevenue":"Dự kiến",
+      "actualRevenue":"Thực tế",
+      "revenueDetail":"Chi tiết:",
+      "totalExpectedRevenue":"Tổng doanh thu dự kiến:",
+      "totalActualRevenue":"Tổng doanh thu thực tế:",
+      "averageProfitMargin":"Biên độ lợi nhuận trung bình:",
+      "totalDebt":"Tổng công nợ:",
+      "totalCost":"Tổng cost:",
+      "totalProfit":"Tổng lợi nhuận thực tế"
     }
  }

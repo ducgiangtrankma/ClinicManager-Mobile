@@ -1,13 +1,9 @@
-import { GrowthYearReportResponse } from '@src/models';
+import { GrowthYearReportResponse, RevenueReportResponse } from '@src/models';
 import { store } from '@src/redux';
 import axiosClient from './axiosClient';
 const reportUrp = '/report';
 export const ReportService = {
   getYearCustomerGrowthReport: (year: string) => {
-    console.log(
-      'getYearCustomerGrowthReport',
-      `${reportUrp}/customer-growth?year=${year}&type=year`,
-    );
     return axiosClient.get<GrowthYearReportResponse>(
       `${reportUrp}/customer-growth?year=${year}&type=year`,
       {
@@ -18,5 +14,15 @@ export const ReportService = {
         timeout: 5000,
       },
     );
+  },
+
+  getRevenueReport: (params: { fromDate: string; toDate: string }) => {
+    return axiosClient.get<RevenueReportResponse>(`${reportUrp}/revenue`, {
+      headers: {
+        Authorization: 'Bearer ' + store.getState().appReducer.accessToken,
+      },
+      params,
+      timeout: 5000,
+    });
   },
 };

@@ -75,7 +75,23 @@ export const queryKeys = {
   customerYearGrowth: {
     all: (userId?: string) => ['customerYearGrowth', userId] as const,
     listGrowth: (year: string) =>
-      [...queryKeys.facilityList.all(year), 'customerYearGrowth'] as const,
+      [
+        ...queryKeys.facilityList.all(),
+        'customerYearGrowth',
+        { year: year },
+      ] as const,
+  },
+  revenueGrowth: {
+    all: (userId?: string) => ['revenueGrowth', userId] as const,
+    listRevenue: (userId: string, fromDate: string, toDate: string) =>
+      [
+        ...queryKeys.revenueGrowth.all(userId),
+        'revenueGrowth',
+        {
+          fromDate: fromDate,
+          toDate: toDate,
+        },
+      ] as const,
   },
 } as const;
 
