@@ -13,3 +13,4 @@ export * from './CustomerCostEntity';
 export * from './CategoryEntity';
 export * from './ScheduleEntity';
 export * from './ReportEntity';
+export * from './NotificationEntity';

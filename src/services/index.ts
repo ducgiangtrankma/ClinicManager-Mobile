@@ -10,3 +10,5 @@ export * from './category-service';
 export * from './product-service';
 export * from './schedule-service';
 export * from './report-service';
+export * from './user-service';
+export * from './notification-service';

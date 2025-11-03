@@ -48,8 +48,8 @@ export const SignInScreen: FC<Props> = () => {
   const validationSignUpSchema = signUpValidationSchema(t);
 
   const initialSignInValues: SignInFormValuesEntity = {
-    email: defaultEmail ?? '',
-    password: '',
+    email: defaultEmail ?? 'tranducgiangact@gmail.com',
+    password: '1234567a',
   };
   const initialSignUpValues: SignUpFormValuesEntity = {
     email: '',

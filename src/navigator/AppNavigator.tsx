@@ -1,9 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { RXStore, useSelector } from '@src/common';
-import { RootNavigation } from './RootNavigation';
 import React, { useEffect, useState } from 'react';
-import { navigationRef } from './NavigationServices';
 import { useTranslation } from 'react-i18next';
+import { navigationRef } from './NavigationServices';
+import { RootNavigation } from './RootNavigation';
 
 export const AppContainer = () => {
   const [navigationReady, setNavigationReady] = useState<boolean>(false);
@@ -13,6 +13,7 @@ export const AppContainer = () => {
     i18n.changeLanguage(appLanguage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appLanguage]);
+
   return (
     <NavigationContainer
       ref={navigationRef}

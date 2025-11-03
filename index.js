@@ -8,6 +8,10 @@ import { name as appName } from './app.json';
 import { CacheManager } from '@georstat/react-native-image-cache';
 import { Dirs } from 'react-native-file-access';
 import { AppConfig } from '@src/config';
+import {
+  getMessaging,
+  setBackgroundMessageHandler,
+} from '@react-native-firebase/messaging';
 CacheManager.config = {
   baseDir: `${Dirs.CacheDir}/${AppConfig.appName}_images_cache/`,
   // blurRadius: 15, // 	Mức độ làm mờ ảnh thumbnail
@@ -17,4 +21,15 @@ CacheManager.config = {
   sourceAnimationDuration: 1000, //Thời gian hiệu ứng ảnh chính -ms
   thumbnailAnimationDuration: 1000, // Thời gian hiệu ứng ảnh thumbnail - ms
 };
-AppRegistry.registerComponent(appName, () => App);
+setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
+  console.log('[Background Message]', remoteMessage);
+});
+
+function HeadlessCheck({ isHeadless }) {
+  if (isHeadless) {
+    // App đã được launch từ nền (iOS), không cần hiển thị giao diện
+    return null;
+  }
+  return <App />;
+}
+AppRegistry.registerComponent(appName, () => HeadlessCheck);

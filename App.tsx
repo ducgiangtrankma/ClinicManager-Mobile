@@ -1,7 +1,7 @@
-import { RXStore } from '@src/common';
+import { requestNotificationPermissions, RXStore } from '@src/common';
 import { AppContainer } from '@src/navigator/AppNavigator';
 import { persistor, store } from '@src/redux';
-import React, { FC, Suspense } from 'react';
+import React, { FC, Suspense, useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -49,6 +49,9 @@ if (Platform.OS === 'ios') {
   // KeyboardManager.isKeyboardShowing().then(isShowing => {});
 }
 const App: FC<Props> = () => {
+  useEffect(() => {
+    requestNotificationPermissions();
+  }, []);
   return (
     <SafeAreaProvider>
       <Provider store={store}>

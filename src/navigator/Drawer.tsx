@@ -1,9 +1,15 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { useAppTheme } from '@src/common';
+import {
+  subscribeTopic,
+  useAppTheme,
+  useBackgroundOpenedNotification,
+  useInAppNotification,
+  useKilledOpenedNotification,
+} from '@src/common';
 import { AppModuleListScreen } from '@src/screens';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { CustomerModuleStack } from './CustomerModule/CustomerModuleStackNavigation';
 import { APP_SCREEN } from './ScreenTypes';
 import { WarehouseModuleStack } from './WarehouseModule/WarehoustModuleStackNavigation';
@@ -16,11 +22,63 @@ import {
 } from '@src/assets';
 import { useTranslation } from 'react-i18next';
 import { ReportModuleStack } from './Report/ReportStackNavigation';
+import { getDeviceToken } from '@src/utils';
+import { RemoteNotificationEntity } from '@src/models';
+import { UserService } from '@src/services';
+import { NotificationService } from '@src/services/notification-service';
 
 const Drawer = createDrawerNavigator();
 export const DrawerNavigator: React.FunctionComponent = () => {
   const { Colors } = useAppTheme();
   const { t } = useTranslation();
+
+  //Xử lý event Notification - start
+  useInAppNotification(mess => {
+    console.log('mess', mess);
+    // const messageData = mess as RemoteNotificationEntity;
+    // dispatch(onAddReadNotification(messageData?.data?.notificationId));
+    // showToast(
+    //   'success',
+    //   messageData.notification.title,
+    //   messageData.notification.body,
+    //   'none',
+    //   1500,
+    // );
+  });
+
+  const handleOutsideNotification = useCallback(
+    (messageData: RemoteNotificationEntity) => {
+      const type = messageData?.data?.type;
+      console.log('handleOutsideNotification - type', type);
+    },
+    [],
+  );
+
+  useBackgroundOpenedNotification(mess => {
+    handleOutsideNotification(mess as RemoteNotificationEntity);
+  });
+
+  useKilledOpenedNotification(mess => {
+    handleOutsideNotification(mess as RemoteNotificationEntity);
+  });
+  //Xử lý event Notification - end
+
+  const registerDevice = useCallback(async () => {
+    try {
+      const deviceToken = await getDeviceToken();
+      if (deviceToken) {
+        await UserService.registerDeviceInfo(deviceToken);
+      }
+      await subscribeTopic('all');
+      await NotificationService.registerTopic('all');
+    } catch (error) {
+      console.log('registerDevice -error', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    registerDevice();
+  }, [registerDevice]);
   return (
     <Drawer.Navigator
       initialRouteName={APP_SCREEN.MODULE_MENU}
