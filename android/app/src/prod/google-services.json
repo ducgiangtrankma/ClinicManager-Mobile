@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "196704949621",
+    "project_id": "clinicmanager-e858b",
+    "storage_bucket": "clinicmanager-e858b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196704949621:android:3b4e43429b548f2134af3c",
+        "android_client_info": {
+          "package_name": "com.clinicmanagermobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQyCgsfl3E59XeVgQx5rQ_vcLCeHRpUS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
