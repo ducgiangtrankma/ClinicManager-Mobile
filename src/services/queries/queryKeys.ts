@@ -93,6 +93,18 @@ export const queryKeys = {
         },
       ] as const,
   },
+
+  notification: {
+    all: (userId?: string) => ['notification', userId] as const,
+    listNotification: (userId: string, limit: number) =>
+      [
+        ...queryKeys.notification.all(userId),
+        'listNotification',
+        {
+          limit: limit,
+        },
+      ] as const,
+  },
 } as const;
 
 export type QueryKeys = typeof queryKeys;

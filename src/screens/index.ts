@@ -7,3 +7,4 @@ export * from './ForgotPassword';
 export * from './VerifyOtp';
 export * from './WarehouseManagerModule';
 export * from './ReportModule';
+export * from './Notification';

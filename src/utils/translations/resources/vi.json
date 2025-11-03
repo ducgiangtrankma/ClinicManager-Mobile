@@ -135,6 +135,7 @@
       "drawer_customer":"Quản lý khách hàng",
       "drawer_warehouse":"Quản lý kho",
       "drawer_report":"Báo cáo",
+      "drawer_noti":"Thông báo",
       "step_button_tile_next":"Tiếp theo",
       "step_button_title_back":"Quay lại",
       "step_button_save":"Lưu",
@@ -255,6 +256,7 @@
       "averageProfitMargin":"Biên độ lợi nhuận trung bình:",
       "totalDebt":"Tổng công nợ:",
       "totalCost":"Tổng cost:",
-      "totalProfit":"Tổng lợi nhuận thực tế"
+      "totalProfit":"Tổng lợi nhuận thực tế",
+      "notification_title":"Thông báo"
     }
  }

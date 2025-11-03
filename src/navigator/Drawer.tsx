@@ -8,7 +8,7 @@ import {
   useInAppNotification,
   useKilledOpenedNotification,
 } from '@src/common';
-import { AppModuleListScreen } from '@src/screens';
+import { AppModuleListScreen, NotificationScreen } from '@src/screens';
 import React, { useCallback, useEffect } from 'react';
 import { CustomerModuleStack } from './CustomerModule/CustomerModuleStackNavigation';
 import { APP_SCREEN } from './ScreenTypes';
@@ -17,6 +17,7 @@ import { DrawerContent } from './DrawerContent';
 import {
   FacilityIcon,
   GroupUserIcon,
+  NotificationIcon,
   ReportModuleIcon,
   WarehouseIcon,
 } from '@src/assets';
@@ -26,6 +27,7 @@ import { getDeviceToken } from '@src/utils';
 import { RemoteNotificationEntity } from '@src/models';
 import { UserService } from '@src/services';
 import { NotificationService } from '@src/services/notification-service';
+import { showToast } from '@src/components';
 
 const Drawer = createDrawerNavigator();
 export const DrawerNavigator: React.FunctionComponent = () => {
@@ -35,15 +37,15 @@ export const DrawerNavigator: React.FunctionComponent = () => {
   //Xử lý event Notification - start
   useInAppNotification(mess => {
     console.log('mess', mess);
-    // const messageData = mess as RemoteNotificationEntity;
+    const messageData = mess as RemoteNotificationEntity;
     // dispatch(onAddReadNotification(messageData?.data?.notificationId));
-    // showToast(
-    //   'success',
-    //   messageData.notification.title,
-    //   messageData.notification.body,
-    //   'none',
-    //   1500,
-    // );
+    showToast(
+      'success',
+      messageData.notification.title,
+      messageData.notification.body,
+      'none',
+      1500,
+    );
   });
 
   const handleOutsideNotification = useCallback(
@@ -124,6 +126,15 @@ export const DrawerNavigator: React.FunctionComponent = () => {
           drawerIcon: ({ color }) => <ReportModuleIcon color={color} />,
           headerShown: false,
           title: t('drawer_report'),
+        }}
+      />
+      <Drawer.Screen
+        name={APP_SCREEN.NOTIFICATION}
+        component={NotificationScreen}
+        options={{
+          drawerIcon: ({ color }) => <NotificationIcon color={color} />,
+          headerShown: false,
+          title: t('drawer_noti'),
         }}
       />
     </Drawer.Navigator>
