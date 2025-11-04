@@ -72,7 +72,6 @@ export const CreateBillScreen: FC<Props> = () => {
   //   bill && bill.treatmentInfo
   //     ? bill.treatmentInfo.totalTreatmentFee
   //     : bill?.bill.total ?? 0;
-  const [contentHeight, setContentHeight] = useState(0);
   return (
     <PageContainer disablePaddingBottom style={styles.container}>
       <AppHeader
@@ -91,14 +90,11 @@ export const CreateBillScreen: FC<Props> = () => {
         }
       />
       {bill && (
-        <ViewShot
-          ref={viewShotRef}
-          style={[{ backgroundColor: Colors.white }]}
-          captureMode="mount"
-        >
-          <ScrollView
-            onContentSizeChange={(_, height) => setContentHeight(height)}
-            contentContainerStyle={{ minHeight: contentHeight }}
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <ViewShot
+            ref={viewShotRef}
+            style={[{ backgroundColor: Colors.white }]}
+            options={{ format: 'jpg', quality: 0.9 }}
           >
             <AppText
               textAlign="center"
@@ -172,8 +168,8 @@ export const CreateBillScreen: FC<Props> = () => {
                       horizontal
                       style={{
                         flexWrap: 'wrap',
-
-                        marginVertical: sizes._8sdp,
+                        marginTop: sizes._8sdp,
+                        marginBottom: sizes._6sdp,
                       }}
                       align="center"
                     >
@@ -188,31 +184,16 @@ export const CreateBillScreen: FC<Props> = () => {
                         {t.title ?? ''}
                       </AppText>
                     </Box>
-                    <Box horizontal style={{ flexWrap: 'wrap' }} align="center">
-                      <AppText
-                        numberOfLines={2}
-                        fontFamily="content_italic"
-                        fontSize="14"
-                      >
-                        Chi tiết:
-                      </AppText>
+                    <AppText
+                      numberOfLines={2}
+                      fontFamily="content_italic"
+                      fontSize="14"
+                    >
+                      Chi tiết:
+                    </AppText>
+                    <Box style={{ flexWrap: 'wrap' }} align="center">
                       <AppText fontFamily="content_italic" fontSize="14">
-                        {t.description ?? ''}Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit. Nunc lacus sapien, semper
-                        vel pellentesque nec, placerat eu orci. Vestibulum
-                        ullamcorper, massa vel dignissim sagittis, eros velit
-                        sollicitudin lorem, lacinia consectetur velit massa non
-                        nibh. Fusce quam nisi, feugiat at vestibulum non,
-                        faucibus egestas urna. Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit. Pellentesque vel placerat
-                        lorem, id vestibulum tortor. Cras quis ullamcorper
-                        lacus, ut aliquam lacus. In vulputate dolor vel ligula
-                        ornare, id tincidunt mauris pulvinar. Ut porta sapien
-                        faucibus, lobortis tortor nec, auctor arcu. Curabitur
-                        ultrices nunc nec vestibulum egestas. Cras eu ante nec
-                        arcu placerat iaculis quis sit amet dui. Sed rhoncus
-                        lorem erat, id tincidunt nunc convallis non. Maecenas
-                        posuere dictum metus, sed dictum velit pharetra a.
+                        {t.description ?? ''}
                       </AppText>
                     </Box>
                   </Box>
@@ -261,8 +242,8 @@ export const CreateBillScreen: FC<Props> = () => {
             >
               {formatDateTime(bill.bill.createdAt, 'dd/mm/yyyy HH:mm')}
             </AppText>
-          </ScrollView>
-        </ViewShot>
+          </ViewShot>
+        </ScrollView>
       )}
     </PageContainer>
   );
@@ -270,6 +251,9 @@ export const CreateBillScreen: FC<Props> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
   },
   qrCode: {
     width: _screen_width * 0.6,
