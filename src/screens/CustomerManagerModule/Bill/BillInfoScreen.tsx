@@ -11,7 +11,7 @@ import {
   PageContainer,
   showSuccessMessage,
 } from '@src/components';
-import { BillEntity } from '@src/models';
+import { BillEntity, BillType } from '@src/models';
 import {
   APP_SCREEN,
   goBack,
@@ -48,6 +48,7 @@ export const CreateBillScreen: FC<Props> = () => {
   const _handleCreateBill = useCallback(async () => {
     try {
       if (createBillPayload) {
+        console.log('createBillPayload', createBillPayload);
         globalLoading.show();
         const response = await PaymentService.createBill(createBillPayload);
         setBill(response.data);
@@ -66,6 +67,12 @@ export const CreateBillScreen: FC<Props> = () => {
     _handleCreateBill();
   }, [_handleCreateBill]);
 
+  const valueQrCode = (bill && bill.bill.paymentTotal) ?? 0;
+  // const sumTotal =
+  //   bill && bill.treatmentInfo
+  //     ? bill.treatmentInfo.totalTreatmentFee
+  //     : bill?.bill.total ?? 0;
+  const [contentHeight, setContentHeight] = useState(0);
   return (
     <PageContainer disablePaddingBottom style={styles.container}>
       <AppHeader
@@ -86,10 +93,13 @@ export const CreateBillScreen: FC<Props> = () => {
       {bill && (
         <ViewShot
           ref={viewShotRef}
-          style={[styles.container, { backgroundColor: Colors.white }]}
+          style={[{ backgroundColor: Colors.white }]}
           captureMode="mount"
         >
-          <ScrollView>
+          <ScrollView
+            onContentSizeChange={(_, height) => setContentHeight(height)}
+            contentContainerStyle={{ minHeight: contentHeight }}
+          >
             <AppText
               textAlign="center"
               translationKey="payment_bill_description_1"
@@ -113,7 +123,7 @@ export const CreateBillScreen: FC<Props> = () => {
                 color={Colors.red}
               >
                 {' '}
-                {formatMoney(bill.bill.paymentTotal)} vnđ
+                {formatMoney(valueQrCode)} vnđ
               </AppText>
             </Box>
             <AppText
@@ -143,44 +153,101 @@ export const CreateBillScreen: FC<Props> = () => {
                 fontSize="18"
                 fontFamily="content_bold"
               />
-              <Box horizontal style={{ flexWrap: 'wrap' }}>
+              <Box>
                 <AppText
                   fontFamily="content_bold"
                   translationKey="payment_bill_info_treatment"
                 />
-                <AppText numberOfLines={2}>
-                  {bill?.treatmentInfo?.title ?? ''}
-                </AppText>
+                {bill.treatmentInfo?.map(t => (
+                  <Box
+                    key={t.description}
+                    style={{
+                      borderBottomWidth: 1,
+                      borderStyle: 'dashed',
+                      paddingBottom: sizes._8sdp,
+                      marginHorizontal: sizes._8sdp,
+                    }}
+                  >
+                    <Box
+                      horizontal
+                      style={{
+                        flexWrap: 'wrap',
+
+                        marginVertical: sizes._8sdp,
+                      }}
+                      align="center"
+                    >
+                      <AppText
+                        numberOfLines={2}
+                        fontFamily="content_italic"
+                        fontSize="14"
+                      >
+                        Liệu trình:
+                      </AppText>
+                      <AppText fontFamily="content_italic" fontSize="14">
+                        {t.title ?? ''}
+                      </AppText>
+                    </Box>
+                    <Box horizontal style={{ flexWrap: 'wrap' }} align="center">
+                      <AppText
+                        numberOfLines={2}
+                        fontFamily="content_italic"
+                        fontSize="14"
+                      >
+                        Chi tiết:
+                      </AppText>
+                      <AppText fontFamily="content_italic" fontSize="14">
+                        {t.description ?? ''}Lorem ipsum dolor sit amet,
+                        consectetur adipiscing elit. Nunc lacus sapien, semper
+                        vel pellentesque nec, placerat eu orci. Vestibulum
+                        ullamcorper, massa vel dignissim sagittis, eros velit
+                        sollicitudin lorem, lacinia consectetur velit massa non
+                        nibh. Fusce quam nisi, feugiat at vestibulum non,
+                        faucibus egestas urna. Lorem ipsum dolor sit amet,
+                        consectetur adipiscing elit. Pellentesque vel placerat
+                        lorem, id vestibulum tortor. Cras quis ullamcorper
+                        lacus, ut aliquam lacus. In vulputate dolor vel ligula
+                        ornare, id tincidunt mauris pulvinar. Ut porta sapien
+                        faucibus, lobortis tortor nec, auctor arcu. Curabitur
+                        ultrices nunc nec vestibulum egestas. Cras eu ante nec
+                        arcu placerat iaculis quis sit amet dui. Sed rhoncus
+                        lorem erat, id tincidunt nunc convallis non. Maecenas
+                        posuere dictum metus, sed dictum velit pharetra a.
+                      </AppText>
+                    </Box>
+                  </Box>
+                ))}
               </Box>
-              <Box horizontal>
+              {/* <Box horizontal>
                 <AppText
                   fontFamily="content_bold"
                   translationKey="payment_bill_sum"
                 />
-                <AppText>
-                  {' '}
-                  {formatMoney(bill.treatmentInfo?.totalTreatmentFee ?? 0)} vnđ
-                </AppText>
-              </Box>
+                <AppText> {formatMoney(sumTotal)} vnđ</AppText>
+              </Box> */}
               <Box horizontal>
                 <AppText
                   fontFamily="content_bold"
                   translationKey="payment_bill_paid"
                 />
-                <AppText> {formatMoney(bill?.bill.paymentTotal)} vnđ</AppText>
+                <AppText> {formatMoney(valueQrCode)} vnđ</AppText>
               </Box>
               <Box horizontal>
                 <AppText
                   fontFamily="content_bold"
                   translationKey="payment_bill_in_debt"
                 />
-                <AppText>
-                  {' '}
-                  {formatMoney(
-                    bill?.treatmentInfo?.estimatedDebtAfterPayment ?? 0,
-                  )}{' '}
-                  vnđ
-                </AppText>
+                {bill.type === BillType.ALL ? (
+                  <AppText> 0 vnđ</AppText>
+                ) : (
+                  <AppText>
+                    {' '}
+                    {formatMoney(
+                      bill?.treatmentInfo[0].estimatedDebtAfterPayment ?? 0,
+                    )}{' '}
+                    vnđ
+                  </AppText>
+                )}
               </Box>
             </Box>
             <AppText textAlign="center" fontFamily="content_italic">

@@ -396,7 +396,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
         onSelect={value => {
           if (formikRef.current) {
             formikRef.current.setFieldValue(
-              'leather_classification',
+              'leatherClassification',
               value.value,
             );
             selectLeatherClassificationRef.current.close();

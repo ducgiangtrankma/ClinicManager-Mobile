@@ -1,5 +1,12 @@
 import { useAppTheme } from '@src/common';
-import { AppButton, AppInput, AppText, Box, FormTitle } from '@src/components';
+import {
+  AppButton,
+  AppInput,
+  AppText,
+  Box,
+  FormTitle,
+  showErrorMessage,
+} from '@src/components';
 import {
   BillType,
   CreateBillPayload,
@@ -42,6 +49,13 @@ export const TreatmentPayment: FC<Props> = ({ treatment }) => {
         treatmentId: treatment.id,
         paid: Number(values.newPaid),
       };
+      if (createBillPayload.paid === 0) {
+        showErrorMessage(
+          'error.title',
+          'Không thể tạo hoá đơn chuyển khoản 0 vnđ',
+        );
+        return;
+      }
       navigate(APP_SCREEN.CREATE_BILL, {
         bill: createBillPayload,
       });
@@ -121,17 +135,15 @@ export const TreatmentPayment: FC<Props> = ({ treatment }) => {
                 keyboardType="number-pad"
                 errMessage={errors.newPaid}
               />
+              <AppText
+                fontFamily="content_italic"
+                fontSize="12"
+                margin={{ ml: sizes._4sdp }}
+              >
+                Quy đổi tiền tệ: {formatMoney(values.newPaid)} vnđ
+              </AppText>
             </Box>
-            {/* <Box gap={sizes._8sdp}>
-              <FormTitle title="treatment_voucher" />
-              <AppInput
-                value={values.voucher ?? ''}
-                placeholder={t('treatment_voucher_placeholder')}
-                onChangeText={value => setFieldValue('voucher', Number(value))}
-                clearButtonMode="always"
-                errMessage={errors.newPaid}
-              />
-            </Box> */}
+
             <Box
               horizontal
               gap={sizes._16sdp}

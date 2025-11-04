@@ -47,6 +47,7 @@ export const CustomerDetailPayment: FC<Props> = ({ customerInfo }) => {
     }, [getPaymentHistory]),
   );
   console.log('payments', payments);
+  console.log('customerInfo.debt', customerInfo.debt);
 
   const handlePaymentAll = useCallback(() => {
     const paymentPayload: CreateBillPayload = {
@@ -55,6 +56,12 @@ export const CustomerDetailPayment: FC<Props> = ({ customerInfo }) => {
       treatmentId: null,
       paid: Number(customerInfo.debt),
     };
+    if (paymentPayload.paid === 0) {
+      showErrorMessage(
+        'error.title',
+        'Không thể tạo hoá đơn chuyển khoản 0 vnđ',
+      );
+    }
     navigate(APP_SCREEN.CREATE_BILL, {
       bill: paymentPayload,
     });

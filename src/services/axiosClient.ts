@@ -4,7 +4,7 @@ import { onLogout, onSetToken, store } from '@src/redux';
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import queryString from 'query-string';
 import DeviceInfo from 'react-native-device-info';
-const LOCAL = 'http://10.254.223.247:8002/api/v1';
+const LOCAL = 'http://10.254.236.108:8002/api/v1';
 const apiUrl = __DEV__ ? LOCAL : AppConfig.apiUrl;
 // const apiUrl = 'http://192.168.0.108:8001/api/v1';
 

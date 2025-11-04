@@ -3,13 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		016A8275DBA11C63A1F965FA /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAB652D20790E105FCF9D3BD /* libPods-ClinicManagerMobile-ClinicManagerMobile-Dev.a */; };
 		0A830F97BA744F7C977A9224 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BF6A04B3F38474292E38C14 /* Quicksand-Bold.ttf */; };
-		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1D68CC6C7EFB4206AF96007C /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A92BD3CC182E4E5FA50F5A89 /* Quicksand-Regular.ttf */; };
 		46BB2E511C084412AD6FDEC8 /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DC233ABA234241DABA5484BC /* Quicksand-SemiBold.ttf */; };
@@ -64,7 +64,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		CEC58C382EB8867B000D56A3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		CEC58C382EB8867B000D56A3 /* Exceptions for "GoogleService" folder in "ClinicManagerMobile-Dev" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Prod/GoogleService-Info.plist",
@@ -74,7 +74,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		CEC58C342EB8863D000D56A3 /* GoogleService */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (CEC58C382EB8867B000D56A3 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GoogleService; sourceTree = "<group>"; };
+		CEC58C342EB8863D000D56A3 /* GoogleService */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CEC58C382EB8867B000D56A3 /* Exceptions for "GoogleService" folder in "ClinicManagerMobile-Dev" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = GoogleService;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */,
 				EE381D594A1A665D3FA2FF23 /* libPods-ClinicManagerMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

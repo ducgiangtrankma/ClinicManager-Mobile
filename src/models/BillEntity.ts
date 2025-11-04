@@ -15,11 +15,14 @@ export interface CreateBillPayload {
 export interface BillEntity {
   qrCode: string;
   bill: BillInfo;
-  treatmentInfo?: {
+  total: number;
+  type: BillType;
+  treatmentInfo: {
     title: string;
-    totalTreatmentFee: string;
-    estimatedDebtAfterPayment: number; // Đảm bảo không âm
-  };
+    totalTreatmentFee: number;
+    estimatedDebtAfterPayment: number;
+    description: string;
+  }[];
 }
 
 export interface BillInfo {
