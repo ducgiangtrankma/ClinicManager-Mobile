@@ -2,34 +2,32 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {
-  subscribeTopic,
-  useAppTheme,
-  useBackgroundOpenedNotification,
-  useInAppNotification,
-  useKilledOpenedNotification,
-} from '@src/common';
-import { AppModuleListScreen, NotificationScreen } from '@src/screens';
-import React, { useCallback, useEffect } from 'react';
-import { CustomerModuleStack } from './CustomerModule/CustomerModuleStackNavigation';
-import { APP_SCREEN } from './ScreenTypes';
-import { WarehouseModuleStack } from './WarehouseModule/WarehoustModuleStackNavigation';
-import { DrawerContent } from './DrawerContent';
-import {
-  DrawerBillIcon,
   FacilityIcon,
   GroupUserIcon,
   NotificationIcon,
   ReportModuleIcon,
   WarehouseIcon,
 } from '@src/assets';
-import { useTranslation } from 'react-i18next';
-import { ReportModuleStack } from './Report/ReportStackNavigation';
-import { getDeviceToken } from '@src/utils';
+import {
+  subscribeTopic,
+  useAppTheme,
+  useBackgroundOpenedNotification,
+  useInAppNotification,
+  useKilledOpenedNotification,
+} from '@src/common';
+import { showToast } from '@src/components';
 import { RemoteNotificationEntity } from '@src/models';
+import { AppModuleListScreen, NotificationScreen } from '@src/screens';
 import { UserService } from '@src/services';
 import { NotificationService } from '@src/services/notification-service';
-import { showToast } from '@src/components';
-import { PaymentModuleStack } from './PaymentModule/PaymentModuleStackNavigation';
+import { getDeviceToken } from '@src/utils';
+import React, { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { CustomerModuleStack } from './CustomerModule/CustomerModuleStackNavigation';
+import { DrawerContent } from './DrawerContent';
+import { ReportModuleStack } from './Report/ReportStackNavigation';
+import { APP_SCREEN } from './ScreenTypes';
+import { WarehouseModuleStack } from './WarehouseModule/WarehoustModuleStackNavigation';
 
 const Drawer = createDrawerNavigator();
 export const DrawerNavigator: React.FunctionComponent = () => {
@@ -130,7 +128,7 @@ export const DrawerNavigator: React.FunctionComponent = () => {
           title: t('drawer_report'),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={APP_SCREEN.PAYMENT_MODULE}
         component={PaymentModuleStack}
         options={{
@@ -138,7 +136,7 @@ export const DrawerNavigator: React.FunctionComponent = () => {
           headerShown: false,
           title: t('drawer_payment'),
         }}
-      />
+      /> */}
       <Drawer.Screen
         name={APP_SCREEN.NOTIFICATION}
         component={NotificationScreen}

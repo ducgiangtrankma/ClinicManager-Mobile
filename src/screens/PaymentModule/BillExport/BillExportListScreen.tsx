@@ -81,17 +81,23 @@ export const BillExportListScreen: FC<Props> = () => {
         }
       />
       {summary && (
-        <Box
-          align="center"
-          horizontal
-          gap={sizes._6sdp}
-          style={{ marginRight: sizes._16sdp }}
-          justify="flex-end"
-        >
-          <AppText> Tổng tiền đã nhận:</AppText>
-          <AppText color={Colors.green} fontFamily="content_bold" fontSize="18">
-            {formatMoney(summary.totalAmount)} vnđ
-          </AppText>
+        <Box>
+          <Box
+            align="center"
+            horizontal
+            gap={sizes._6sdp}
+            style={{ marginRight: sizes._16sdp }}
+            justify="flex-end"
+          >
+            <AppText>Tổng tiền chưa nhận:</AppText>
+            <AppText
+              color={Colors.green}
+              fontFamily="content_bold"
+              fontSize="18"
+            >
+              {formatMoney(summary.totalPendingAmount)} vnđ
+            </AppText>
+          </Box>
         </Box>
       )}
       <AppText

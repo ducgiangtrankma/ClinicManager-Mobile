@@ -1,7 +1,9 @@
+import { CheckIcon, UnCheckIcon } from '@src/assets';
 import { useAppTheme } from '@src/common';
 import {
   AppButton,
   AppSelectForm,
+  AppText,
   BottomSheetModalContainer,
   BottomSheetModalRef,
   Box,
@@ -9,7 +11,7 @@ import {
   DateTimePickerReft,
   FormTitle,
 } from '@src/components';
-import { sizes } from '@src/utils';
+import { ACTIVE_OPACITY_TOUCH, sizes } from '@src/utils';
 import dayjs from 'dayjs';
 import React, {
   forwardRef,
@@ -21,6 +23,7 @@ import {
   ScrollView as NativeScrollView,
   Platform,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import { ScrollView as GestureScrollView } from 'react-native-gesture-handler';
 const SheetScrollView =
@@ -29,6 +32,7 @@ const SheetScrollView =
 export interface CustomerFilterValue {
   fromDate?: string;
   toDate?: string;
+  hasDebt?: boolean;
 }
 
 interface Props {
@@ -51,11 +55,13 @@ export const CustomerFilter = forwardRef<CustomerFilterRef, Props>(
 
     const [startDate, setStartDate] = useState<string | undefined>(undefined);
     const [endDate, setEndDate] = useState<string | undefined>(undefined);
+    const [hasDebt, setHasDebt] = useState<boolean | undefined>(undefined);
 
     const handleApplyFilter = () => {
       onFilterChange?.({
         fromDate: startDate,
         toDate: endDate,
+        hasDebt: hasDebt,
       });
       bottomSheetRef.current?.close();
     };
@@ -63,9 +69,11 @@ export const CustomerFilter = forwardRef<CustomerFilterRef, Props>(
     const handleClearFilter = () => {
       setStartDate(undefined);
       setEndDate(undefined);
+      setHasDebt(undefined);
       onFilterChange?.({
         fromDate: undefined,
         toDate: undefined,
+        hasDebt: undefined,
       });
     };
 
@@ -93,6 +101,27 @@ export const CustomerFilter = forwardRef<CustomerFilterRef, Props>(
           <Box style={styles.container}>
             <SheetScrollView>
               <Box gap={sizes._16sdp}>
+                <TouchableOpacity
+                  activeOpacity={ACTIVE_OPACITY_TOUCH}
+                  onPress={() => {
+                    if (hasDebt) {
+                      setHasDebt(undefined);
+                    } else {
+                      setHasDebt(true);
+                    }
+                  }}
+                >
+                  <Box horizontal align="center" gap={sizes._12sdp}>
+                    {hasDebt ? (
+                      <CheckIcon color={Colors.green} />
+                    ) : (
+                      <UnCheckIcon />
+                    )}
+                    <AppText fontFamily="content_bold">
+                      Khách hàng còn công nợ
+                    </AppText>
+                  </Box>
+                </TouchableOpacity>
                 <FormTitle title="customer_filter" />
                 <Box horizontal gap={sizes._16sdp}>
                   <Box style={styles.full}>

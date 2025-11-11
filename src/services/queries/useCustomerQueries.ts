@@ -9,6 +9,7 @@ export const useCustomerListQuery = (
   keyword?: string,
   fromDate?: string,
   toDate?: string,
+  hasDebt?: boolean,
 ) => {
   const userId = store.getState().appReducer.user?.id ?? '';
 
@@ -19,6 +20,7 @@ export const useCustomerListQuery = (
       keyword,
       fromDate,
       toDate,
+      hasDebt,
     ),
     queryFn: async ({ pageParam = 1 }) => {
       const response = await CustomerService.getListCustomer({
@@ -27,6 +29,7 @@ export const useCustomerListQuery = (
         keyword: keyword !== '' ? keyword : undefined,
         fromDate,
         toDate,
+        hasDebt,
       });
       return response.data;
     },

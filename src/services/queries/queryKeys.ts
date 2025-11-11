@@ -18,6 +18,7 @@ export const queryKeys = {
       keyword?: string,
       fromDate?: string,
       toDate?: string,
+      hasDebt?: boolean,
     ) =>
       [
         ...queryKeys.customerList.all(userId),
@@ -27,6 +28,7 @@ export const queryKeys = {
           keyword,
           fromDate,
           toDate,
+          hasDebt,
         },
       ] as const,
   },

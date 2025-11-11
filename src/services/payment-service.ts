@@ -56,6 +56,7 @@ export const PaymentService = {
       params: {
         limit: limit,
         ...params,
+        status: BillStatus.WAIT_FOR_PAYMENT,
       },
       timeout: 5000,
     });

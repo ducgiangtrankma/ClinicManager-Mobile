@@ -7,6 +7,7 @@ import {
   _screen_width,
   ACTIVE_OPACITY_TOUCH,
   callNumber,
+  formatMoney,
   sizes,
 } from '@src/utils';
 
@@ -58,7 +59,19 @@ export const CustomerItem: FC<Props> = ({ item }) => {
               </Box>
             </TouchableOpacity>
           </Box>
-          {item.completed && <CheckIcon color={Colors.green} />}
+          <Box>
+            {item.completed ? (
+              <CheckIcon color={Colors.green} />
+            ) : (
+              <>
+                {item.debt !== 0 && (
+                  <AppText color={Colors.red}>
+                    Nợ: {formatMoney(item.debt)}
+                  </AppText>
+                )}
+              </>
+            )}
+          </Box>
         </Box>
       </TouchableOpacity>
     </Box>

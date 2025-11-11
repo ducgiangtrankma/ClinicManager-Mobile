@@ -31,11 +31,13 @@ export const CustomerHomeScreen: FC<Props> = () => {
   const [keyword, setKeyword] = useState<string | undefined>(undefined);
   const [fromDate, setFromDate] = useState<string | undefined>(undefined);
   const [toDate, setToDate] = useState<string | undefined>(undefined);
+  const [hasDebt, setHasDebt] = useState<boolean | undefined>(undefined);
 
   const handleFilterChange = useCallback((filter: CustomerFilterValue) => {
     console.log('Filter changed:', filter);
     setFromDate(filter.fromDate);
     setToDate(filter.toDate);
+    setHasDebt(filter.hasDebt);
   }, []);
 
   const {
@@ -46,7 +48,7 @@ export const CustomerHomeScreen: FC<Props> = () => {
     isFetchingNextPage,
     refetch,
     isRefetching,
-  } = useCustomerListQuery(10, keyword, fromDate, toDate);
+  } = useCustomerListQuery(10, keyword, fromDate, toDate, hasDebt);
 
   const customers = data?.pages.flatMap(p => p.customers) ?? [];
   const renderItem = useCallback(

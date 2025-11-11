@@ -16,6 +16,7 @@ export const CustomerService = {
     keyword?: string;
     fromDate?: string;
     toDate?: string;
+    hasDebt?: boolean;
   }) => {
     return axiosClient.get<{
       customers: CustomerEntity[];
