@@ -71,3 +71,84 @@ export enum BillStatus {
   SUCCESS = 'SUCCESS', // Thanh công
   ERROR = 'ERROR', // Lỗi
 }
+
+export interface BillExportEntity {
+  customer: Customer;
+  createBy: CreateBy;
+  type: string;
+  treatmentId: string;
+  voucher: any;
+  total: number;
+  discount: number;
+  paymentTotal: number;
+  actualPayment: any;
+  overpayment: any;
+  status: BillStatus;
+  createdAt: string;
+  updatedAt: string;
+  treatment: Treatment;
+  id: string;
+  transactions: Transaction[];
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  phoneNumber: string;
+}
+
+export interface CreateBy {
+  id: string;
+  email: string;
+}
+
+export interface Treatment {
+  id: string;
+  title: string;
+  totalTreatmentFee: number;
+  debt: number;
+  paid: number;
+}
+
+export interface Transaction {
+  id: string;
+  transactionId: string;
+  amount: number;
+  status: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface BillErrorEntity {
+  id: string;
+  gateway: string;
+  transactionDate: string;
+  accountNumber: string;
+  content: string;
+  transferAmount: number;
+  referenceCode: string;
+  errorReason: string;
+  isResolved: boolean;
+  resolvedAt: any;
+  resolvedBy: any;
+  resolvedNote: any;
+  billId: any;
+  createdAt: string;
+  updatedAt: string;
+  rawWebhookData: RawWebhookData;
+}
+
+export interface RawWebhookData {
+  gateway: string;
+  transactionDate: string;
+  accountNumber: string;
+  subAccount: any;
+  code: any;
+  content: string;
+  transferType: string;
+  description: string;
+  transferAmount: number;
+  referenceCode: string;
+  accumulated: number;
+  id: number;
+}

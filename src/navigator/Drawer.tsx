@@ -15,6 +15,7 @@ import { APP_SCREEN } from './ScreenTypes';
 import { WarehouseModuleStack } from './WarehouseModule/WarehoustModuleStackNavigation';
 import { DrawerContent } from './DrawerContent';
 import {
+  DrawerBillIcon,
   FacilityIcon,
   GroupUserIcon,
   NotificationIcon,
@@ -28,6 +29,7 @@ import { RemoteNotificationEntity } from '@src/models';
 import { UserService } from '@src/services';
 import { NotificationService } from '@src/services/notification-service';
 import { showToast } from '@src/components';
+import { PaymentModuleStack } from './PaymentModule/PaymentModuleStackNavigation';
 
 const Drawer = createDrawerNavigator();
 export const DrawerNavigator: React.FunctionComponent = () => {
@@ -126,6 +128,15 @@ export const DrawerNavigator: React.FunctionComponent = () => {
           drawerIcon: ({ color }) => <ReportModuleIcon color={color} />,
           headerShown: false,
           title: t('drawer_report'),
+        }}
+      />
+      <Drawer.Screen
+        name={APP_SCREEN.PAYMENT_MODULE}
+        component={PaymentModuleStack}
+        options={{
+          drawerIcon: ({ color }) => <DrawerBillIcon color={color} />,
+          headerShown: false,
+          title: t('drawer_payment'),
         }}
       />
       <Drawer.Screen

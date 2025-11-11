@@ -31,6 +31,10 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mailto</string>
+	</array>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Vui lòng cho phép Clinic Manager truy cập lịch của bạn. Dữ liệu của bạn sẽ không được chia sẻ nếu không được sự cho phép của bạn</string>
 	<key>NSCameraUsageDescription</key>

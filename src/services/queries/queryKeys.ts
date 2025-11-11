@@ -1,4 +1,7 @@
 // Cấu trúc: DOMAIN -> FEATURE -> PARAMETERS
+
+import { BillStatus } from '@src/models';
+
 //userId: string truyền vào key queries để xử lý việc cache data khi user logout và login tài khoản khác liên tục trên 1 thiết bị
 export const queryKeys = {
   // Month calendar queries
@@ -103,6 +106,29 @@ export const queryKeys = {
         {
           limit: limit,
         },
+      ] as const,
+  },
+  billExport: {
+    all: (storeId?: string) => ['billExport', storeId] as const,
+    listBillExport: (
+      storeId: string,
+      limit: number,
+      params?: {
+        fromDate?: string;
+        toDate?: string;
+        status?: BillStatus;
+        page?: number;
+      },
+    ) =>
+      [...queryKeys.billExport.all(storeId), 'listBillExport', params] as const,
+  },
+  billError: {
+    all: (storeId?: string) => ['billError', storeId] as const,
+    listBillError: (storeId: string) =>
+      [
+        ...queryKeys.billExport.all(storeId),
+        'listBillExport',
+        storeId,
       ] as const,
   },
 } as const;

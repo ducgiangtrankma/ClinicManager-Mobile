@@ -7,3 +7,8 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
  ./gradlew assembleDebug // Storage - Debug mode
  ./gradlew assembleRelease // Storage - Release mode
  ```
+
+ # Lỗi pod do xcode 16 - Change 7x to 52
+```
+ 	objectVersion = 52;
+```
