@@ -9,4 +9,5 @@ export interface CreateScheduleFormValuesEntity {
 export interface UpdateScheduleFormValuesEntity {
   implementationDate?: string;
   note?: string;
+  eventId?: string;
 }

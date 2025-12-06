@@ -20,9 +20,11 @@ import {
 } from '@src/models';
 import { APP_SCREEN, goBack, RootStackParamList } from '@src/navigator';
 import {
+  addEventToNativeCalender,
   DEFAULT_HIT_SLOP,
   deleteEvent,
   formatDateTime,
+  isNativeEventId,
   scheduleValidationSchema,
   sizes,
   updateEventToNativeCalender,
@@ -58,18 +60,29 @@ export const ScheduleDetailScreen: FC<Props> = () => {
   const handleSave = async (values: CreateScheduleFormValuesEntity) => {
     try {
       if (schedule?.id) {
+        let newEventId = values.eventId;
         if (values.eventId) {
-          await updateEventToNativeCalender(
-            values.eventId,
-            values.note ?? '',
-            values.implementationDate,
-            values.implementationDate,
-            values.note ?? '',
-          );
+          if (isNativeEventId(values.eventId)) {
+            await updateEventToNativeCalender(
+              values.eventId,
+              values.note ?? '',
+              values.implementationDate,
+              values.implementationDate,
+              values.note ?? '',
+            );
+          } else {
+            newEventId = await addEventToNativeCalender(
+              values.note ?? '',
+              values.implementationDate,
+              values.implementationDate,
+              values.note ?? '',
+            );
+          }
         }
         const updatePayload: UpdateScheduleFormValuesEntity = {
           implementationDate: values.implementationDate,
           note: values.note,
+          eventId: newEventId,
         };
         globalLoading.show();
         await ScheduleService.updateSchedule(schedule?.id, updatePayload);

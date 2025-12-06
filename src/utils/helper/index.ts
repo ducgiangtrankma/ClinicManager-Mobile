@@ -325,6 +325,11 @@ export const addEventToNativeCalender = async (
     ],
   });
 };
+
+export const isNativeEventId = (id?: string) => {
+  if (!id) return false;
+  return !/^web/i.test(id); // true nếu KHÔNG bắt đầu bằng "web"
+};
 export const updateEventToNativeCalender = async (
   eventId: string,
   eventTitle: string,
