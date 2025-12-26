@@ -3,7 +3,7 @@ import { ProductSelected } from './ProductEntity';
 export interface CustomerCostEntity {
   customerId: string;
   summary: Summary;
-  treatments: Treatment[];
+  treatments: TreatmentCustomerCost[];
 }
 
 export interface Summary {
@@ -18,7 +18,7 @@ export interface Summary {
   expectedAverageProfitMargin: number; // % lợi nhuận trung bình nếu thu đủ tiền
 }
 
-export interface Treatment {
+export interface TreatmentCustomerCost {
   id: string;
   sessionName: string;
   title: string;

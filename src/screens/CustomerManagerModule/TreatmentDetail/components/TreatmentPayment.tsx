@@ -58,9 +58,10 @@ export const TreatmentPayment: FC<Props> = ({ treatment }) => {
       }
       navigate(APP_SCREEN.CREATE_BILL, {
         bill: createBillPayload,
+        customerName: treatment.customer.name,
       });
     },
-    [treatment.customer.id, treatment.id],
+    [treatment.customer.id, treatment.customer.name, treatment.id],
   );
   return (
     <Box style={styles.container}>

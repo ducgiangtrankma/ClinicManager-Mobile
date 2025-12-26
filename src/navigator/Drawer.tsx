@@ -6,6 +6,7 @@ import {
   GroupUserIcon,
   NotificationIcon,
   ReportModuleIcon,
+  SuggestionIcon,
   WarehouseIcon,
 } from '@src/assets';
 import {
@@ -17,7 +18,11 @@ import {
 } from '@src/common';
 import { showToast } from '@src/components';
 import { RemoteNotificationEntity } from '@src/models';
-import { AppModuleListScreen, NotificationScreen } from '@src/screens';
+import {
+  AppModuleListScreen,
+  NotificationScreen,
+  SuggestionManagerScreen,
+} from '@src/screens';
 import { UserService } from '@src/services';
 import { NotificationService } from '@src/services/notification-service';
 import { getDeviceToken } from '@src/utils';
@@ -144,6 +149,15 @@ export const DrawerNavigator: React.FunctionComponent = () => {
           drawerIcon: ({ color }) => <NotificationIcon color={color} />,
           headerShown: false,
           title: t('drawer_noti'),
+        }}
+      />
+      <Drawer.Screen
+        name={APP_SCREEN.SUGGESTION_MANAGER}
+        component={SuggestionManagerScreen}
+        options={{
+          drawerIcon: ({ color }) => <SuggestionIcon color={color} />,
+          headerShown: false,
+          title: t('drawer_suggestion'),
         }}
       />
     </Drawer.Navigator>

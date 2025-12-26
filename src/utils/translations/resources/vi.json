@@ -276,6 +276,23 @@
       "bill_error_item_bank":"Nguồn nhận:",
       "bill_error_item_transferAmount":"Số tiền giao dịch:",
       "bill_error_item_content":"Nội dung giao dịch:",
-      "bill_error_item_create":"Thời gian ghi nhận:"
+      "bill_error_item_create":"Thời gian ghi nhận:",
+      "select_suggestion_title":"Chọn gợi ý",
+      "suggestion_empty_message":"Bạn cần tạo các gợi ý trước khi sử dụng",
+      "common_confirm":"Xác nhận",
+      "drawer_suggestion":"Quản lý gợi ý",
+      "suggestion_manager_title":"Quản lý gợi ý",
+      "suggestion_tab_medical_history":"Tiền sử bệnh lý",
+      "suggestion_tab_pre_treatment":"Quá trình điều trị trước đó",
+      "suggestion_tab_skin_condition":"Tình trạng da",
+      "suggestion_tab_routine":"Routine",
+      "suggestion_tab_diagnostic":"Chuẩn đoán",
+      "suggestion_tab_note":"Ghi chú",
+      "suggestion_add_placeholder":"Nhập nội dung gợi ý mới...",
+      "suggestion_add_button":"Thêm",
+      "suggestion_delete_confirm":"Bạn có chắc muốn xoá gợi ý này?",
+      "suggestion_add_success":"Thêm gợi ý thành công",
+      "suggestion_delete_success":"Xoá gợi ý thành công",
+      "suggestion_empty_list":"Chưa có gợi ý nào"
     }
  }

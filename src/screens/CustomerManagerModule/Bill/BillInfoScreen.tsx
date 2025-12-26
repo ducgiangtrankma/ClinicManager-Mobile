@@ -35,6 +35,8 @@ export const CreateBillScreen: FC<Props> = () => {
   const route =
     useRoute<RouteProp<RootStackParamList, APP_SCREEN.CREATE_BILL>>();
   const createBillPayload = route?.params?.bill;
+  const customerName = route?.params?.customerName;
+
   const { Colors } = useAppTheme();
   const viewShotRef = useRef<ViewShot>(null);
   const [bill, setBill] = useState<BillEntity>();
@@ -144,11 +146,21 @@ export const CreateBillScreen: FC<Props> = () => {
                 },
               ]}
             >
-              <AppText
-                translationKey="payment_bill_info"
-                fontSize="18"
-                fontFamily="content_bold"
-              />
+              <Box
+                direction="horizontal"
+                style={{
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  gap: sizes._4sdp,
+                }}
+              >
+                <AppText
+                  translationKey="payment_bill_info"
+                  fontSize="18"
+                  fontFamily="content_bold"
+                />
+                <AppText>{customerName ?? ''}</AppText>
+              </Box>
               <Box>
                 <AppText
                   fontFamily="content_bold"

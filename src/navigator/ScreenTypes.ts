@@ -40,6 +40,7 @@ export enum APP_SCREEN {
   CREATE_CATEGORY = 'CREATE_CATEGORY',
   PRODUCT_DETAIL = 'PRODUCT_DETAIL',
   CATEGORY_DETAIL = 'CATEGORY_DETAIL',
+  SUGGESTION_MANAGER = 'SUGGESTION_MANAGER',
 }
 export type UnAuthenticationPramsList = {
   [APP_SCREEN.ONBOARDING]: undefined;
@@ -90,6 +91,7 @@ export type AuthenticationPramsList = {
   };
   [APP_SCREEN.CREATE_BILL]: {
     bill: CreateBillPayload;
+    customerName: string;
   };
   [APP_SCREEN.SCHEDULE]: undefined;
   [APP_SCREEN.CUSTOMER_COST]: {
@@ -108,6 +110,7 @@ export type AuthenticationPramsList = {
   };
 
   [APP_SCREEN.CUSTOMER_GROWTH]: undefined;
+  [APP_SCREEN.SUGGESTION_MANAGER]: undefined;
 };
 
 export type RootStackParamList = {

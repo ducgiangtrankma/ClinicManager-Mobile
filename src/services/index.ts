@@ -12,3 +12,4 @@ export * from './schedule-service';
 export * from './report-service';
 export * from './user-service';
 export * from './notification-service';
+export * from './suggestion-service';

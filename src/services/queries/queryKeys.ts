@@ -133,6 +133,11 @@ export const queryKeys = {
         storeId,
       ] as const,
   },
+  suggestion: {
+    all: (facilityId?: string) => ['suggestion', facilityId] as const,
+    list: (facilityId: string) =>
+      [...queryKeys.suggestion.all(facilityId), 'list'] as const,
+  },
 } as const;
 
 export type QueryKeys = typeof queryKeys;

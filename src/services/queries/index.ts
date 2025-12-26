@@ -8,3 +8,4 @@ export * from './useYearCustomerGrowthQueries';
 export * from './useNotificationQueries';
 export * from './useBillExportQueries';
 export * from './useBillErrorQueries';
+export * from './useSuggestionQueries';

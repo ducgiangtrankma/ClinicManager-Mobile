@@ -64,8 +64,9 @@ export const CustomerDetailPayment: FC<Props> = ({ customerInfo }) => {
     }
     navigate(APP_SCREEN.CREATE_BILL, {
       bill: paymentPayload,
+      customerName: customerInfo.name,
     });
-  }, [customerInfo.debt, customerInfo.id]);
+  }, [customerInfo.debt, customerInfo.id, customerInfo.name]);
   return (
     <Box style={styles.container}>
       <TouchableOpacity

@@ -73,8 +73,8 @@ export enum BillStatus {
 }
 
 export interface BillExportEntity {
-  customer: Customer;
-  createBy: CreateBy;
+  customer: BillCustomer;
+  createBy: BillCreateBy;
   type: string;
   treatmentId: string;
   voucher: any;
@@ -91,13 +91,13 @@ export interface BillExportEntity {
   transactions: Transaction[];
 }
 
-export interface Customer {
+export interface BillCustomer {
   id: string;
   name: string;
   phoneNumber: string;
 }
 
-export interface CreateBy {
+export interface BillCreateBy {
   id: string;
   email: string;
 }

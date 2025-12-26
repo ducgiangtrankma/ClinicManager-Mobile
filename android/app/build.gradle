@@ -97,6 +97,10 @@ android {
         //Required
         resValue "string", "build_config_package", applicationId // Bắt buộc để đọc được value trong env
     }
+
+    aaptOptions {
+        cruncherEnabled = false
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')

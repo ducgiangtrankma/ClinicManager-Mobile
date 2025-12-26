@@ -15,6 +15,8 @@ import {
   SelectLeatherClassificationRef,
   SelectMaternity,
   SelectMaternityRef,
+  SelectSuggestion,
+  SelectSuggestionRef,
   showErrorMessage,
 } from '@src/components';
 import { CreateCustomerProgress } from '@src/components/CreateCustomerStep';
@@ -27,7 +29,11 @@ import {
   LocalFileEntity,
 } from '@src/models';
 import { goBack } from '@src/navigator';
-import { AttachmentService, CustomerService } from '@src/services';
+import {
+  AttachmentService,
+  CustomerService,
+  useSuggestionQuery,
+} from '@src/services';
 import {
   _screen_width,
   createCustomerValidationSchema,
@@ -67,10 +73,14 @@ export const CreateCustomerScreen: FC<Props> = () => {
     React.createRef<any>();
   const attachmentPickerRef: React.RefObject<AttachmentPickerRef> =
     React.createRef<any>();
+  const selectSuggestionRef: React.RefObject<SelectSuggestionRef> =
+    React.createRef<any>();
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const [images, setImages] = useState<LocalFileEntity[]>([]);
   const formikRef = useRef<any>(null);
+
+  const { data: suggestionsData } = useSuggestionQuery();
 
   // Validation functions for each step
   const validateStep = useCallback(
@@ -86,30 +96,10 @@ export const CreateCustomerScreen: FC<Props> = () => {
           );
         case 1: // Step 2: Medical Info
           return true;
-        // return (
-        //   !errors.leather_classification &&
-        //   !errors.maternity &&
-        //   !errors.medical_history &&
-        //   values.medical_history.trim() !== ''
-        // );
         case 2: // Step 3: Skin Care History
           return true;
-        // return (
-        //   !errors.pre_treatment &&
-        //   !errors.skin_condition &&
-        //   !errors.routine &&
-        //   values.pre_treatment.trim() !== '' &&
-        //   values.skin_condition.trim() !== '' &&
-        //   values.routine.trim() !== ''
-        // );
         case 3: // Step 4: Diagnosis and Notes
           return true;
-        // return (
-        //   !errors.diagnostic &&
-        //   !errors.note &&
-        //   values.diagnostic.trim() !== '' &&
-        //   values.note.trim() !== ''
-        // );
         default:
           return true;
       }
@@ -223,16 +213,26 @@ export const CreateCustomerScreen: FC<Props> = () => {
               formik={formik}
               selectLeatherClassificationRef={selectLeatherClassificationRef}
               selectMaternityRef={selectMaternityRef}
+              selectSuggestionRef={selectSuggestionRef}
+              suggestionsData={suggestionsData}
             />
           );
         case 2:
-          return <Step3SkinCareHistory formik={formik} />;
+          return (
+            <Step3SkinCareHistory
+              formik={formik}
+              selectSuggestionRef={selectSuggestionRef}
+              suggestionsData={suggestionsData}
+            />
+          );
         case 3:
           return (
             <Step4DiagnosisAndNotes
               formik={formik}
               attachmentPickerRef={attachmentPickerRef}
               images={images}
+              selectSuggestionRef={selectSuggestionRef}
+              suggestionsData={suggestionsData}
             />
           );
         default:
@@ -245,8 +245,10 @@ export const CreateCustomerScreen: FC<Props> = () => {
       selectGenderRef,
       selectLeatherClassificationRef,
       selectMaternityRef,
+      selectSuggestionRef,
       attachmentPickerRef,
       images,
+      suggestionsData,
     ],
   );
 
@@ -436,6 +438,7 @@ export const CreateCustomerScreen: FC<Props> = () => {
           }
         }}
       />
+      <SelectSuggestion ref={selectSuggestionRef} />
     </PageContainer>
   );
 };
