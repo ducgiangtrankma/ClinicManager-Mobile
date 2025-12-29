@@ -8,10 +8,11 @@ import {
   LocalFileEntity,
   ProductSelected,
   ScheduleEntity,
+  SystemSettingEntity,
 } from '@src/models';
 import { TreatmentEntity } from '@src/models/TreatmentEntity';
 import { Linking, PermissionsAndroid, Platform } from 'react-native';
-
+import Config from 'react-native-config';
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import {
   DayEvents,
@@ -20,6 +21,7 @@ import {
 import dayjs from 'dayjs';
 
 import RNCalendarEvents from 'react-native-calendar-events';
+import { AppConfig } from '@src/config';
 function callNumber(phone: string) {
   let phoneNumber = phone;
   if (Platform.OS !== 'android') {
@@ -382,5 +384,48 @@ export const getMonthRange = (year?: number, month?: number) => {
     startDate: base.startOf('month').format('YYYY-MM-DD'),
     endDate: base.endOf('month').format('YYYY-MM-DD'),
   };
+};
+
+export const checkUpdateApp = (appConfig: SystemSettingEntity) => {
+  // const {appConfig} = useSelector(x => x.appReducer);
+  //android
+  const ANDROID_REMOTE_VERSION = appConfig.androidNewVersion.version;
+  const ANDROID_APP_VERSION = AppConfig.androidVersion;
+  //ios
+  const IOS_APP_VERSION = AppConfig.iosVersion;
+  const IOS_REMOTE_VERSION = appConfig.iosNewVersion.version;
+
+  if (Config.ENV === 'PROD') {
+    if (Platform.OS === 'android') {
+      if (
+        ANDROID_APP_VERSION &&
+        ANDROID_REMOTE_VERSION &&
+        ANDROID_APP_VERSION < ANDROID_REMOTE_VERSION
+      ) {
+        if (appConfig.androidNewVersion.urlUpdate) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    }
+    if (Platform.OS === 'ios') {
+      if (
+        IOS_REMOTE_VERSION &&
+        IOS_APP_VERSION &&
+        IOS_APP_VERSION < IOS_REMOTE_VERSION
+      ) {
+        if (appConfig.iosNewVersion.urlUpdate) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
+      }
+    }
+  } else {
+    return false;
+  }
 };
 export { callNumber, isSuccessTreatment };

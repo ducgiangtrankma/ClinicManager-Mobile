@@ -10,3 +10,4 @@ export * from './ReportModule';
 export * from './Notification';
 export * from './PaymentModule';
 export * from './SuggestionModule';
+export * from './SystemMaintenance';

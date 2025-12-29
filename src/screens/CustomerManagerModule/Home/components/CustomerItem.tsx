@@ -55,7 +55,9 @@ export const CustomerItem: FC<Props> = ({ item }) => {
             >
               <Box horizontal align="center" gap={sizes._6sdp}>
                 <CallIcon />
-                <AppText>{item.phoneNumber}</AppText>
+                <AppText>
+                  {item.phoneNumber.replace(/(?<=\d{7})\d{3}$/, '****')}
+                </AppText>
               </Box>
             </TouchableOpacity>
           </Box>

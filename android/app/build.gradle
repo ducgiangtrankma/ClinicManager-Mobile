@@ -92,8 +92,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         // versionCode 1
         // versionName "1.0"
-        versionCode Integer.valueOf(env.get("VERSION_CODE_ANDROID"))
-        versionName project.env.get("VERSION_NAME_ANDROID")
+        versionCode Integer.valueOf(env.get("ANDROID_APP_VERSION_CODE"))
+        versionName project.env.get("ANDROID_APP_VERSION_NAME")
         //Required
         resValue "string", "build_config_package", applicationId // Bắt buộc để đọc được value trong env
     }

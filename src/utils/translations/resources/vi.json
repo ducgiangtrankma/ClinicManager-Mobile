@@ -293,6 +293,13 @@
       "suggestion_delete_confirm":"Bạn có chắc muốn xoá gợi ý này?",
       "suggestion_add_success":"Thêm gợi ý thành công",
       "suggestion_delete_success":"Xoá gợi ý thành công",
-      "suggestion_empty_list":"Chưa có gợi ý nào"
+      "suggestion_empty_list":"Chưa có gợi ý nào",
+      "system_mode_title":"Clinic Manager Xin lỗi!",
+      "system_mode":"Hệ thống đang bảo trì. Vui lòng quay lại sau",
+      "setting_delete_account":"Xoá tài khoản của tôi",
+      "setting_confirm_delete_account":"Xác nhận xoá tài khoản",
+      "setting_confirm_delete_account_description":"Mọi thông tin và dữ liệu tài khoản của bạn sẽ bị xóa và không thể khôi phục.",
+      "setting_cancel_delete":"Huỷ",
+      "setting_summit_delete":"Đồng ý"
     }
  }
