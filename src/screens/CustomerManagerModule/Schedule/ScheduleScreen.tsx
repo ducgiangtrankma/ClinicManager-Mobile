@@ -20,7 +20,7 @@ import {
   sizes,
 } from '@src/utils';
 import dayjs from 'dayjs';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 import { EmptyListSchedule } from './components/EmptySchedule';
@@ -31,10 +31,10 @@ interface Props {}
 export const CustomerScheduleScreen: FC<Props> = () => {
   const now = new Date();
 
-  const year = now.getFullYear().toString(); // 2025
-  const month = String(now.getMonth() + 1)
-    .padStart(2, '0')
-    .toString();
+  const [year, setYear] = useState<string>(now.getFullYear().toString());
+  const [month, setMonth] = useState<string>(
+    String(now.getMonth() + 1).padStart(2, '0'),
+  );
   const { appLanguage } = useSelector(x => x.languageReducer);
   const { scheduleType } = useSelector(x => x.appReducer);
   const { Colors } = useAppTheme();
@@ -46,7 +46,6 @@ export const CustomerScheduleScreen: FC<Props> = () => {
   const { data, isLoading, refetch } = useScheduleQuery(startDate, endDate);
   const {
     data: calendarData,
-
     refetch: calendarRefetch,
   } = useCalendarQuery(month, year);
 
@@ -64,12 +63,25 @@ export const CustomerScheduleScreen: FC<Props> = () => {
   //   }
   // }, [scheduleType]);
 
+  // Refetch calendar data when month/year changes
+  useEffect(() => {
+    calendarRefetch();
+  }, [month, year, calendarRefetch]);
+
   useFocusEffect(
     React.useCallback(() => {
       refetch();
       calendarRefetch();
       return () => {};
     }, [calendarRefetch, refetch]),
+  );
+
+  const handleMonthChange = useCallback(
+    (newMonth: string, newYear: string) => {
+      setMonth(newMonth);
+      setYear(newYear);
+    },
+    [],
   );
   return (
     <PageContainer disablePaddingBottom>
@@ -105,6 +117,7 @@ export const CustomerScheduleScreen: FC<Props> = () => {
                 setStartDate(date);
                 setEndDate(date);
               }}
+              onMonthChange={handleMonthChange}
             />
           </Box>
           <Box style={styles.moodEntriesContainer}>

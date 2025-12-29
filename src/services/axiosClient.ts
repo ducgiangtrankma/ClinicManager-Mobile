@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import DeviceInfo from 'react-native-device-info';
 const LOCAL = 'http://localhost:8002/api/v1';
 const apiUrl = __DEV__ ? LOCAL : AppConfig.apiUrl;
+
 // const apiUrl = 'http://192.168.0.108:8001/api/v1';
 
 // const apiUrl = 'http://192.168.0.114:8001/api/v1';

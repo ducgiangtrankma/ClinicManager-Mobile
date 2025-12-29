@@ -4,7 +4,7 @@ import { LeftArrowIcon, RightArrowIcon } from '@src/assets';
 import { APP_FONTS } from '@src/themes';
 import { DEFAULT_HIT_SLOP, sizes } from '@src/utils';
 import dayjs from 'dayjs';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { DayState } from 'react-native-calendars/src/types';
@@ -129,6 +129,7 @@ interface Props {
   onDatePress?: (date: string) => void;
   selectedDate?: string;
   onSelectedDateChange?: (date: string) => void;
+  onMonthChange?: (month: string, year: string) => void;
 }
 
 export const MonthCalendar: FC<Props> = ({
@@ -137,6 +138,7 @@ export const MonthCalendar: FC<Props> = ({
   onDatePress,
   selectedDate: propSelectedDate,
   onSelectedDateChange,
+  onMonthChange,
 }) => {
   const { Colors } = useAppTheme();
   const { appLanguage } = useSelector(x => x.languageReducer);
@@ -189,6 +191,15 @@ export const MonthCalendar: FC<Props> = ({
     LocaleConfig.locales[locale] = LOCALE_CONFIGS[locale];
     LocaleConfig.defaultLocale = locale;
   }, [appLanguage]);
+
+  // Notify parent when month changes
+  useEffect(() => {
+    if (onMonthChange) {
+      const month = String(currentMonth.month() + 1).padStart(2, '0');
+      const year = currentMonth.year().toString();
+      onMonthChange(month, year);
+    }
+  }, [currentMonth, onMonthChange]);
 
   // Navigation functions
   const handlePreviousMonth = useCallback(() => {

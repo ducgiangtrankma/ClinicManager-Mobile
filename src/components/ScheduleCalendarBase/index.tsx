@@ -6,11 +6,13 @@ import { CalendarEvent, DayEvents, MonthCalendar } from './MonthCalendar';
 interface Props {
   calendarEvents: DayEvents | undefined;
   onSelectDate: (date: string) => void;
+  onMonthChange?: (month: string, year: string) => void;
 }
 
 export const ScheduleCalendarBase: FC<Props> = ({
   calendarEvents,
   onSelectDate,
+  onMonthChange,
 }) => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format('YYYY-MM-DD'),
@@ -36,6 +38,7 @@ export const ScheduleCalendarBase: FC<Props> = ({
         onDatePress={handleDatePress}
         selectedDate={selectedDate}
         onSelectedDateChange={handleSelectedDateChange}
+        onMonthChange={onMonthChange}
       />
     </Box>
   );
